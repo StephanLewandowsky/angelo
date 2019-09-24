@@ -30,6 +30,10 @@ library(scales)
 library(summarytools) #contains descr()
 library(workflowr)
 
+revscore <- function (x,cluster) {  #this reverse scores a scale for items of reversed polarity
+  return ((likscaleupper[cluster]+1)-x)            
+}
+
 #define working directories
 inputdir <- "data"
 
@@ -37,6 +41,7 @@ inputdir <- "data"
 angelo1 <- read.csv(paste(inputdir,"Study 1 - Data Matrix (Complete).csv",sep="/"),header=TRUE,row.names=NULL) 
 ```
 
+## Summary statistics
 ```{r summary, echo=FALSE}
 table(angelo1$Sex)
 prop.table(table(angelo1$Sex))
@@ -48,52 +53,50 @@ prop.table(table(angelo1$Education))
 
 descr(select(angelo1,starts_with("Polit")))
 
-# 
-# 
-# angelo11.5 <- angelo1 %>% filter(QB_15 == 20) %>%       #must choose 20 from the AFQ slider (this eliminates NA softlaunch subject)
-#   filter(QAC == 4) %>%              #table is not an animal
-#   #filter(Q_TotalDuration<1801) %>%    #30 minutes should be ample
-#   select(contains("Q"),contains("CRT")) %>% 
-#   select(-contains("Q_Tot"),-contains("QZ"),-contains("QX"),-contains("QY"),
-#          -contains("Click"),-contains("Submit")) %>%        #drop the Qs that ain't qs.
-#   select(-QB_15)                    #drop AFQ
-# 
-# # first fix the Qualtrics-induced scale problems, so SD=1 and SA=7
-# angelo11.5 <- angelo11.5 %>%  mutate_at(c(paste("QC.",c(1:5),sep=""),
-#                                         paste("QE.",c(1:5),sep=""),
-#                                         paste("QF.",c(1:5),sep=""),
-#                                         paste("QH.",c(1:5),sep=""),
-#                                         paste("QI.",c(1:5),sep=""),
-#                                         paste("QJ.",c(1:5),sep=""),
-#                                         paste("QG.",c(1:5),sep="")),fixscore,mm=14) %>%
-#   mutate_at(paste("QD.",c(1:5),sep=""), fixscore,mm=28) 
-# 
-# ##--- identify keyhitters before reverse-scoring ----------------------------------------------------------------------
-# neutral <- 0 #if set to zero, any sequence of identical keys is eliminated. If set to 4, only non-neutral responses are dropped
-# keyhitters <- NULL
-# for (cluster in c("C","E","F","D","G")) { #eliminate "H","I","J", which have no reverse scoring
-#   keyhitters <- cbind(keyhitters,
-#                       angelo11.5 %>% select(num_range(paste("Q",cluster,".",sep=""),1:5)) %>% 
-#                         apply(.,1,FUN=function(x) ifelse((var(x)==0 & mean(x)!=neutral),1,0)) 
-#   )
-# }
-# table(rowSums(keyhitters))
-# #include "50" for sliders in identifying keyhitters
-# keyhitters <- cbind(keyhitters, angelo11.5 %>% select(contains("QB")) %>% 
-#                       apply(.,1,FUN=function(x) ifelse((var(x)==0 & mean(x)==50),1,0))) 
-# table(rowSums(keyhitters))
-# #angelo11.5 <- filter(angelo11.5,!(rowSums(keyhitters)>0)) #filter(angelo11.5, Qage<50) #
-# 
-# #demographics
-# males <- table(angelo11.5$Qgender)["1"]
-# females <- table(angelo11.5$Qgender)["2"]
-# mage <- round(mean(angelo11.5$Qage),1)
-# mdage <- round(median(angelo11.5$Qage),1)
-# minage <- min(angelo11.5$Qage)
-# maxage <- max(angelo11.5$Qage)
-# histogram(~Qage|Qgender,data=angelo11.5)
-# agebygender <- angelo11.5 %>% group_by(Qgender) %>% summarise(mean(Qage)) %>% unlist %>% as.numeric %>% round(.,1)
+itemclusters <- c("R.PBS", "IAS.R.PBS", "GCBS", "IAS.GCBS", "PSEUDO", "IAS.PSEUDO")
+```
 
+## Participants who pressed the same key for all items in a cluster (0: no cluster, >=1: number of clusters)
+```{r keyhitters, echo=FALSE}
+# identify keyhitters before reverse-scoring
+neutral <- 0 #if set to zero, any sequence of identical keys is eliminated. If set to 4, only non-neutral responses are dropped
+keyhitters <- NULL
+for (cluster in itemclusters) {
+   keyhitters <- cbind(keyhitters, angelo1 %>% select(starts_with(cluster)) %>% 
+                      apply(.,1,FUN=function(x) ifelse((var(x)==0 & mean(x)!=neutral),1,0)) )
+ }
+table(rowSums(keyhitters))
+
+
+#do reverse scoring
+likscaleupper <- c(7,4,5,4,5,4)
+names(likscaleupper) <- itemclusters
+angelo2 <- select(angelo1,1:6) #grab first bit, then add columns
+for (cluster in itemclusters) {
+   angelo2 <- cbind(angelo2, angelo1 %>% select(starts_with(cluster)) %>% mutate_at(vars(contains("..R")),revscore,cluster)) 
+}
+angelo2 <- cbind(angelo2,angelo1$SIN.B)
+```
+
+```{r corrs, echo=FALSE, results="hide"}
+# compute pairwise correlations within each cluster
+for (cluster in itemclusters) {
+  angelo2 %>% select(starts_with(cluster)) %>% cor(use="complete.obs") %>% print
+}
 
 ```
 
+## Correlations among composites
+```{r composites, echo=FALSE}
+
+angelocomps <- NULL
+for (cluster in itemclusters) {
+    angelocomps <- cbind(angelocomps, angelo2 %>% select(starts_with(cluster)) %>% apply(.,1,mean,na.rm=TRUE))
+}
+angelocomps <- as.data.frame(angelocomps)
+names(angelocomps) <- itemclusters
+angelocomps <- cbind(select(angelo1,1:6), angelocomps)
+
+cor(angelocomps %>% select(-c(1:6)))
+
+```  
