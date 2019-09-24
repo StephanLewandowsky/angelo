@@ -576,10 +576,10 @@ environment
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotreeb65de39ea56f700b1829225a42d6bef7c80d2955targetblankb65de39a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/StephanLewandowsky/angelo/tree/b65de39ea56f700b1829225a42d6bef7c80d2955" target="_blank">b65de39</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotree78b29e7d2b7a33670f3653a8318425558990c04atargetblank78b29e7a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/StephanLewandowsky/angelo/tree/78b29e7d2b7a33670f3653a8318425558990c04a" target="_blank">78b29e7</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotreeb65de39ea56f700b1829225a42d6bef7c80d2955targetblankb65de39a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotree78b29e7d2b7a33670f3653a8318425558990c04atargetblank78b29e7a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -591,6 +591,12 @@ Ignored files:
 
 Untracked files:
     Untracked:  data/Study 1 - Data Matrix (Complete).csv
+    Untracked:  data/Study 1 - Data Matrix (Complete).xls
+    Untracked:  data/Study 1 - Data Matrix.csv
+    Untracked:  data/Study 1 - Data Matrix.xls
+    Untracked:  data/Study 1 - Reversed encoded and Likert scales.doc
+    Untracked:  data/Study 2 - Data Matrix.xls
+    Untracked:  data/Study 2 - Reversed encoded and Likert scales.doc
 
 </code></pre>
 <p>
@@ -629,6 +635,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/StephanLewandowsky/angelo/blob/78b29e7d2b7a33670f3653a8318425558990c04a/analysis/angelo1.Rmd" target="_blank">78b29e7</a>
+</td>
+<td>
+StephanLewandowsky
+</td>
+<td>
+2019-09-24
+</td>
+<td>
+Composite correlations
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/StephanLewandowsky/angelo/752572a64b9850ec659977e33c45f27830a626bb/docs/angelo1.html" target="_blank">752572a</a>
+</td>
+<td>
+StephanLewandowsky
+</td>
+<td>
+2019-09-24
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -707,6 +747,9 @@ update after adding first analysis
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <p>The analyses are available at <a href="https://stephanlewandowsky.github.io/angelo/" class="uri">https://stephanlewandowsky.github.io/angelo/</a>.</p>
+</div>
+<div id="summary-statistics" class="section level2">
+<h2>Summary statistics</h2>
 <pre><code>
 Female   Male 
    395    702 </code></pre>
@@ -761,6 +804,29 @@ N: 1097
          Kurtosis                                 0.75
           N.Valid                              1097.00
         Pct.Valid                               100.00</code></pre>
+</div>
+<div id="participants-who-pressed-the-same-key-for-all-items-in-a-cluster-0-no-cluster-1-number-of-clusters" class="section level2">
+<h2>Participants who pressed the same key for all items in a cluster (0: no cluster, &gt;=1: number of clusters)</h2>
+<pre><code>
+  0   1   2   3   6 
+987  82  14  13   1 </code></pre>
+</div>
+<div id="correlations-among-composites" class="section level2">
+<h2>Correlations among composites</h2>
+<pre><code>                 R.PBS   IAS.R.PBS        GCBS    IAS.GCBS     PSEUDO
+R.PBS       1.00000000 -0.07834244  0.56648419 -0.07329624  0.6914106
+IAS.R.PBS  -0.07834244  1.00000000 -0.07573926  0.63681883 -0.1708556
+GCBS        0.56648419 -0.07573926  1.00000000 -0.08788975  0.7097454
+IAS.GCBS   -0.07329624  0.63681883 -0.08788975  1.00000000 -0.1457308
+PSEUDO      0.69141059 -0.17085561  0.70974535 -0.14573078  1.0000000
+IAS.PSEUDO -0.10735191  0.65445180 -0.07281787  0.71107858 -0.1390890
+            IAS.PSEUDO
+R.PBS      -0.10735191
+IAS.R.PBS   0.65445180
+GCBS       -0.07281787
+IAS.GCBS    0.71107858
+PSEUDO     -0.13908901
+IAS.PSEUDO  1.00000000</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
