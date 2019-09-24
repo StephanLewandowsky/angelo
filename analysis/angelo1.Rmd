@@ -9,9 +9,9 @@ editor_options:
 
 ## Introduction
 
-```{r}
+The analyses are available at https://stephanlewandowsky.github.io/angelo/. 
 
-
+```{r echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
 rm(list=ls())
 library(lattice)
 library(stargazer)
@@ -31,15 +31,13 @@ library(summarytools) #contains descr()
 library(workflowr)
 
 #define working directories
-figdir   <- "../_angelofigures"
-inputdir <- "../_angelodata"
+inputdir <- "data"
 
 ##--- Begin by reading data and variable names -----------------------------------------------------------------------
-if (rev(str_split(getwd(),"/")[[1]])[1] == "_angelopaper") {
-  setwd("../_angelosource")
-}
 angelo1 <- read.csv(paste(inputdir,"Study 1 - Data Matrix (Complete).csv",sep="/"),header=TRUE,row.names=NULL) 
+```
 
+```{r summary, echo=FALSE}
 table(angelo1$Sex)
 prop.table(table(angelo1$Sex))
 
