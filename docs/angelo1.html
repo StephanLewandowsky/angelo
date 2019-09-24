@@ -576,10 +576,10 @@ environment
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotree1d9ed0cc65af64ae08f3b5099814e859d1fa5fd3targetblank1d9ed0ca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/StephanLewandowsky/angelo/tree/1d9ed0cc65af64ae08f3b5099814e859d1fa5fd3" target="_blank">1d9ed0c</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotree41ae57598b44d04277730906a4ea6d5f528d8c83targetblank41ae575a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/StephanLewandowsky/angelo/tree/41ae57598b44d04277730906a4ea6d5f528d8c83" target="_blank">41ae575</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotree1d9ed0cc65af64ae08f3b5099814e859d1fa5fd3targetblank1d9ed0ca" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotree41ae57598b44d04277730906a4ea6d5f528d8c83targetblank41ae575a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -634,6 +634,40 @@ Message
 Rmd
 </td>
 <td>
+<a href="https://github.com/StephanLewandowsky/angelo/blob/41ae57598b44d04277730906a4ea6d5f528d8c83/analysis/angelo1.Rmd" target="_blank">41ae575</a>
+</td>
+<td>
+StephanLewandowsky
+</td>
+<td>
+2019-09-24
+</td>
+<td>
+update after adding first analysis
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/StephanLewandowsky/angelo/b2ca4c81b017f4046a034189d9d26c80cff3caf8/docs/angelo1.html" target="_blank">b2ca4c8</a>
+</td>
+<td>
+StephanLewandowsky
+</td>
+<td>
+2019-09-24
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
 <a href="https://github.com/StephanLewandowsky/angelo/blob/1d9ed0cc65af64ae08f3b5099814e859d1fa5fd3/analysis/angelo1.Rmd" target="_blank">1d9ed0c</a>
 </td>
 <td>
@@ -655,133 +689,13 @@ update after adding first analysis
 </div>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<pre class="r"><code>rm(list=ls())
-library(lattice)
-library(stargazer)</code></pre>
-<pre><code>
-Please cite as: </code></pre>
-<pre><code> Hlavac, Marek (2018). stargazer: Well-Formatted Regression and Summary Statistics Tables.</code></pre>
-<pre><code> R package version 5.2.2. https://CRAN.R-project.org/package=stargazer </code></pre>
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>-- Attaching packages --------------------------------------------------------------------------------------------- tidyverse 1.2.1 --</code></pre>
-<pre><code>v ggplot2 3.2.0     v purrr   0.3.2
-v tibble  2.0.1     v dplyr   0.8.3
-v tidyr   0.8.2     v stringr 1.3.1
-v readr   1.3.1     v forcats 0.4.0</code></pre>
-<pre><code>Warning: package &#39;ggplot2&#39; was built under R version 3.5.3</code></pre>
-<pre><code>Warning: package &#39;purrr&#39; was built under R version 3.5.3</code></pre>
-<pre><code>Warning: package &#39;dplyr&#39; was built under R version 3.5.3</code></pre>
-<pre><code>Warning: package &#39;forcats&#39; was built under R version 3.5.3</code></pre>
-<pre><code>-- Conflicts ------------------------------------------------------------------------------------------------ tidyverse_conflicts() --
-x dplyr::filter() masks stats::filter()
-x dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code>library(lme4)</code></pre>
-<pre><code>Loading required package: Matrix</code></pre>
-<pre><code>
-Attaching package: &#39;Matrix&#39;</code></pre>
-<pre><code>The following object is masked from &#39;package:tidyr&#39;:
-
-    expand</code></pre>
-<pre class="r"><code>library(lavaan)</code></pre>
-<pre><code>This is lavaan 0.6-3</code></pre>
-<pre><code>lavaan is BETA software! Please report any bugs.</code></pre>
-<pre class="r"><code>library(semPlot)
-library(semTools)</code></pre>
-<pre><code> </code></pre>
-<pre><code>###############################################################################</code></pre>
-<pre><code>This is semTools 0.5-1</code></pre>
-<pre><code>All users of R (or SEM) are invited to submit functions or ideas for functions.</code></pre>
-<pre><code>###############################################################################</code></pre>
-<pre><code>
-Attaching package: &#39;semTools&#39;</code></pre>
-<pre><code>The following object is masked from &#39;package:readr&#39;:
-
-    clipboard</code></pre>
-<pre class="r"><code>library(RColorBrewer)
-library(gridExtra)</code></pre>
-<pre><code>
-Attaching package: &#39;gridExtra&#39;</code></pre>
-<pre><code>The following object is masked from &#39;package:dplyr&#39;:
-
-    combine</code></pre>
-<pre class="r"><code>library(stringr)
-library(Hmisc)</code></pre>
-<pre><code>Loading required package: survival</code></pre>
-<pre><code>Loading required package: Formula</code></pre>
-<pre><code>
-Attaching package: &#39;Hmisc&#39;</code></pre>
-<pre><code>The following objects are masked from &#39;package:dplyr&#39;:
-
-    src, summarize</code></pre>
-<pre><code>The following objects are masked from &#39;package:base&#39;:
-
-    format.pval, units</code></pre>
-<pre class="r"><code>library(reshape2)</code></pre>
-<pre><code>
-Attaching package: &#39;reshape2&#39;</code></pre>
-<pre><code>The following object is masked from &#39;package:tidyr&#39;:
-
-    smiths</code></pre>
-<pre class="r"><code>library(psych)</code></pre>
-<pre><code>
-Attaching package: &#39;psych&#39;</code></pre>
-<pre><code>The following object is masked from &#39;package:Hmisc&#39;:
-
-    describe</code></pre>
-<pre><code>The following object is masked from &#39;package:semTools&#39;:
-
-    skew</code></pre>
-<pre><code>The following object is masked from &#39;package:lavaan&#39;:
-
-    cor2cov</code></pre>
-<pre><code>The following objects are masked from &#39;package:ggplot2&#39;:
-
-    %+%, alpha</code></pre>
-<pre class="r"><code>library(scales)</code></pre>
-<pre><code>
-Attaching package: &#39;scales&#39;</code></pre>
-<pre><code>The following objects are masked from &#39;package:psych&#39;:
-
-    alpha, rescale</code></pre>
-<pre><code>The following object is masked from &#39;package:purrr&#39;:
-
-    discard</code></pre>
-<pre><code>The following object is masked from &#39;package:readr&#39;:
-
-    col_factor</code></pre>
-<pre class="r"><code>library(summarytools) #contains descr()</code></pre>
-<pre><code>Warning: package &#39;summarytools&#39; was built under R version 3.5.3</code></pre>
-<pre><code>
-Attaching package: &#39;summarytools&#39;</code></pre>
-<pre><code>The following objects are masked from &#39;package:Hmisc&#39;:
-
-    label, label&lt;-</code></pre>
-<pre><code>The following object is masked from &#39;package:tibble&#39;:
-
-    view</code></pre>
-<pre class="r"><code>library(workflowr)</code></pre>
-<pre><code>Warning: package &#39;workflowr&#39; was built under R version 3.5.3</code></pre>
-<pre><code>This is workflowr version 1.4.0
-Run ?workflowr for help getting started</code></pre>
-<pre class="r"><code>#define working directories
-figdir   &lt;- &quot;../_angelofigures&quot;
-inputdir &lt;- &quot;../_angelodata&quot;
-
-##--- Begin by reading data and variable names -----------------------------------------------------------------------
-if (rev(str_split(getwd(),&quot;/&quot;)[[1]])[1] == &quot;_angelopaper&quot;) {
-  setwd(&quot;../_angelosource&quot;)
-}
-angelo1 &lt;- read.csv(paste(inputdir,&quot;Study 1 - Data Matrix (Complete).csv&quot;,sep=&quot;/&quot;),header=TRUE,row.names=NULL) 
-
-table(angelo1$Sex)</code></pre>
+<p>The analyses are available at <a href="https://stephanlewandowsky.github.io/angelo/" class="uri">https://stephanlewandowsky.github.io/angelo/</a>.</p>
 <pre><code>
 Female   Male 
    395    702 </code></pre>
-<pre class="r"><code>prop.table(table(angelo1$Sex))</code></pre>
 <pre><code>
    Female      Male 
 0.3600729 0.6399271 </code></pre>
-<pre class="r"><code>descr(angelo1$Age)</code></pre>
 <pre><code>Descriptive Statistics  
 angelo1$Age  
 N: 1097  
@@ -803,15 +717,12 @@ N: 1097
          Kurtosis      5.88
           N.Valid   1097.00
         Pct.Valid    100.00</code></pre>
-<pre class="r"><code>table(angelo1$Education)</code></pre>
 <pre><code>
 Pre-university     University 
            242            855 </code></pre>
-<pre class="r"><code>prop.table(table(angelo1$Education))</code></pre>
 <pre><code>
 Pre-university     University 
      0.2206016      0.7793984 </code></pre>
-<pre class="r"><code>descr(select(angelo1,starts_with(&quot;Polit&quot;)))</code></pre>
 <pre><code>Descriptive Statistics  
 Political.tendency..1...Left.wing.  
 N: 1097  
@@ -833,51 +744,6 @@ N: 1097
          Kurtosis                                 0.75
           N.Valid                              1097.00
         Pct.Valid                               100.00</code></pre>
-<pre class="r"><code># 
-# 
-# angelo11.5 &lt;- angelo1 %&gt;% filter(QB_15 == 20) %&gt;%       #must choose 20 from the AFQ slider (this eliminates NA softlaunch subject)
-#   filter(QAC == 4) %&gt;%              #table is not an animal
-#   #filter(Q_TotalDuration&lt;1801) %&gt;%    #30 minutes should be ample
-#   select(contains(&quot;Q&quot;),contains(&quot;CRT&quot;)) %&gt;% 
-#   select(-contains(&quot;Q_Tot&quot;),-contains(&quot;QZ&quot;),-contains(&quot;QX&quot;),-contains(&quot;QY&quot;),
-#          -contains(&quot;Click&quot;),-contains(&quot;Submit&quot;)) %&gt;%        #drop the Qs that ain&#39;t qs.
-#   select(-QB_15)                    #drop AFQ
-# 
-# # first fix the Qualtrics-induced scale problems, so SD=1 and SA=7
-# angelo11.5 &lt;- angelo11.5 %&gt;%  mutate_at(c(paste(&quot;QC.&quot;,c(1:5),sep=&quot;&quot;),
-#                                         paste(&quot;QE.&quot;,c(1:5),sep=&quot;&quot;),
-#                                         paste(&quot;QF.&quot;,c(1:5),sep=&quot;&quot;),
-#                                         paste(&quot;QH.&quot;,c(1:5),sep=&quot;&quot;),
-#                                         paste(&quot;QI.&quot;,c(1:5),sep=&quot;&quot;),
-#                                         paste(&quot;QJ.&quot;,c(1:5),sep=&quot;&quot;),
-#                                         paste(&quot;QG.&quot;,c(1:5),sep=&quot;&quot;)),fixscore,mm=14) %&gt;%
-#   mutate_at(paste(&quot;QD.&quot;,c(1:5),sep=&quot;&quot;), fixscore,mm=28) 
-# 
-# ##--- identify keyhitters before reverse-scoring ----------------------------------------------------------------------
-# neutral &lt;- 0 #if set to zero, any sequence of identical keys is eliminated. If set to 4, only non-neutral responses are dropped
-# keyhitters &lt;- NULL
-# for (cluster in c(&quot;C&quot;,&quot;E&quot;,&quot;F&quot;,&quot;D&quot;,&quot;G&quot;)) { #eliminate &quot;H&quot;,&quot;I&quot;,&quot;J&quot;, which have no reverse scoring
-#   keyhitters &lt;- cbind(keyhitters,
-#                       angelo11.5 %&gt;% select(num_range(paste(&quot;Q&quot;,cluster,&quot;.&quot;,sep=&quot;&quot;),1:5)) %&gt;% 
-#                         apply(.,1,FUN=function(x) ifelse((var(x)==0 &amp; mean(x)!=neutral),1,0)) 
-#   )
-# }
-# table(rowSums(keyhitters))
-# #include &quot;50&quot; for sliders in identifying keyhitters
-# keyhitters &lt;- cbind(keyhitters, angelo11.5 %&gt;% select(contains(&quot;QB&quot;)) %&gt;% 
-#                       apply(.,1,FUN=function(x) ifelse((var(x)==0 &amp; mean(x)==50),1,0))) 
-# table(rowSums(keyhitters))
-# #angelo11.5 &lt;- filter(angelo11.5,!(rowSums(keyhitters)&gt;0)) #filter(angelo11.5, Qage&lt;50) #
-# 
-# #demographics
-# males &lt;- table(angelo11.5$Qgender)[&quot;1&quot;]
-# females &lt;- table(angelo11.5$Qgender)[&quot;2&quot;]
-# mage &lt;- round(mean(angelo11.5$Qage),1)
-# mdage &lt;- round(median(angelo11.5$Qage),1)
-# minage &lt;- min(angelo11.5$Qage)
-# maxage &lt;- max(angelo11.5$Qage)
-# histogram(~Qage|Qgender,data=angelo11.5)
-# agebygender &lt;- angelo11.5 %&gt;% group_by(Qgender) %&gt;% summarise(mean(Qage)) %&gt;% unlist %&gt;% as.numeric %&gt;% round(.,1)</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
