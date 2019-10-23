@@ -74,7 +74,7 @@ singleindmodel <- function(indicators,paircorrs,dat) {
 ```
 
 ## Simulate data
-```{r simulate, echo=FALSE}
+```{r simulate, echo=TRUE}
 #nomenclature of variables
 # QF Free market endorsement 
 # QE accept evolution        
@@ -109,7 +109,7 @@ summary(fit,standardized=TRUE, fit.measures=TRUE)
 ```
 
 ## Compute measurement models to confirm applicability of SI models
-```{r measmod, echo=FALSE}
+```{r measmod, echo=TRUE}
 
 freemarketvars <- paste("QF.",c(1:5),sep="")
 fmmod <- c("fm =~ ",paste(freemarketvars,collapse=" + "))
@@ -130,7 +130,7 @@ invisible(vaxgof<-fitMM (vaxmod,simDat))
 ```
 
 ## Compute single-indicator models
-```{r simods, echo=FALSE}
+```{r simods, echo=TRUE}
 
 fmSI      <- singleindmodel(freemarketvars,NULL,simDat)
 evoSI     <- singleindmodel(evovars, NULL,simDat)
@@ -150,7 +150,7 @@ cor(compositeDat)
 ```
 
 ## Correlation among latent variables (SI models)
-```{r sicor, echo=FALSE}
+```{r sicor, echo=TRUE}
 correl <- c("evoFac   =~ evo
              religFac =~ rel
              vaxFac   =~ vax
@@ -172,7 +172,7 @@ semPaths(fitsSIcor, what="std", title =FALSE, curvePivot = TRUE,residuals=FALSE,
 
 
 ## Recover original model using SI 
-```{r recover, echo=FALSE}
+```{r recover, echo=TRUE}
 recover <-c("evoFac ~ fmFac +  religFac 
              vaxFac ~ fmFac +  religFac 
 
