@@ -16,6 +16,7 @@ Click [here](angelo1.html) for first part
 Click [here](recovery.html) for simulation of single-indicator models
 
 ```{r workflowr steps, echo=FALSE,warning=FALSE, message=FALSE, results="hide"}
+#wflow_build() --alternative to knit button
 #wflow_publish(c("analysis/index.Rmd", "analysis/recovery.Rmd", "analysis/angelo1.Rmd"),"text message")
 #wflow_git_push(username="StephanLewandowsky")
 

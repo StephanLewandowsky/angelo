@@ -5,12 +5,12 @@ date: "2019-10-23"
 output: workflowr::wflow_html
 editor_options:
   chunk_output_type: console
-  code_folding: show
+  code_folding: hide
 ---
 
 ## Recover simulated data using single-indicator latent-variable model
 
-```{r echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
+```{r echo=TRUE, warning=FALSE, message=FALSE, results="hide"}
 rm(list=ls())
 library(lattice)
 library(stargazer)
