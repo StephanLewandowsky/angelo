@@ -30,6 +30,8 @@ library(scales)
 library(summarytools) #contains descr()
 library(workflowr)
 
+source("analysis/funcs.r")
+
 revscore <- function (x,cluster) {  #this reverse scores a scale for items of reversed polarity
   return ((likscaleupper[cluster]+1)-x)            
 }
@@ -85,6 +87,41 @@ for (cluster in itemclusters) {
 }
 
 ```
+
+
+## Compute measurement models for each cluster
+```{r singinds, echo=FALSE}
+
+  expl <- angelo2 %>% select(starts_with( "R.PBS")) %>% select(-c(R.PBS.23..R.,  R.PBS.20 ))
+
+  vars <- angelo2 %>% select(starts_with( "R.PBS")) %>% select(-c(R.PBS.23..R.,  R.PBS.20 )) %>% names
+  fmmod <- c("fm =~ ",paste(vars,collapse=" + "),"R.PBS.8 ~~ R.PBS.22","R.PBS.2 ~~  R.PBS.9","R.PBS.1 ~~ R.PBS.15","R.PBS.11 ~~ R.PBS.18","R.PBS.6 ~~ R.PBS.13")
+  invisible(fmgof<-fitMM (fmmod,angelo2))
+  
+  vars <- angelo2 %>% select(starts_with( "IAS.R.PBS")) %>%  names
+  fmmod <- c("fm =~ ",paste(vars,collapse=" + ")," IAS.R.PBS.4..R. ~~ IAS.R.PBS.5..R.")
+  invisible(fmgof<-fitMM (fmmod,angelo2))
+
+  vars <- angelo2 %>% select(starts_with("GCBS")) %>%  names
+  fmmod <- c("fm =~ ",paste(vars,collapse=" + "),"GCBS.7 ~~ GCBS.8","GCBS.1 ~~ GCBS.2")
+  invisible(fmgof<-fitMM (fmmod,angelo2))
+
+  vars <- angelo2 %>% select(starts_with("IAS.GCBS")) %>%  names
+  fmmod <- c("fm =~ ",paste(vars,collapse=" + "),"IAS.GCBS.2 ~~     IAS.GCBS.3","IAS.GCBS.4..R. ~~ IAS.GCBS.5..R.")
+  invisible(fmgof<-fitMM (fmmod,angelo2))
+
+  vars <- angelo2 %>% select(starts_with("PSEUDO")) %>% select(-c(PSEUDO.19, PSEUDO.4..R.)) %>% names
+  fmmod <- c("fm =~ ",paste(vars,collapse=" + "),"PSEUDO.1 ~~  PSEUDO.2","PSEUDO.24..R. ~~ PSEUDO.29")
+  invisible(fmgof<-fitMM (fmmod,angelo2))
+
+  vars <- angelo2 %>% select(starts_with("IAS.PSEUDO")) %>% names
+  fmmod <- c("fm =~ ",paste(vars,collapse=" + "),"IAS.PSEUDO.4..R. ~~ IAS.PSEUDO.5..R.","IAS.PSEUDO.1..R. ~~ IAS.PSEUDO.5..R.")
+  invisible(fmgof<-fitMM (fmmod,angelo2))
+
+
+
+```
+
 
 ## Correlations among composites
 ```{r composites, echo=FALSE}
