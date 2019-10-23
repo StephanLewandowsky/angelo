@@ -25,6 +25,7 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
@@ -268,6 +269,14 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 
 
@@ -411,6 +420,14 @@ div.section {
 </style>
 
 <div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
 
 
 
@@ -576,10 +593,10 @@ environment
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotreebd870cfbb8ef6a9040256ecce80294c51502822dtargetblankbd870cfa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/StephanLewandowsky/angelo/tree/bd870cfbb8ef6a9040256ecce80294c51502822d" target="_blank">bd870cf</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotree0d2f1cd2a993048cc5854bbaafccb6f85d51d9a4targetblank0d2f1cda"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/StephanLewandowsky/angelo/tree/0d2f1cd2a993048cc5854bbaafccb6f85d51d9a4" target="_blank">0d2f1cd</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotreebd870cfbb8ef6a9040256ecce80294c51502822dtargetblankbd870cfa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotree0d2f1cd2a993048cc5854bbaafccb6f85d51d9a4targetblank0d2f1cda" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -590,6 +607,7 @@ Ignored files:
     Ignored:    .Rproj.user/
 
 Untracked files:
+    Untracked:  analysis/funcs.R
     Untracked:  data/Study 1 - Data Matrix (Complete).csv
     Untracked:  data/Study 1 - Data Matrix (Complete).xls
     Untracked:  data/Study 1 - Data Matrix.csv
@@ -635,6 +653,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/StephanLewandowsky/angelo/blob/0d2f1cd2a993048cc5854bbaafccb6f85d51d9a4/analysis/recovery.Rmd" target="_blank">0d2f1cd</a>
+</td>
+<td>
+StephanLewandowsky
+</td>
+<td>
+2019-10-23
+</td>
+<td>
+text message
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/StephanLewandowsky/angelo/9c1ecb194c4c85d9f0147a1553d134dba07b4e24/docs/recovery.html" target="_blank">9c1ecb1</a>
+</td>
+<td>
+StephanLewandowsky
+</td>
+<td>
+2019-10-23
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -796,7 +848,7 @@ Add recovery simulation
 </div>
 </div>
 <div id="recover-simulated-data-using-single-indicator-latent-variable-model" class="section level2">
-<h2>Recover simulated data using single-indicator latent-variable model</h2>
+<h2><span class="header-section-number">0.1</span> Recover simulated data using single-indicator latent-variable model</h2>
 <pre class="r"><code>rm(list=ls())
 library(lattice)
 library(stargazer)
@@ -815,48 +867,10 @@ library(scales)
 library(summarytools) #contains descr()
 library(workflowr)
 
-# Miscellaneous functions -------------------------------------------------------------------------------
-#http://stackoverflow.com/questions/21011672/automatically-add-variable-names-to-elements-of-a-list
-listN &lt;- function(...){
-  anonList &lt;- list(...)
-  names(anonList) &lt;- as.character(substitute(list(...)))[-1]
-  anonList
-}
-
-#function to fit and print a measurement model ------------------------------------------------------------
-fitMM &lt;- function (humspecmod,this1) {
-  fithumspec &lt;- sem(humspecmod, data=this1)
-  summary(fithumspec, standardized=TRUE, fit.measures=TRUE)
-  mod_ind &lt;- modificationindices(fithumspec)
-  print(head(mod_ind[order(mod_ind$mi, decreasing=TRUE), ], 4))
-  return(fitMeasures(fithumspec))
-}
-
-#function to create and run a single indicator model and return omega and so on --------------------------
-#  indicators are provided in character vector
-#  pairwise correlations are optionally provided as a list of pairwise character vectors
-singleindmodel &lt;- function(indicators,paircorrs,dat) {
-  pcs &lt;- paste(unlist(lapply(paircorrs,FUN=function(x) paste(x[1], &quot;~~&quot;, x[2], &quot;\n&quot;))),collapse=&quot; &quot;)
-  SImod &lt;- paste(&quot;factor =~&quot;, paste(indicators, collapse=&quot; + &quot;), &quot;\n&quot;,
-                 pcs, 
-                 &quot;phantfac &lt;~&quot;, paste(paste(&quot;1*&quot;,indicators,sep=&quot;&quot;), collapse=&quot; + &quot;), &quot;\n&quot;,
-                 &quot;factor ~~ 0*phantfac&quot;)
-  
-  fitSImod &lt;- sem(SImod, dat[,indicators], estimator=&quot;ML&quot;)
-  ParSImod &lt;- parameterEstimates(fitSImod, standardized=TRUE)
-  LoadingsSImod &lt;- ParSImod[1:length(indicators), &quot;std.all&quot;]
-  ErrorvarSImod &lt;- 1 - LoadingsSImod^2
-  ImpliedCorrSImod &lt;- lavTech(fitSImod, what=&#39;cor.lv&#39;)
-  OmegaSImod &lt;- ImpliedCorrSImod[[1]][1,2]^2            #Squared correlation between factor and phantom variable
-  
-  varSImod &lt;- var(apply(dat[,indicators], MARGIN=1, FUN=mean)) #variance of composite
-  SDSImod &lt;- sqrt(varSImod)               #SD of composite, to pass back for analysis
-  eSImod &lt;- (1-OmegaSImod)*varSImod       #error term of single indicator
-  return(listN(OmegaSImod,eSImod,SDSImod))
-}</code></pre>
+source(&quot;analysis/funcs.r&quot;)</code></pre>
 </div>
 <div id="simulate-data" class="section level2">
-<h2>Simulate data</h2>
+<h2><span class="header-section-number">0.2</span> Simulate data</h2>
 <pre class="r"><code>#nomenclature of variables
 # QF Free market endorsement 
 # QE accept evolution        
@@ -1008,7 +1022,7 @@ Variances:
    .vxfac             0.312    0.052    5.982    0.000    0.940    0.940</code></pre>
 </div>
 <div id="compute-measurement-models-to-confirm-applicability-of-si-models" class="section level2">
-<h2>Compute measurement models to confirm applicability of SI models</h2>
+<h2><span class="header-section-number">0.3</span> Compute measurement models to confirm applicability of SI models</h2>
 <pre class="r"><code>freemarketvars &lt;- paste(&quot;QF.&quot;,c(1:5),sep=&quot;&quot;)
 fmmod &lt;- c(&quot;fm =~ &quot;,paste(freemarketvars,collapse=&quot; + &quot;))
 invisible(fmgof&lt;-fitMM (fmmod,simDat))</code></pre>
@@ -1311,7 +1325,7 @@ Variances:
 12 QV.1 ~~ QV.2 0.445 -0.031  -0.031   -0.031   -0.031</code></pre>
 </div>
 <div id="compute-single-indicator-models" class="section level2">
-<h2>Compute single-indicator models</h2>
+<h2><span class="header-section-number">0.4</span> Compute single-indicator models</h2>
 <pre class="r"><code>fmSI      &lt;- singleindmodel(freemarketvars,NULL,simDat)
 evoSI     &lt;- singleindmodel(evovars, NULL,simDat)
 relSI     &lt;- singleindmodel(relvars, NULL,simDat)
@@ -1333,7 +1347,7 @@ rel  0.03019846 -0.33959236  1.00000000 -0.07212953
 vax -0.12006308  0.22296357 -0.07212953  1.00000000</code></pre>
 </div>
 <div id="correlation-among-latent-variables-si-models" class="section level2">
-<h2>Correlation among latent variables (SI models)</h2>
+<h2><span class="header-section-number">0.5</span> Correlation among latent variables (SI models)</h2>
 <pre class="r"><code>correl &lt;- c(&quot;evoFac   =~ evo
              religFac =~ rel
              vaxFac   =~ vax
@@ -1471,7 +1485,7 @@ StephanLewandowsky
 </div>
 </div>
 <div id="recover-original-model-using-si" class="section level2">
-<h2>Recover original model using SI</h2>
+<h2><span class="header-section-number">0.6</span> Recover original model using SI</h2>
 <pre class="r"><code>recover &lt;-c(&quot;evoFac ~ fmFac +  religFac 
              vaxFac ~ fmFac +  religFac 
 
