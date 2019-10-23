@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="StephanLewandowsky" />
+
+<meta name="date" content="2019-10-23" />
+
+<title>recovery</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">angelo</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/StephanLewandowsky/angelo">
+    <span class="fa fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">recovery</h1>
+<h4 class="author"><em>StephanLewandowsky</em></h4>
+<h4 class="date"><em>2019-10-23</em></h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2019-10-23
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>angelo/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.4.0). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongobjectspresent"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>Environment:</strong> objects present </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongobjectspresent" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+The global environment had objects present when the code in the R Markdown file was run. These objects can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment. Use <code>wflow_publish</code> or <code>wflow_build</code> to ensure that the code is always run in an empty environment.
+</p>
+<p>
+The following objects were defined in the global environment when these results were created:
+</p>
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th style="text-align:left;">
+Name
+</th>
+<th style="text-align:left;">
+Class
+</th>
+<th style="text-align:left;">
+Size
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+data
+</td>
+<td style="text-align:left;">
+environment
+</td>
+<td style="text-align:left;">
+56 bytes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+env
+</td>
+<td style="text-align:left;">
+environment
+</td>
+<td style="text-align:left;">
+56 bytes
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20190924code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20190924)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20190924code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20190924)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotree7d34b2de7dc99c887cc53438c88f594b939765ddtargetblank7d34b2da"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/StephanLewandowsky/angelo/tree/7d34b2de7dc99c887cc53438c88f594b939765dd" target="_blank">7d34b2d</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotree7d34b2de7dc99c887cc53438c88f594b939765ddtargetblank7d34b2da" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    docs/figure/
+
+Untracked files:
+    Untracked:  data/Study 1 - Data Matrix (Complete).csv
+    Untracked:  data/Study 1 - Data Matrix (Complete).xls
+    Untracked:  data/Study 1 - Data Matrix.csv
+    Untracked:  data/Study 1 - Data Matrix.xls
+    Untracked:  data/Study 1 - Reversed encoded and Likert scales.doc
+    Untracked:  data/Study 2 - Data Matrix.xls
+    Untracked:  data/Study 2 - Reversed encoded and Likert scales.doc
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the R Markdown and HTML files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view them.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/StephanLewandowsky/angelo/blob/7d34b2de7dc99c887cc53438c88f594b939765dd/analysis/recovery.Rmd" target="_blank">7d34b2d</a>
+</td>
+<td>
+StephanLewandowsky
+</td>
+<td>
+2019-10-23
+</td>
+<td>
+Add recovery simulation
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="recover-simulated-data-using-single-indicator-latent-variable-model" class="section level2">
+<h2>Recover simulated data using single-indicator latent-variable model</h2>
+</div>
+<div id="simulate-data" class="section level2">
+<h2>Simulate data</h2>
+<pre><code>lavaan 0.6-3 ended normally after 60 iterations
+
+  Optimization method                           NLMINB
+  Number of free parameters                         46
+
+  Number of observations                          1000
+
+  Estimator                                         ML
+  Model Fit Test Statistic                     167.566
+  Degrees of freedom                               164
+  P-value (Chi-square)                           0.408
+
+Model test baseline model:
+
+  Minimum Function Test Statistic             1749.999
+  Degrees of freedom                               190
+  P-value                                        0.000
+
+User model versus baseline model:
+
+  Comparative Fit Index (CFI)                    0.998
+  Tucker-Lewis Index (TLI)                       0.997
+
+Loglikelihood and Information Criteria:
+
+  Loglikelihood user model (H0)             -30085.996
+  Loglikelihood unrestricted model (H1)     -30002.213
+
+  Number of free parameters                         46
+  Akaike (AIC)                               60263.991
+  Bayesian (BIC)                             60489.748
+  Sample-size adjusted Bayesian (BIC)        60343.650
+
+Root Mean Square Error of Approximation:
+
+  RMSEA                                          0.005
+  90 Percent Confidence Interval          0.000  0.015
+  P-value RMSEA &lt;= 0.05                          1.000
+
+Standardized Root Mean Square Residual:
+
+  SRMR                                           0.025
+
+Parameter Estimates:
+
+  Information                                 Expected
+  Information saturated (h1) model          Structured
+  Standard Errors                             Standard
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  fmfac =~                                                              
+    QF.1              1.000                               0.541    0.481
+    QF.2              0.916    0.118    7.771    0.000    0.495    0.425
+    QF.3              1.119    0.133    8.439    0.000    0.605    0.521
+    QF.4              0.704    0.101    6.989    0.000    0.381    0.354
+    QF.5              1.086    0.129    8.389    0.000    0.588    0.510
+  evfac =~                                                              
+    QE.1              1.000                               0.582    0.497
+    QE.2              1.053    0.102   10.328    0.000    0.613    0.513
+    QE.3              1.351    0.120   11.287    0.000    0.786    0.624
+    QE.4              0.931    0.095    9.800    0.000    0.542    0.469
+    QE.5              1.138    0.106   10.702    0.000    0.662    0.550
+  rlfac =~                                                              
+    QR.1              1.000                               0.418    0.389
+    QR.2              0.927    0.151    6.129    0.000    0.388    0.375
+    QR.3              0.637    0.133    4.771    0.000    0.266    0.246
+    QR.4              1.310    0.196    6.671    0.000    0.548    0.478
+    QR.5              0.495    0.120    4.136    0.000    0.207    0.203
+  vxfac =~                                                              
+    QV.1              1.000                               0.577    0.491
+    QV.2              0.869    0.105    8.309    0.000    0.501    0.458
+    QV.3              1.044    0.120    8.704    0.000    0.602    0.512
+    QV.4              0.764    0.100    7.644    0.000    0.441    0.393
+    QV.5              0.864    0.104    8.269    0.000    0.498    0.453
+
+Regressions:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  vxfac ~                                                               
+    fmfac            -0.216    0.063   -3.444    0.001   -0.203   -0.203
+    rlfac            -0.175    0.091   -1.929    0.054   -0.127   -0.127
+  evfac ~                                                               
+    fmfac            -0.042    0.057   -0.726    0.468   -0.039   -0.039
+    rlfac            -0.887    0.144   -6.163    0.000   -0.638   -0.638
+
+Covariances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  fmfac ~~                                                              
+    rlfac             0.014    0.014    0.970    0.332    0.062    0.062
+ .evfac ~~                                                              
+   .vxfac             0.087    0.020    4.333    0.000    0.348    0.348
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .QF.1              0.974    0.056   17.465    0.000    0.974    0.769
+   .QF.2              1.113    0.059   18.797    0.000    1.113    0.819
+   .QF.3              0.981    0.060   16.260    0.000    0.981    0.728
+   .QF.4              1.010    0.050   20.059    0.000    1.010    0.874
+   .QF.5              0.981    0.059   16.614    0.000    0.981    0.740
+   .QE.1              1.034    0.054   19.178    0.000    1.034    0.753
+   .QE.2              1.051    0.056   18.880    0.000    1.051    0.737
+   .QE.3              0.968    0.060   16.114    0.000    0.968    0.610
+   .QE.4              1.045    0.053   19.635    0.000    1.045    0.781
+   .QE.5              1.014    0.056   18.133    0.000    1.014    0.698
+   .QR.1              0.981    0.052   18.706    0.000    0.981    0.849
+   .QR.2              0.918    0.048   19.011    0.000    0.918    0.859
+   .QR.3              1.101    0.052   21.069    0.000    1.101    0.939
+   .QR.4              1.012    0.063   16.159    0.000    1.012    0.771
+   .QR.5              0.996    0.046   21.501    0.000    0.996    0.959
+   .QV.1              1.049    0.060   17.505    0.000    1.049    0.759
+   .QV.2              0.949    0.052   18.319    0.000    0.949    0.791
+   .QV.3              1.020    0.060   16.915    0.000    1.020    0.738
+   .QV.4              1.065    0.054   19.597    0.000    1.065    0.846
+   .QV.5              0.961    0.052   18.420    0.000    0.961    0.795
+    fmfac             0.293    0.050    5.827    0.000    1.000    1.000
+   .evfac             0.199    0.036    5.540    0.000    0.588    0.588
+    rlfac             0.175    0.040    4.411    0.000    1.000    1.000
+   .vxfac             0.312    0.052    5.982    0.000    0.940    0.940</code></pre>
+</div>
+<div id="compute-measurement-models-to-confirm-applicability-of-si-models" class="section level2">
+<h2>Compute measurement models to confirm applicability of SI models</h2>
+<pre><code>lavaan 0.6-3 ended normally after 33 iterations
+
+  Optimization method                           NLMINB
+  Number of free parameters                         10
+
+  Number of observations                          1000
+
+  Estimator                                         ML
+  Model Fit Test Statistic                       0.515
+  Degrees of freedom                                 5
+  P-value (Chi-square)                           0.992
+
+Model test baseline model:
+
+  Minimum Function Test Statistic              344.487
+  Degrees of freedom                                10
+  P-value                                        0.000
+
+User model versus baseline model:
+
+  Comparative Fit Index (CFI)                    1.000
+  Tucker-Lewis Index (TLI)                       1.027
+
+Loglikelihood and Information Criteria:
+
+  Loglikelihood user model (H0)              -7556.691
+  Loglikelihood unrestricted model (H1)      -7556.433
+
+  Number of free parameters                         10
+  Akaike (AIC)                               15133.382
+  Bayesian (BIC)                             15182.459
+  Sample-size adjusted Bayesian (BIC)        15150.699
+
+Root Mean Square Error of Approximation:
+
+  RMSEA                                          0.000
+  90 Percent Confidence Interval          0.000  0.000
+  P-value RMSEA &lt;= 0.05                          1.000
+
+Standardized Root Mean Square Residual:
+
+  SRMR                                           0.005
+
+Parameter Estimates:
+
+  Information                                 Expected
+  Information saturated (h1) model          Structured
+  Standard Errors                             Standard
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  fm =~                                                                 
+    QF.1              1.000                               0.548    0.487
+    QF.2              0.901    0.117    7.731    0.000    0.494    0.424
+    QF.3              1.088    0.130    8.360    0.000    0.596    0.514
+    QF.4              0.687    0.099    6.914    0.000    0.376    0.350
+    QF.5              1.085    0.130    8.370    0.000    0.594    0.516
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .QF.1              0.967    0.056   17.188    0.000    0.967    0.763
+   .QF.2              1.114    0.059   18.751    0.000    1.114    0.820
+   .QF.3              0.992    0.061   16.376    0.000    0.992    0.736
+   .QF.4              1.013    0.050   20.077    0.000    1.013    0.877
+   .QF.5              0.973    0.060   16.300    0.000    0.973    0.734
+    fm                0.300    0.051    5.851    0.000    1.000    1.000
+
+    lhs op  rhs    mi    epc sepc.lv sepc.all sepc.nox
+20 QF.3 ~~ QF.5 0.294 -0.029  -0.029   -0.030   -0.030
+17 QF.2 ~~ QF.4 0.201 -0.018  -0.018   -0.017   -0.017
+19 QF.3 ~~ QF.4 0.194  0.018   0.018    0.018    0.018
+14 QF.1 ~~ QF.4 0.127 -0.014  -0.014   -0.014   -0.014</code></pre>
+<pre><code>lavaan 0.6-3 ended normally after 29 iterations
+
+  Optimization method                           NLMINB
+  Number of free parameters                         10
+
+  Number of observations                          1000
+
+  Estimator                                         ML
+  Model Fit Test Statistic                       7.600
+  Degrees of freedom                                 5
+  P-value (Chi-square)                           0.180
+
+Model test baseline model:
+
+  Minimum Function Test Statistic              587.068
+  Degrees of freedom                                10
+  P-value                                        0.000
+
+User model versus baseline model:
+
+  Comparative Fit Index (CFI)                    0.995
+  Tucker-Lewis Index (TLI)                       0.991
+
+Loglikelihood and Information Criteria:
+
+  Loglikelihood user model (H0)              -7704.142
+  Loglikelihood unrestricted model (H1)      -7700.342
+
+  Number of free parameters                         10
+  Akaike (AIC)                               15428.285
+  Bayesian (BIC)                             15477.362
+  Sample-size adjusted Bayesian (BIC)        15445.602
+
+Root Mean Square Error of Approximation:
+
+  RMSEA                                          0.023
+  90 Percent Confidence Interval          0.000  0.053
+  P-value RMSEA &lt;= 0.05                          0.924
+
+Standardized Root Mean Square Residual:
+
+  SRMR                                           0.016
+
+Parameter Estimates:
+
+  Information                                 Expected
+  Information saturated (h1) model          Structured
+  Standard Errors                             Standard
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  ev =~                                                                 
+    QE.1              1.000                               0.570    0.486
+    QE.2              1.057    0.109    9.729    0.000    0.602    0.504
+    QE.3              1.400    0.132   10.590    0.000    0.798    0.633
+    QE.4              0.960    0.102    9.400    0.000    0.547    0.473
+    QE.5              1.171    0.115   10.161    0.000    0.667    0.554
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .QE.1              1.048    0.055   18.890    0.000    1.048    0.764
+   .QE.2              1.064    0.057   18.524    0.000    1.064    0.746
+   .QE.3              0.950    0.064   14.780    0.000    0.950    0.599
+   .QE.4              1.039    0.054   19.138    0.000    1.039    0.776
+   .QE.5              1.008    0.058   17.349    0.000    1.008    0.694
+    ev                0.324    0.050    6.551    0.000    1.000    1.000
+
+    lhs op  rhs    mi    epc sepc.lv sepc.all sepc.nox
+16 QE.2 ~~ QE.3 4.525 -0.110  -0.110   -0.109   -0.109
+14 QE.1 ~~ QE.4 3.339 -0.075  -0.075   -0.072   -0.072
+13 QE.1 ~~ QE.3 1.863  0.068   0.068    0.068    0.068
+12 QE.1 ~~ QE.2 1.665  0.055   0.055    0.052    0.052</code></pre>
+<pre><code>lavaan 0.6-3 ended normally after 39 iterations
+
+  Optimization method                           NLMINB
+  Number of free parameters                         10
+
+  Number of observations                          1000
+
+  Estimator                                         ML
+  Model Fit Test Statistic                       4.337
+  Degrees of freedom                                 5
+  P-value (Chi-square)                           0.502
+
+Model test baseline model:
+
+  Minimum Function Test Statistic              127.957
+  Degrees of freedom                                10
+  P-value                                        0.000
+
+User model versus baseline model:
+
+  Comparative Fit Index (CFI)                    1.000
+  Tucker-Lewis Index (TLI)                       1.011
+
+Loglikelihood and Information Criteria:
+
+  Loglikelihood user model (H0)              -7373.290
+  Loglikelihood unrestricted model (H1)      -7371.121
+
+  Number of free parameters                         10
+  Akaike (AIC)                               14766.579
+  Bayesian (BIC)                             14815.657
+  Sample-size adjusted Bayesian (BIC)        14783.896
+
+Root Mean Square Error of Approximation:
+
+  RMSEA                                          0.000
+  90 Percent Confidence Interval          0.000  0.041
+  P-value RMSEA &lt;= 0.05                          0.986
+
+Standardized Root Mean Square Residual:
+
+  SRMR                                           0.015
+
+Parameter Estimates:
+
+  Information                                 Expected
+  Information saturated (h1) model          Structured
+  Standard Errors                             Standard
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  rl =~                                                                 
+    QR.1              1.000                               0.427    0.397
+    QR.2              0.991    0.195    5.087    0.000    0.423    0.409
+    QR.3              0.537    0.145    3.707    0.000    0.229    0.212
+    QR.4              1.248    0.249    5.020    0.000    0.533    0.465
+    QR.5              0.470    0.134    3.520    0.000    0.201    0.197
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .QR.1              0.974    0.059   16.421    0.000    0.974    0.842
+   .QR.2              0.889    0.056   15.947    0.000    0.889    0.832
+   .QR.3              1.120    0.053   20.944    0.000    1.120    0.955
+   .QR.4              1.028    0.076   13.605    0.000    1.028    0.783
+   .QR.5              0.999    0.047   21.145    0.000    0.999    0.961
+    rl                0.182    0.049    3.724    0.000    1.000    1.000
+
+    lhs op  rhs    mi    epc sepc.lv sepc.all sepc.nox
+18 QR.2 ~~ QR.5 3.209 -0.067  -0.067   -0.072   -0.072
+14 QR.1 ~~ QR.4 2.025 -0.107  -0.107   -0.107   -0.107
+21 QR.4 ~~ QR.5 1.533  0.055   0.055    0.054    0.054
+12 QR.1 ~~ QR.2 1.336  0.068   0.068    0.073    0.073</code></pre>
+<pre><code>lavaan 0.6-3 ended normally after 32 iterations
+
+  Optimization method                           NLMINB
+  Number of free parameters                         10
+
+  Number of observations                          1000
+
+  Estimator                                         ML
+  Model Fit Test Statistic                       2.389
+  Degrees of freedom                                 5
+  P-value (Chi-square)                           0.793
+
+Model test baseline model:
+
+  Minimum Function Test Statistic              347.851
+  Degrees of freedom                                10
+  P-value                                        0.000
+
+User model versus baseline model:
+
+  Comparative Fit Index (CFI)                    1.000
+  Tucker-Lewis Index (TLI)                       1.015
+
+Loglikelihood and Information Criteria:
+
+  Loglikelihood user model (H0)              -7546.828
+  Loglikelihood unrestricted model (H1)      -7545.634
+
+  Number of free parameters                         10
+  Akaike (AIC)                               15113.656
+  Bayesian (BIC)                             15162.734
+  Sample-size adjusted Bayesian (BIC)        15130.973
+
+Root Mean Square Error of Approximation:
+
+  RMSEA                                          0.000
+  90 Percent Confidence Interval          0.000  0.028
+  P-value RMSEA &lt;= 0.05                          0.998
+
+Standardized Root Mean Square Residual:
+
+  SRMR                                           0.010
+
+Parameter Estimates:
+
+  Information                                 Expected
+  Information saturated (h1) model          Structured
+  Standard Errors                             Standard
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  vx =~                                                                 
+    QV.1              1.000                               0.584    0.497
+    QV.2              0.856    0.107    8.031    0.000    0.500    0.456
+    QV.3              1.042    0.124    8.391    0.000    0.608    0.517
+    QV.4              0.757    0.102    7.444    0.000    0.442    0.394
+    QV.5              0.832    0.105    7.911    0.000    0.485    0.441
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .QV.1              1.041    0.062   16.879    0.000    1.041    0.753
+   .QV.2              0.951    0.053   17.983    0.000    0.951    0.792
+   .QV.3              1.012    0.062   16.238    0.000    1.012    0.732
+   .QV.4              1.064    0.055   19.332    0.000    1.064    0.845
+   .QV.5              0.974    0.053   18.335    0.000    0.974    0.805
+    vx                0.341    0.057    5.943    0.000    1.000    1.000
+
+    lhs op  rhs    mi    epc sepc.lv sepc.all sepc.nox
+18 QV.2 ~~ QV.5 1.967  0.058   0.058    0.060    0.060
+14 QV.1 ~~ QV.4 0.822  0.041   0.041    0.039    0.039
+21 QV.4 ~~ QV.5 0.636 -0.032  -0.032   -0.032   -0.032
+12 QV.1 ~~ QV.2 0.445 -0.031  -0.031   -0.031   -0.031</code></pre>
+</div>
+<div id="compute-single-indicator-models" class="section level2">
+<h2>Compute single-indicator models</h2>
+<pre><code>             fm         evo         rel         vax
+fm   1.00000000 -0.04945464  0.03019846 -0.12006308
+evo -0.04945464  1.00000000 -0.33959236  0.22296357
+rel  0.03019846 -0.33959236  1.00000000 -0.07212953
+vax -0.12006308  0.22296357 -0.07212953  1.00000000</code></pre>
+</div>
+<div id="correlation-among-latent-variables-si-models" class="section level2">
+<h2>Correlation among latent variables (SI models)</h2>
+<pre><code>lavaan 0.6-3 ended normally after 22 iterations
+
+  Optimization method                           NLMINB
+  Number of free parameters                         10
+
+  Number of observations                          1000
+
+  Estimator                                         ML
+  Model Fit Test Statistic                       0.000
+  Degrees of freedom                                 0
+
+Model test baseline model:
+
+  Minimum Function Test Statistic              188.828
+  Degrees of freedom                                 6
+  P-value                                        0.000
+
+User model versus baseline model:
+
+  Comparative Fit Index (CFI)                    1.000
+  Tucker-Lewis Index (TLI)                       1.000
+
+Loglikelihood and Information Criteria:
+
+  Loglikelihood user model (H0)              -4037.825
+  Loglikelihood unrestricted model (H1)      -4037.825
+
+  Number of free parameters                         10
+  Akaike (AIC)                                8095.649
+  Bayesian (BIC)                              8144.727
+  Sample-size adjusted Bayesian (BIC)         8112.966
+
+Root Mean Square Error of Approximation:
+
+  RMSEA                                          0.000
+  90 Percent Confidence Interval          0.000  0.000
+  P-value RMSEA &lt;= 0.05                             NA
+
+Standardized Root Mean Square Residual:
+
+  SRMR                                           0.000
+
+Parameter Estimates:
+
+  Information                                 Expected
+  Information saturated (h1) model          Structured
+  Standard Errors                             Standard
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  evoFac =~                                                             
+    evo               0.636    0.021   29.719    0.000    0.636    0.815
+  religFac =~                                                           
+    rel               0.362    0.020   17.694    0.000    0.362    0.629
+  vaxFac =~                                                             
+    vax               0.523    0.020   25.753    0.000    0.523    0.759
+  fmFac =~                                                              
+    fm                0.522    0.020   25.639    0.000    0.522    0.757
+
+Covariances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  evoFac ~~                                                             
+    religFac         -0.662    0.053  -12.528    0.000   -0.662   -0.662
+    vaxFac            0.360    0.048    7.580    0.000    0.360    0.360
+    fmFac            -0.080    0.051   -1.569    0.117   -0.080   -0.080
+  religFac ~~                                                           
+    vaxFac           -0.151    0.066   -2.298    0.022   -0.151   -0.151
+    fmFac             0.063    0.066    0.956    0.339    0.063    0.063
+  vaxFac ~~                                                             
+    fmFac            -0.209    0.054   -3.878    0.000   -0.209   -0.209
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .evo               0.205                               0.205    0.335
+   .rel               0.200                               0.200    0.604
+   .vax               0.202                               0.202    0.424
+   .fm                0.203                               0.203    0.427
+    evoFac            1.000                               1.000    1.000
+    religFac          1.000                               1.000    1.000
+    vaxFac            1.000                               1.000    1.000
+    fmFac             1.000                               1.000    1.000</code></pre>
+<p><img src="figure/recovery.Rmd/sicor-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="recover-original-model-using-si" class="section level2">
+<h2>Recover original model using SI</h2>
+<pre><code>lavaan 0.6-3 ended normally after 27 iterations
+
+  Optimization method                           NLMINB
+  Number of free parameters                         10
+
+  Number of observations                          1000
+
+  Estimator                                         ML
+  Model Fit Test Statistic                       0.000
+  Degrees of freedom                                 0
+
+Model test baseline model:
+
+  Minimum Function Test Statistic              188.828
+  Degrees of freedom                                 6
+  P-value                                        0.000
+
+User model versus baseline model:
+
+  Comparative Fit Index (CFI)                    1.000
+  Tucker-Lewis Index (TLI)                       1.000
+
+Loglikelihood and Information Criteria:
+
+  Loglikelihood user model (H0)              -4037.825
+  Loglikelihood unrestricted model (H1)      -4037.825
+
+  Number of free parameters                         10
+  Akaike (AIC)                                8095.649
+  Bayesian (BIC)                              8144.727
+  Sample-size adjusted Bayesian (BIC)         8112.966
+
+Root Mean Square Error of Approximation:
+
+  RMSEA                                          0.000
+  90 Percent Confidence Interval          0.000  0.000
+  P-value RMSEA &lt;= 0.05                             NA
+
+Standardized Root Mean Square Residual:
+
+  SRMR                                           0.000
+
+Parameter Estimates:
+
+  Information                                 Expected
+  Information saturated (h1) model          Structured
+  Standard Errors                             Standard
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  evoFac =~                                                             
+    evo               0.476    0.033   14.466    0.000    0.636    0.815
+  religFac =~                                                           
+    rel               0.362    0.020   17.694    0.000    0.362    0.629
+  vaxFac =~                                                             
+    vax               0.507    0.021   24.188    0.000    0.523    0.759
+  fmFac =~                                                              
+    fm                0.522    0.020   25.639    0.000    0.522    0.757
+
+Regressions:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  evoFac ~                                                              
+    fmFac            -0.051    0.074   -0.694    0.488   -0.038   -0.038
+    religFac         -0.882    0.126   -7.010    0.000   -0.660   -0.660
+  vaxFac ~                                                              
+    fmFac            -0.207    0.058   -3.542    0.000   -0.200   -0.200
+    religFac         -0.143    0.069   -2.063    0.039   -0.138   -0.138
+
+Covariances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  religFac ~~                                                           
+    fmFac             0.063    0.066    0.956    0.339    0.063    0.063
+ .evoFac ~~                                                             
+   .vaxFac            0.349    0.070    4.958    0.000    0.349    0.349
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .evo               0.205                               0.205    0.335
+   .rel               0.200                               0.200    0.604
+   .vax               0.202                               0.202    0.424
+   .fm                0.203                               0.203    0.427
+   .evoFac            1.000                               0.560    0.560
+    religFac          1.000                               1.000    1.000
+   .vaxFac            1.000                               0.937    0.937
+    fmFac             1.000                               1.000    1.000</code></pre>
+<p><img src="figure/recovery.Rmd/recover-1.png" width="672" style="display: block; margin: auto;" /></p>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.5.2 (2018-12-20)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 18362)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United Kingdom.1252 
+[2] LC_CTYPE=English_United Kingdom.1252   
+[3] LC_MONETARY=English_United Kingdom.1252
+[4] LC_NUMERIC=C                           
+[5] LC_TIME=English_United Kingdom.1252    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] workflowr_1.4.0    summarytools_0.9.3 scales_1.0.0      
+ [4] psych_1.8.12       reshape2_1.4.3     Hmisc_4.1-1       
+ [7] Formula_1.2-3      survival_2.43-3    gridExtra_2.3     
+[10] RColorBrewer_1.1-2 semTools_0.5-1     semPlot_1.1       
+[13] lavaan_0.6-3       lme4_1.1-19        Matrix_1.2-15     
+[16] forcats_0.4.0      stringr_1.3.1      dplyr_0.8.3       
+[19] purrr_0.3.2        readr_1.3.1        tidyr_0.8.2       
+[22] tibble_2.0.1       ggplot2_3.2.0      tidyverse_1.2.1   
+[25] stargazer_5.2.2    lattice_0.20-38   
+
+loaded via a namespace (and not attached):
+  [1] readxl_1.3.1         backports_1.1.3      BDgraph_2.54        
+  [4] plyr_1.8.4           igraph_1.2.2         lazyeval_0.2.1      
+  [7] splines_3.5.2        pryr_0.1.4           digest_0.6.18       
+ [10] htmltools_0.3.6      matrixcalc_1.0-3     magick_2.0          
+ [13] magrittr_1.5         checkmate_1.9.1      lisrelToR_0.1.4     
+ [16] cluster_2.0.7-1      openxlsx_4.1.0       sna_2.4             
+ [19] modelr_0.1.4         matrixStats_0.54.0   jpeg_0.1-8          
+ [22] sem_3.1-9            colorspace_1.4-0     rvest_0.3.2         
+ [25] haven_2.1.1          xfun_0.4             tcltk_3.5.2         
+ [28] crayon_1.3.4         RCurl_1.95-4.11      jsonlite_1.6        
+ [31] glue_1.3.0           gtable_0.2.0         mi_1.0              
+ [34] ggm_2.3              rapportools_1.0      abind_1.4-5         
+ [37] Rcpp_1.0.1           xtable_1.8-3         htmlTable_1.13.1    
+ [40] foreign_0.8-71       stats4_3.5.2         htmlwidgets_1.3     
+ [43] httr_1.4.1           acepack_1.4.1        pkgconfig_2.0.2     
+ [46] XML_3.98-1.16        nnet_7.3-12          kutils_1.60         
+ [49] tidyselect_0.2.5     rlang_0.4.0          munsell_0.5.0       
+ [52] cellranger_1.1.0     tools_3.5.2          cli_1.1.0           
+ [55] generics_0.0.2       statnet.common_4.2.0 broom_0.5.2         
+ [58] fdrtool_1.2.15       evaluate_0.12        arm_1.10-1          
+ [61] yaml_2.2.0           knitr_1.21           fs_1.3.1            
+ [64] zip_1.0.0            pander_0.6.3         glasso_1.10         
+ [67] pbapply_1.3-4        nlme_3.1-137         whisker_0.3-2       
+ [70] xml2_1.2.0           compiler_3.5.2       rstudioapi_0.9.0    
+ [73] png_0.1-7            huge_1.2.7           pbivnorm_0.6.0      
+ [76] stringi_1.2.4        highr_0.7            qgraph_1.5          
+ [79] rockchalk_1.8.129    nloptr_1.2.1         pillar_1.3.1        
+ [82] OpenMx_2.12.1        data.table_1.12.0    bitops_1.0-6        
+ [85] corpcor_1.6.9        R6_2.3.0             latticeExtra_0.6-28 
+ [88] network_1.13.0.1     codetools_0.2-15     boot_1.3-20         
+ [91] MASS_7.3-51.1        gtools_3.8.1         assertthat_0.2.0    
+ [94] rprojroot_1.3-2      rjson_0.2.20         withr_2.1.2         
+ [97] mnormt_1.5-5         parallel_3.5.2       hms_0.4.2           
+[100] grid_3.5.2           rpart_4.1-13         coda_0.19-2         
+[103] minqa_1.2.4          rmarkdown_1.11       carData_3.0-2       
+[106] git2r_0.24.0         d3Network_0.5.2.1    lubridate_1.7.4     
+[109] base64enc_0.1-3      ellipse_0.4.1       </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
