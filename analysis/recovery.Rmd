@@ -1,0 +1,197 @@
+---
+title: "recovery"
+author: "StephanLewandowsky"
+date: "2019-10-23"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Recover simulated data using single-indicator latent-variable model
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
+rm(list=ls())
+library(lattice)
+library(stargazer)
+library(tidyverse)
+library(lme4)
+library(lavaan)
+library(semPlot)
+library(semTools)
+library(RColorBrewer)
+library(gridExtra)
+library(stringr)
+library(Hmisc)
+library(reshape2)
+library(psych)
+library(scales)
+library(summarytools) #contains descr()
+library(workflowr)
+
+# Miscellaneous functions -------------------------------------------------------------------------------
+#http://stackoverflow.com/questions/21011672/automatically-add-variable-names-to-elements-of-a-list
+listN <- function(...){
+  anonList <- list(...)
+  names(anonList) <- as.character(substitute(list(...)))[-1]
+  anonList
+}
+
+#function to fit and print a measurement model ------------------------------------------------------------
+fitMM <- function (humspecmod,this1) {
+  fithumspec <- sem(humspecmod, data=this1)
+  summary(fithumspec, standardized=TRUE, fit.measures=TRUE)
+  mod_ind <- modificationindices(fithumspec)
+  print(head(mod_ind[order(mod_ind$mi, decreasing=TRUE), ], 4))
+  return(fitMeasures(fithumspec))
+}
+
+#function to create and run a single indicator model and return omega and so on --------------------------
+#  indicators are provided in character vector
+#  pairwise correlations are optionally provided as a list of pairwise character vectors
+singleindmodel <- function(indicators,paircorrs,dat) {
+  pcs <- paste(unlist(lapply(paircorrs,FUN=function(x) paste(x[1], "~~", x[2], "\n"))),collapse=" ")
+  SImod <- paste("factor =~", paste(indicators, collapse=" + "), "\n",
+                 pcs, 
+                 "phantfac <~", paste(paste("1*",indicators,sep=""), collapse=" + "), "\n",
+                 "factor ~~ 0*phantfac")
+  
+  fitSImod <- sem(SImod, dat[,indicators], estimator="ML")
+  ParSImod <- parameterEstimates(fitSImod, standardized=TRUE)
+  LoadingsSImod <- ParSImod[1:length(indicators), "std.all"]
+  ErrorvarSImod <- 1 - LoadingsSImod^2
+  ImpliedCorrSImod <- lavTech(fitSImod, what='cor.lv')
+  OmegaSImod <- ImpliedCorrSImod[[1]][1,2]^2            #Squared correlation between factor and phantom variable
+  
+  varSImod <- var(apply(dat[,indicators], MARGIN=1, FUN=mean)) #variance of composite
+  SDSImod <- sqrt(varSImod)               #SD of composite, to pass back for analysis
+  eSImod <- (1-OmegaSImod)*varSImod       #error term of single indicator
+  return(listN(OmegaSImod,eSImod,SDSImod))
+}
+
+
+```
+
+## Simulate data
+```{r simulate, echo=FALSE}
+#nomenclature of variables
+# QF Free market endorsement 
+# QE accept evolution        
+# QR religion                 
+# QV vaccinations
+
+simMod <- 'fmfac =~ 0.5 * QF.1 + 0.5 * QF.2 + 0.6 * QF.3 + 0.4 * QF.4 + 0.5 * QF.5
+           evfac =~ 0.5 * QE.1 + 0.5 * QE.2 + 0.6 * QE.3 + 0.4 * QE.4 + 0.5 * QE.5
+           rlfac =~ 0.4 * QR.1 + 0.4 * QR.2 + 0.3 * QR.3 + 0.5 * QR.4 + 0.2 * QR.5
+           vxfac =~ 0.5 * QV.1 + 0.5 * QV.2 + 0.6 * QV.3 + 0.4 * QV.4 + 0.5 * QV.5
+
+           vxfac ~ (-0.2) * fmfac + (- 0.2) * rlfac
+           evfac ~ (-0.1) * fmfac + (- 0.7) * rlfac
+           vxfac ~~ 0.4 * evfac
+          '
+
+simDat <- simulateData(model = simMod, model.type = "sem", sample.nobs = 1000, ov.var = NULL, 
+                       group.label = NULL, empirical = FALSE, 
+                       return.type = "data.frame", return.fit = FALSE,
+                       debug = FALSE, standardized = FALSE)
+
+fitsimMod <- 'fmfac =~ QF.1 + QF.2 + QF.3 + QF.4 + QF.5
+              evfac =~ QE.1 + QE.2 + QE.3 + QE.4 + QE.5
+              rlfac =~ QR.1 + QR.2 + QR.3 + QR.4 + QR.5
+              vxfac =~ QV.1 + QV.2 + QV.3 + QV.4 + QV.5
+
+              vxfac ~ fmfac + rlfac
+              evfac ~ fmfac + rlfac
+          '
+fit <- sem(fitsimMod,data=simDat)
+summary(fit,standardized=TRUE, fit.measures=TRUE)
+```
+
+## Compute measurement models to confirm applicability of SI models
+```{r measmod, echo=FALSE}
+
+freemarketvars <- paste("QF.",c(1:5),sep="")
+fmmod <- c("fm =~ ",paste(freemarketvars,collapse=" + "))
+invisible(fmgof<-fitMM (fmmod,simDat))
+
+evovars <- paste("QE.",c(1:5),sep="")
+evmod <- c("ev =~ ",paste(evovars,collapse=" + "))
+invisible(evgof<-fitMM (evmod,simDat))
+
+relvars <- paste("QR.",c(1:5),sep="")
+relmod <- c("rl =~ ",paste(relvars,collapse=" + "))
+invisible(relgof<-fitMM (relmod,simDat))
+
+vaxvars <- paste("QV.",c(1:5),sep="")
+vaxmod <- c("vx =~ ",paste(vaxvars,collapse=" + "))
+invisible(vaxgof<-fitMM (vaxmod,simDat))
+
+```
+
+## Compute single-indicator models
+```{r simods, echo=FALSE}
+
+fmSI      <- singleindmodel(freemarketvars,NULL,simDat)
+evoSI     <- singleindmodel(evovars, NULL,simDat)
+relSI     <- singleindmodel(relvars, NULL,simDat)
+vaxSI     <- singleindmodel(vaxvars, NULL,simDat)
+
+
+compositeDat <- data.frame ( #compute composite scores for the SI models
+                      fm  = apply(simDat[,freemarketvars], 1,mean),
+                      evo = apply(simDat[,evovars], 1,mean),
+                      rel = apply(simDat[,relvars], 1,mean),
+                      vax = apply(simDat[,vaxvars], 1,mean)
+                    )
+#compute correlations of composite
+cor(compositeDat)
+
+```
+
+## Correlation among latent variables (SI models)
+```{r sicor, echo=FALSE}
+correl <- c("evoFac   =~ evo
+             religFac =~ rel
+             vaxFac   =~ vax
+             fmFac    =~ fm
+
+                  evo ~~ ", evoSI$eSImod, "*evo",
+                 "rel ~~",  relSI$eSImod, "*rel",
+                 "vax ~~",  vaxSI$eSImod, "*vax",
+                 "fm ~~",   fmSI$eSImod,  "*fm"
+)
+fitsSIcor <- sem(correl, compositeDat, std.lv=TRUE, estimator="ML")
+summary(fitsSIcor,standardized=TRUE, fit.measures=TRUE)
+#lavInspect(fitsmallCorrel, what = "cor.lv")
+#fitsmallCorrelFM <- measEq.syntax(smallCorrel, compositedarwin, std.lv=TRUE, estimator="ML",group="gender") # http://lavaan.ugent.be/tutorial/groups.html
+#x11()
+semPaths(fitsSIcor, what="std", title =FALSE, curvePivot = TRUE,residuals=FALSE, structural=TRUE, layout="circle")
+
+```
+
+
+## Recover original model using SI 
+```{r recover, echo=FALSE}
+recover <-c("evoFac ~ fmFac +  religFac 
+             vaxFac ~ fmFac +  religFac 
+
+             evoFac   =~ evo
+             religFac =~ rel
+             vaxFac   =~ vax
+             fmFac    =~ fm
+
+             evo ~~ ", evoSI$eSImod, "*evo",
+            "rel ~~",  relSI$eSImod, "*rel",
+            "vax ~~",  vaxSI$eSImod, "*vax",
+            "fm ~~",   fmSI$eSImod,  "*fm"
+)
+fitsSI <- sem(recover, compositeDat, std.lv=TRUE, estimator="ML")
+summary(fitsSI,standardized=TRUE, fit.measures=TRUE)
+#lavInspect(fitsmallCorrel, what = "cor.lv")
+#fitsmallCorrelFM <- measEq.syntax(smallCorrel, compositedarwin, std.lv=TRUE, estimator="ML",group="gender") # http://lavaan.ugent.be/tutorial/groups.html
+x11()
+semPaths(fitsSI, what="std", title =FALSE, curvePivot = TRUE,residuals=FALSE, structural=TRUE, layout="tree2")
+
+```
+
+
+

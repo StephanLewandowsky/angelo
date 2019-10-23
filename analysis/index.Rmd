@@ -12,3 +12,5 @@ Analyses of Angelo's experiments (with Sander van der Linden), September-October
 
 
 Click [here](angelo1.html) for first part
+
+Click [here](recovery.html) for simulation of single-indicator models
