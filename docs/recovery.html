@@ -576,10 +576,10 @@ environment
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotree65ab92b1523f2c0b4affc6b29221c75813ca3baetargetblank65ab92ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/StephanLewandowsky/angelo/tree/65ab92b1523f2c0b4affc6b29221c75813ca3bae" target="_blank">65ab92b</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotreebd870cfbb8ef6a9040256ecce80294c51502822dtargetblankbd870cfa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/StephanLewandowsky/angelo/tree/bd870cfbb8ef6a9040256ecce80294c51502822d" target="_blank">bd870cf</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotree65ab92b1523f2c0b4affc6b29221c75813ca3baetargetblank65ab92ba" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotreebd870cfbb8ef6a9040256ecce80294c51502822dtargetblankbd870cfa" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -635,6 +635,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/StephanLewandowsky/angelo/blob/bd870cfbb8ef6a9040256ecce80294c51502822d/analysis/recovery.Rmd" target="_blank">bd870cf</a>
+</td>
+<td>
+StephanLewandowsky
+</td>
+<td>
+2019-10-23
+</td>
+<td>
+text message
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/StephanLewandowsky/angelo/b5aabd4b608f33d02782abe701238a4dcd02fbd8/docs/recovery.html" target="_blank">b5aabd4</a>
+</td>
+<td>
+StephanLewandowsky
+</td>
+<td>
+2019-10-23
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -823,6 +857,37 @@ singleindmodel &lt;- function(indicators,paircorrs,dat) {
 </div>
 <div id="simulate-data" class="section level2">
 <h2>Simulate data</h2>
+<pre class="r"><code>#nomenclature of variables
+# QF Free market endorsement 
+# QE accept evolution        
+# QR religion                 
+# QV vaccinations
+
+simMod &lt;- &#39;fmfac =~ 0.5 * QF.1 + 0.5 * QF.2 + 0.6 * QF.3 + 0.4 * QF.4 + 0.5 * QF.5
+           evfac =~ 0.5 * QE.1 + 0.5 * QE.2 + 0.6 * QE.3 + 0.4 * QE.4 + 0.5 * QE.5
+           rlfac =~ 0.4 * QR.1 + 0.4 * QR.2 + 0.3 * QR.3 + 0.5 * QR.4 + 0.2 * QR.5
+           vxfac =~ 0.5 * QV.1 + 0.5 * QV.2 + 0.6 * QV.3 + 0.4 * QV.4 + 0.5 * QV.5
+
+           vxfac ~ (-0.2) * fmfac + (- 0.2) * rlfac
+           evfac ~ (-0.1) * fmfac + (- 0.7) * rlfac
+           vxfac ~~ 0.4 * evfac
+          &#39;
+
+simDat &lt;- simulateData(model = simMod, model.type = &quot;sem&quot;, sample.nobs = 1000, ov.var = NULL, 
+                       group.label = NULL, empirical = FALSE, 
+                       return.type = &quot;data.frame&quot;, return.fit = FALSE,
+                       debug = FALSE, standardized = FALSE)
+
+fitsimMod &lt;- &#39;fmfac =~ QF.1 + QF.2 + QF.3 + QF.4 + QF.5
+              evfac =~ QE.1 + QE.2 + QE.3 + QE.4 + QE.5
+              rlfac =~ QR.1 + QR.2 + QR.3 + QR.4 + QR.5
+              vxfac =~ QV.1 + QV.2 + QV.3 + QV.4 + QV.5
+
+              vxfac ~ fmfac + rlfac
+              evfac ~ fmfac + rlfac
+          &#39;
+fit &lt;- sem(fitsimMod,data=simDat)
+summary(fit,standardized=TRUE, fit.measures=TRUE)</code></pre>
 <pre><code>lavaan 0.6-3 ended normally after 60 iterations
 
   Optimization method                           NLMINB
@@ -944,6 +1009,9 @@ Variances:
 </div>
 <div id="compute-measurement-models-to-confirm-applicability-of-si-models" class="section level2">
 <h2>Compute measurement models to confirm applicability of SI models</h2>
+<pre class="r"><code>freemarketvars &lt;- paste(&quot;QF.&quot;,c(1:5),sep=&quot;&quot;)
+fmmod &lt;- c(&quot;fm =~ &quot;,paste(freemarketvars,collapse=&quot; + &quot;))
+invisible(fmgof&lt;-fitMM (fmmod,simDat))</code></pre>
 <pre><code>lavaan 0.6-3 ended normally after 33 iterations
 
   Optimization method                           NLMINB
@@ -1016,6 +1084,9 @@ Variances:
 17 QF.2 ~~ QF.4 0.201 -0.018  -0.018   -0.017   -0.017
 19 QF.3 ~~ QF.4 0.194  0.018   0.018    0.018    0.018
 14 QF.1 ~~ QF.4 0.127 -0.014  -0.014   -0.014   -0.014</code></pre>
+<pre class="r"><code>evovars &lt;- paste(&quot;QE.&quot;,c(1:5),sep=&quot;&quot;)
+evmod &lt;- c(&quot;ev =~ &quot;,paste(evovars,collapse=&quot; + &quot;))
+invisible(evgof&lt;-fitMM (evmod,simDat))</code></pre>
 <pre><code>lavaan 0.6-3 ended normally after 29 iterations
 
   Optimization method                           NLMINB
@@ -1088,6 +1159,9 @@ Variances:
 14 QE.1 ~~ QE.4 3.339 -0.075  -0.075   -0.072   -0.072
 13 QE.1 ~~ QE.3 1.863  0.068   0.068    0.068    0.068
 12 QE.1 ~~ QE.2 1.665  0.055   0.055    0.052    0.052</code></pre>
+<pre class="r"><code>relvars &lt;- paste(&quot;QR.&quot;,c(1:5),sep=&quot;&quot;)
+relmod &lt;- c(&quot;rl =~ &quot;,paste(relvars,collapse=&quot; + &quot;))
+invisible(relgof&lt;-fitMM (relmod,simDat))</code></pre>
 <pre><code>lavaan 0.6-3 ended normally after 39 iterations
 
   Optimization method                           NLMINB
@@ -1160,6 +1234,9 @@ Variances:
 14 QR.1 ~~ QR.4 2.025 -0.107  -0.107   -0.107   -0.107
 21 QR.4 ~~ QR.5 1.533  0.055   0.055    0.054    0.054
 12 QR.1 ~~ QR.2 1.336  0.068   0.068    0.073    0.073</code></pre>
+<pre class="r"><code>vaxvars &lt;- paste(&quot;QV.&quot;,c(1:5),sep=&quot;&quot;)
+vaxmod &lt;- c(&quot;vx =~ &quot;,paste(vaxvars,collapse=&quot; + &quot;))
+invisible(vaxgof&lt;-fitMM (vaxmod,simDat))</code></pre>
 <pre><code>lavaan 0.6-3 ended normally after 32 iterations
 
   Optimization method                           NLMINB
@@ -1235,6 +1312,20 @@ Variances:
 </div>
 <div id="compute-single-indicator-models" class="section level2">
 <h2>Compute single-indicator models</h2>
+<pre class="r"><code>fmSI      &lt;- singleindmodel(freemarketvars,NULL,simDat)
+evoSI     &lt;- singleindmodel(evovars, NULL,simDat)
+relSI     &lt;- singleindmodel(relvars, NULL,simDat)
+vaxSI     &lt;- singleindmodel(vaxvars, NULL,simDat)
+
+
+compositeDat &lt;- data.frame ( #compute composite scores for the SI models
+                      fm  = apply(simDat[,freemarketvars], 1,mean),
+                      evo = apply(simDat[,evovars], 1,mean),
+                      rel = apply(simDat[,relvars], 1,mean),
+                      vax = apply(simDat[,vaxvars], 1,mean)
+                    )
+#compute correlations of composite
+cor(compositeDat)</code></pre>
 <pre><code>             fm         evo         rel         vax
 fm   1.00000000 -0.04945464  0.03019846 -0.12006308
 evo -0.04945464  1.00000000 -0.33959236  0.22296357
@@ -1243,6 +1334,18 @@ vax -0.12006308  0.22296357 -0.07212953  1.00000000</code></pre>
 </div>
 <div id="correlation-among-latent-variables-si-models" class="section level2">
 <h2>Correlation among latent variables (SI models)</h2>
+<pre class="r"><code>correl &lt;- c(&quot;evoFac   =~ evo
+             religFac =~ rel
+             vaxFac   =~ vax
+             fmFac    =~ fm
+
+                  evo ~~ &quot;, evoSI$eSImod, &quot;*evo&quot;,
+                 &quot;rel ~~&quot;,  relSI$eSImod, &quot;*rel&quot;,
+                 &quot;vax ~~&quot;,  vaxSI$eSImod, &quot;*vax&quot;,
+                 &quot;fm ~~&quot;,   fmSI$eSImod,  &quot;*fm&quot;
+)
+fitsSIcor &lt;- sem(correl, compositeDat, std.lv=TRUE, estimator=&quot;ML&quot;)
+summary(fitsSIcor,standardized=TRUE, fit.measures=TRUE)</code></pre>
 <pre><code>lavaan 0.6-3 ended normally after 22 iterations
 
   Optimization method                           NLMINB
@@ -1324,6 +1427,10 @@ Variances:
     religFac          1.000                               1.000    1.000
     vaxFac            1.000                               1.000    1.000
     fmFac             1.000                               1.000    1.000</code></pre>
+<pre class="r"><code>#lavInspect(fitsmallCorrel, what = &quot;cor.lv&quot;)
+#fitsmallCorrelFM &lt;- measEq.syntax(smallCorrel, compositedarwin, std.lv=TRUE, estimator=&quot;ML&quot;,group=&quot;gender&quot;) # http://lavaan.ugent.be/tutorial/groups.html
+#x11()
+semPaths(fitsSIcor, what=&quot;std&quot;, title =FALSE, curvePivot = TRUE,residuals=FALSE, structural=TRUE, layout=&quot;circle&quot;)</code></pre>
 <p><img src="figure/recovery.Rmd/sicor-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-sicor-1">
@@ -1365,6 +1472,21 @@ StephanLewandowsky
 </div>
 <div id="recover-original-model-using-si" class="section level2">
 <h2>Recover original model using SI</h2>
+<pre class="r"><code>recover &lt;-c(&quot;evoFac ~ fmFac +  religFac 
+             vaxFac ~ fmFac +  religFac 
+
+             evoFac   =~ evo
+             religFac =~ rel
+             vaxFac   =~ vax
+             fmFac    =~ fm
+
+             evo ~~ &quot;, evoSI$eSImod, &quot;*evo&quot;,
+            &quot;rel ~~&quot;,  relSI$eSImod, &quot;*rel&quot;,
+            &quot;vax ~~&quot;,  vaxSI$eSImod, &quot;*vax&quot;,
+            &quot;fm ~~&quot;,   fmSI$eSImod,  &quot;*fm&quot;
+)
+fitsSI &lt;- sem(recover, compositeDat, std.lv=TRUE, estimator=&quot;ML&quot;)
+summary(fitsSI,standardized=TRUE, fit.measures=TRUE)</code></pre>
 <pre><code>lavaan 0.6-3 ended normally after 27 iterations
 
   Optimization method                           NLMINB
@@ -1450,6 +1572,10 @@ Variances:
     religFac          1.000                               1.000    1.000
    .vaxFac            1.000                               0.937    0.937
     fmFac             1.000                               1.000    1.000</code></pre>
+<pre class="r"><code>#lavInspect(fitsmallCorrel, what = &quot;cor.lv&quot;)
+#fitsmallCorrelFM &lt;- measEq.syntax(smallCorrel, compositedarwin, std.lv=TRUE, estimator=&quot;ML&quot;,group=&quot;gender&quot;) # http://lavaan.ugent.be/tutorial/groups.html
+x11()
+semPaths(fitsSI, what=&quot;std&quot;, title =FALSE, curvePivot = TRUE,residuals=FALSE, structural=TRUE, layout=&quot;tree2&quot;)</code></pre>
 <p><img src="figure/recovery.Rmd/recover-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-recover-1">
