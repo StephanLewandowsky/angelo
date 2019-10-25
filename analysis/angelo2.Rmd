@@ -50,14 +50,11 @@ angelo2 <- read.csv(paste(inputdir,"Study 2 - Data Matrix.csv",sep="/"),header=T
 
 ```
 
-## Basic summaries and reverse scoring
-```{r summary, echo=TRUE}
-
+## Reverse scoring
+```{r reverse, echo=TRUE, warning=FALSE, message=FALSE, results="hide"}
 itemclusters  <- c("PSEUDO", "PITS.PSEUDO", "IAS.PSEUDO", "GIS.PSEUDO", "SDQ.PSEUDO")
 likert        <- c(5,5,4,6,7) #likert scales (for reverse scoring)
 names(likert) <- itemclusters
-
-descr(angelo2)
 
 # pre-reverse correlations
 sapply(itemclusters,FUN=function(cluster) {
@@ -69,6 +66,12 @@ angelo2r <- select(angelo2,1:6) #grab first bit, then add columns
 sapply(itemclusters,FUN=function(cluster) {
   angelo2r <<- cbind(angelo2r, angelo2 %>% select(starts_with(cluster)) %>% mutate_at(vars(contains(".R")),revscore,cluster)) 
 })
+```
+
+
+## Basic summaries
+```{r summaries, echo=TRUE}
+descr(angelo2r)
 
 # correlations after reverse scoring
 sapply(itemclusters,FUN=function(cluster) {
@@ -76,8 +79,6 @@ sapply(itemclusters,FUN=function(cluster) {
 })
 
 ```
-
-
 
 ## Correlations among composites
 ```{r composites, echo=TRUE}
