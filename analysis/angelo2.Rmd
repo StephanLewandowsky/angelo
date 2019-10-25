@@ -75,7 +75,7 @@ descr(angelo2r)
 
 # correlations after reverse scoring
 sapply(itemclusters,FUN=function(cluster) {
-  angelo2r %>% select(starts_with(cluster)) %>% cor %>% print
+  angelo2r %>% select(starts_with(cluster)) %>% cor 
 })
 
 ```
