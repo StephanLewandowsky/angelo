@@ -11,13 +11,15 @@ editor_options:
 Analyses of Angelo's experiments (with Sander van der Linden), September-October 2019
 
 
-Click [here](angelo1.html) for first part
+Click [here](angelo1.html) for analysis of first experiment
+
+Click [here](angelo2.html) for analysis of second experiment
 
 Click [here](recovery.html) for simulation of single-indicator models
 
 ```{r workflowr steps, echo=FALSE,warning=FALSE, message=FALSE, results="hide"}
 #wflow_build() --alternative to knit button
-#wflow_publish(c("analysis/index.Rmd", "analysis/recovery.Rmd", "analysis/angelo1.Rmd"),"text message")
+#wflow_publish(c("analysis/index.Rmd", "analysis/recovery.Rmd", "analysis/angelo1.Rmd", "analysis/angelo2.Rmd"),"text message")
 #wflow_git_push(username="StephanLewandowsky")
 
 ```

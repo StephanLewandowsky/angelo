@@ -2,7 +2,15 @@
 title: "angelo1"
 author: "StephanLewandowsky"
 date: "2019-09-24"
-output: workflowr::wflow_html
+output: 
+   workflowr::wflow_html:
+     code_folding: hide
+     number_sections: yes
+     toc: yes
+     toc_depth: 3
+     toc_float: yes
+     theme: cosmo
+     highlight: textmate
 editor_options:
   chunk_output_type: console
 ---

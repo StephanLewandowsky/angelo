@@ -1,0 +1,95 @@
+---
+title: "angelo2"
+author: "StephanLewandowsky"
+date: "2019-10-25"
+output: 
+   workflowr::wflow_html:
+     code_folding: hide
+     number_sections: yes
+     toc: yes
+     toc_depth: 3
+     toc_float: yes
+     theme: cosmo
+     highlight: textmate
+editor_options:
+  chunk_output_type: console
+---
+
+## Setup and read data
+```{r echo=TRUE, warning=FALSE, message=FALSE, results="hide"}
+rm(list=ls())
+library(lattice)
+library(stargazer)
+library(tidyverse)
+library(lme4)
+library(lavaan)
+library(semPlot)
+library(semTools)
+library(RColorBrewer)
+library(gridExtra)
+library(stringr)
+library(Hmisc)
+library(reshape2)
+library(psych)
+library(scales)
+library(summarytools) #contains descr()
+library(workflowr)
+
+source("analysis/funcs.r")
+
+revscore <- function (x,cluster) {  #this reverse scores a scale for items of reversed polarity
+  return ((likert[cluster]+1)-x)            
+}
+
+#define working directories
+inputdir <- "data"
+
+##--- Begin by reading data and variable names -----------------------------------------------------------------------
+angelo2 <- read.csv(paste(inputdir,"Study 2 - Data Matrix.csv",sep="/"),header=TRUE,row.names=NULL) 
+
+
+```
+
+## Basic summaries and reverse scoring
+```{r summary, echo=TRUE}
+
+itemclusters  <- c("PSEUDO", "PITS.PSEUDO", "IAS.PSEUDO", "GIS.PSEUDO", "SDQ.PSEUDO")
+likert        <- c(5,5,4,6,7) #likert scales (for reverse scoring)
+names(likert) <- itemclusters
+
+descr(angelo2)
+
+# pre-reverse correlations
+sapply(itemclusters,FUN=function(cluster) {
+  angelo2 %>% select(starts_with(cluster)) %>% cor %>% print
+})
+
+# all variables to be reverse-scored contain ".R" in name
+angelo2r <- select(angelo2,1:6) #grab first bit, then add columns
+sapply(itemclusters,FUN=function(cluster) {
+  angelo2r <<- cbind(angelo2r, angelo2 %>% select(starts_with(cluster)) %>% mutate_at(vars(contains(".R")),revscore,cluster)) 
+})
+
+# correlations after reverse scoring
+sapply(itemclusters,FUN=function(cluster) {
+  angelo2r %>% select(starts_with(cluster)) %>% cor %>% print
+})
+
+```
+
+
+
+## Correlations among composites
+```{r composites, echo=TRUE}
+
+angelocomps <- NULL
+for (cluster in itemclusters) {
+    angelocomps <- cbind(angelocomps, angelo2r %>% select(starts_with(cluster)) %>% apply(.,1,mean,na.rm=TRUE))
+}
+angelocomps <- as.data.frame(angelocomps)
+names(angelocomps) <- itemclusters
+angelocomps <- cbind(select(angelo2r,1:6), angelocomps)
+
+cor(angelocomps %>% select(-c(1:6)))
+
+```  
