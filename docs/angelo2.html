@@ -593,10 +593,10 @@ environment
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotree3226912cffd36d0a931d7ab3f603ff8037d090fatargetblank3226912a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/StephanLewandowsky/angelo/tree/3226912cffd36d0a931d7ab3f603ff8037d090fa" target="_blank">3226912</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotree39fc3814d7c2bb0c7464be81aafeec4a7888feb6targetblank39fc381a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/StephanLewandowsky/angelo/tree/39fc3814d7c2bb0c7464be81aafeec4a7888feb6" target="_blank">39fc381</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotree3226912cffd36d0a931d7ab3f603ff8037d090fatargetblank3226912a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotree39fc3814d7c2bb0c7464be81aafeec4a7888feb6targetblank39fc381a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -655,6 +655,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/StephanLewandowsky/angelo/blob/39fc3814d7c2bb0c7464be81aafeec4a7888feb6/analysis/angelo2.Rmd" target="_blank">39fc381</a>
+</td>
+<td>
+StephanLewandowsky
+</td>
+<td>
+2019-11-11
+</td>
+<td>
+Exploring reliability in Angelo 2
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/StephanLewandowsky/angelo/06ce15f5d0f7f0eff9cfdfe608d620b4f62e8534/docs/angelo2.html" target="_blank">06ce15f</a>
+</td>
+<td>
+StephanLewandowsky
+</td>
+<td>
+2019-11-11
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -819,8 +853,8 @@ angelo2 &lt;- read.csv(paste(inputdir,&quot;Study 2 - Data Matrix.csv&quot;,sep=
 <pre class="r"><code>names(angelo2)[1] &lt;- &quot;Control&quot;
 angelo2 &lt;- angelo2 %&gt;% filter(Control==1)</code></pre>
 </div>
-<div id="reverse-scoring" class="section level2">
-<h2><span class="header-section-number">0.3</span> Reverse scoring</h2>
+<div id="correlations-before-reverse-scoring-and-then-reverse-score" class="section level2">
+<h2><span class="header-section-number">0.3</span> Correlations before reverse scoring and then reverse score</h2>
 <pre class="r"><code>itemclusters  &lt;- c(&quot;PSEUDO&quot;, &quot;PITS.PSEUDO&quot;, &quot;IAS.PSEUDO&quot;, &quot;GIS.PSEUDO&quot;, &quot;SDQ.PSEUDO&quot;)
 likert        &lt;- c(5,5,4,6,7) #likert scales (for reverse scoring)
 names(likert) &lt;- itemclusters
@@ -1147,8 +1181,10 @@ Table: Table continues below
          Kurtosis           0.93           0.28           0.23
           N.Valid        1120.00        1120.00        1120.00
         Pct.Valid         100.00         100.00         100.00</code></pre>
-<pre class="r"><code># correlations after reverse scoring
-sapply(itemclusters,FUN=function(cluster) {
+</div>
+<div id="correlations-after-reverse-scoring" class="section level2">
+<h2><span class="header-section-number">0.5</span> Correlations after reverse scoring</h2>
+<pre class="r"><code>sapply(itemclusters,FUN=function(cluster) {
   angelo2r %&gt;% select(starts_with(cluster)) %&gt;% cor 
 })</code></pre>
 <pre><code>$PSEUDO
@@ -1506,8 +1542,10 @@ SDQ.PSEUDO.6..R.    0.5676131    0.1687528    0.3997715
 SDQ.PSEUDO.7        1.0000000    0.2869714    0.4556818
 SDQ.PSEUDO.8        0.2869714    1.0000000    0.3812077
 SDQ.PSEUDO.9        0.4556818    0.3812077    1.0000000</code></pre>
-<pre class="r"><code># look at reliabilities
-sapply(itemclusters,FUN=function(cluster) {
+</div>
+<div id="look-at-reliabilities" class="section level2">
+<h2><span class="header-section-number">0.6</span> Look at reliabilities</h2>
+<pre class="r"><code>sapply(itemclusters,FUN=function(cluster) {
   angelo2r %&gt;% select(starts_with(cluster)) %&gt;% psych::alpha(.) %&gt;% print
 })</code></pre>
 <pre><code>
@@ -1956,7 +1994,7 @@ SDQ.PSEUDO.8     0.03 0.06 0.05 0.10 0.13 0.26 0.37    0
 SDQ.PSEUDO.9     0.01 0.01 0.02 0.17 0.16 0.27 0.36    0</code></pre>
 </div>
 <div id="correlations-among-composites" class="section level2">
-<h2><span class="header-section-number">0.5</span> Correlations among composites</h2>
+<h2><span class="header-section-number">0.7</span> Correlations among composites</h2>
 <pre class="r"><code>angelocomps &lt;- NULL
 for (cluster in itemclusters) {
     angelocomps &lt;- cbind(angelocomps, angelo2r %&gt;% select(starts_with(cluster)) %&gt;% apply(.,1,mean,na.rm=TRUE))
