@@ -18,8 +18,8 @@ Click [here](angelo2.html) for analysis of second experiment
 Click [here](recovery.html) for simulation of single-indicator models
 
 ```{r workflowr steps, echo=FALSE,warning=FALSE, message=FALSE, results="hide"}
-#wflow_build() --alternative to knit button
-#wflow_publish(c("analysis/index.Rmd", "analysis/recovery.Rmd", "analysis/angelo1.Rmd", "analysis/angelo2.Rmd"),"text message")
+#wflow_build() --alternative to knit button (but it cleans environment, hence preferable)
+#wflow_publish(c("analysis/index.Rmd", "analysis/recovery.Rmd", "analysis/angelo1.Rmd", "analysis/angelo2.Rmd"),"Exploring reliability in Angelo 2")
 #wflow_git_push(username="StephanLewandowsky")
 
 ```
