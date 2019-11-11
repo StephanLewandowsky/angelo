@@ -458,7 +458,7 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-10-25
+<strong>Last updated:</strong> 2019-11-11
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -593,10 +593,10 @@ environment
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotreedf5e4817643b8755342d957f8765c3034d63f3a5targetblankdf5e481a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/StephanLewandowsky/angelo/tree/df5e4817643b8755342d957f8765c3034d63f3a5" target="_blank">df5e481</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotree3226912cffd36d0a931d7ab3f603ff8037d090fatargetblank3226912a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/StephanLewandowsky/angelo/tree/3226912cffd36d0a931d7ab3f603ff8037d090fa" target="_blank">3226912</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotreedf5e4817643b8755342d957f8765c3034d63f3a5targetblankdf5e481a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotree3226912cffd36d0a931d7ab3f603ff8037d090fatargetblank3226912a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -613,10 +613,10 @@ Untracked files:
     Untracked:  data/Study 1 - Data Matrix.csv
     Untracked:  data/Study 1 - Data Matrix.xls
     Untracked:  data/Study 1 - Reversed encoded and Likert scales.doc
+    Untracked:  data/Study 2 - Data Matrix (with control item).xls
     Untracked:  data/Study 2 - Data Matrix.csv
     Untracked:  data/Study 2 - Data Matrix.xls
     Untracked:  data/Study 2 - Reversed encoded and Likert scales.doc
-    Untracked:  data/~$udy 2 - Reversed encoded and Likert scales.doc
 
 </code></pre>
 <p>
@@ -655,6 +655,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/StephanLewandowsky/angelo/blob/3226912cffd36d0a931d7ab3f603ff8037d090fa/analysis/angelo2.Rmd" target="_blank">3226912</a>
+</td>
+<td>
+StephanLewandowsky
+</td>
+<td>
+2019-11-11
+</td>
+<td>
+Exploring reliability in Angelo 2
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/StephanLewandowsky/angelo/980dce8d9c78d30696c6c7337c09e8b952e92d3b/docs/angelo2.html" target="_blank">980dce8</a>
+</td>
+<td>
+StephanLewandowsky
+</td>
+<td>
+2019-10-25
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -776,11 +810,17 @@ revscore &lt;- function (x,cluster) {  #this reverse scores a scale for items of
 #define working directories
 inputdir &lt;- &quot;data&quot;
 
-##--- Begin by reading data and variable names -----------------------------------------------------------------------
+## Reading data and variable names 
+# csv created from &quot;Study 2 - Data Matrix (with control item).xlsx&quot; on 11/11/19.
 angelo2 &lt;- read.csv(paste(inputdir,&quot;Study 2 - Data Matrix.csv&quot;,sep=&quot;/&quot;),header=TRUE,row.names=NULL) </code></pre>
 </div>
+<div id="cleaning-data" class="section level2">
+<h2><span class="header-section-number">0.2</span> Cleaning data</h2>
+<pre class="r"><code>names(angelo2)[1] &lt;- &quot;Control&quot;
+angelo2 &lt;- angelo2 %&gt;% filter(Control==1)</code></pre>
+</div>
 <div id="reverse-scoring" class="section level2">
-<h2><span class="header-section-number">0.2</span> Reverse scoring</h2>
+<h2><span class="header-section-number">0.3</span> Reverse scoring</h2>
 <pre class="r"><code>itemclusters  &lt;- c(&quot;PSEUDO&quot;, &quot;PITS.PSEUDO&quot;, &quot;IAS.PSEUDO&quot;, &quot;GIS.PSEUDO&quot;, &quot;SDQ.PSEUDO&quot;)
 likert        &lt;- c(5,5,4,6,7) #likert scales (for reverse scoring)
 names(likert) &lt;- itemclusters
@@ -791,80 +831,80 @@ sapply(itemclusters,FUN=function(cluster) {
 })
 
 # all variables to be reverse-scored contain &quot;.R&quot; in name
-angelo2r &lt;- select(angelo2,1:6) #grab first bit, then add columns
+angelo2r &lt;- select(angelo2,Control:starts_with(&quot;Political&quot;)) #grab first bit, then add columns
 sapply(itemclusters,FUN=function(cluster) {
   angelo2r &lt;&lt;- cbind(angelo2r, angelo2 %&gt;% select(starts_with(cluster)) %&gt;% mutate_at(vars(contains(&quot;.R&quot;)),revscore,cluster)) 
 })</code></pre>
 </div>
 <div id="basic-summaries" class="section level2">
-<h2><span class="header-section-number">0.3</span> Basic summaries</h2>
+<h2><span class="header-section-number">0.4</span> Basic summaries</h2>
 <pre class="r"><code>descr(angelo2r)</code></pre>
 <pre><code>Non-numerical variable(s) ignored: Sex, Education, Nationality, Religion</code></pre>
 <pre><code>Descriptive Statistics  
 angelo2r  
-N: 1215  
+N: 1120  
 
-                        Age   GIS.PSEUDO.1   GIS.PSEUDO.10..R.   GIS.PSEUDO.11..R.   GIS.PSEUDO.12
------------------ --------- -------------- ------------------- ------------------- ---------------
-             Mean     39.85           3.91                4.78                4.80            4.62
-          Std.Dev     10.25           1.22                1.33                1.35            1.18
-              Min     15.00           1.00                1.00                1.00            1.00
-               Q1     33.00           3.00                4.00                4.00            4.00
-           Median     39.00           4.00                5.00                5.00            5.00
-               Q3     46.00           5.00                6.00                6.00            5.00
-              Max     79.00           6.00                6.00                6.00            6.00
-              MAD     10.38           1.48                1.48                1.48            1.48
-              IQR     13.00           2.00                2.00                2.00            1.00
-               CV      0.26           0.31                0.28                0.28            0.26
-         Skewness      0.43          -0.42               -1.03               -1.12           -1.14
-      SE.Skewness      0.07           0.07                0.07                0.07            0.07
-         Kurtosis      0.14          -0.24                0.24                0.46            1.33
-          N.Valid   1215.00        1215.00             1215.00             1215.00         1215.00
-        Pct.Valid    100.00         100.00              100.00              100.00          100.00
-
-Table: Table continues below
-
- 
-
-                    GIS.PSEUDO.2   GIS.PSEUDO.3..R.   GIS.PSEUDO.4..R.   GIS.PSEUDO.5
------------------ -------------- ------------------ ------------------ --------------
-             Mean           3.66               4.50               4.18           3.33
-          Std.Dev           1.33               1.26               1.38           1.43
-              Min           1.00               1.00               1.00           1.00
-               Q1           3.00               4.00               3.00           2.00
-           Median           4.00               5.00               4.00           3.00
-               Q3           5.00               5.00               5.00           4.00
-              Max           6.00               6.00               6.00           6.00
-              MAD           1.48               1.48               1.48           1.48
-              IQR           2.00               1.00               2.00           2.00
-               CV           0.36               0.28               0.33           0.43
-         Skewness          -0.24              -0.73              -0.51          -0.08
-      SE.Skewness           0.07               0.07               0.07           0.07
-         Kurtosis          -0.66              -0.06              -0.62          -1.01
-          N.Valid        1215.00            1215.00            1215.00        1215.00
-        Pct.Valid         100.00             100.00             100.00         100.00
+                        Age   Control   GIS.PSEUDO.1   GIS.PSEUDO.10..R.   GIS.PSEUDO.11..R.
+----------------- --------- --------- -------------- ------------------- -------------------
+             Mean     39.56      1.00           3.91                4.82                4.83
+          Std.Dev     10.02      0.00           1.22                1.31                1.36
+              Min     15.00      1.00           1.00                1.00                1.00
+               Q1     33.00      1.00           3.00                4.00                4.00
+           Median     39.00      1.00           4.00                5.00                5.00
+               Q3     46.00      1.00           5.00                6.00                6.00
+              Max     79.00      1.00           6.00                6.00                6.00
+              MAD      8.90      0.00           1.48                1.48                1.48
+              IQR     13.00      0.00           2.00                2.00                2.00
+               CV      0.25      0.00           0.31                0.27                0.28
+         Skewness      0.43       NaN          -0.43               -1.06               -1.16
+      SE.Skewness      0.07      0.07           0.07                0.07                0.07
+         Kurtosis      0.22       NaN          -0.25                0.29                0.50
+          N.Valid   1120.00   1120.00        1120.00             1120.00             1120.00
+        Pct.Valid    100.00    100.00         100.00              100.00              100.00
 
 Table: Table continues below
 
  
 
-                    GIS.PSEUDO.6..R.   GIS.PSEUDO.7   GIS.PSEUDO.8..R.   GIS.PSEUDO.9
------------------ ------------------ -------------- ------------------ --------------
-             Mean               4.06           3.94               3.18           4.28
-          Std.Dev               1.49           1.47               1.45           1.22
-              Min               1.00           1.00               1.00           1.00
-               Q1               3.00           3.00               2.00           4.00
-           Median               4.00           4.00               3.00           4.00
-               Q3               5.00           5.00               4.00           5.00
-              Max               6.00           6.00               6.00           6.00
-              MAD               1.48           1.48               1.48           1.48
-              IQR               2.00           2.00               2.00           1.00
-               CV               0.37           0.37               0.46           0.29
-         Skewness              -0.44          -0.46               0.22          -0.69
-      SE.Skewness               0.07           0.07               0.07           0.07
-         Kurtosis              -0.87          -0.76              -0.93           0.19
-          N.Valid            1215.00        1215.00            1215.00        1215.00
-        Pct.Valid             100.00         100.00             100.00         100.00
+                    GIS.PSEUDO.12   GIS.PSEUDO.2   GIS.PSEUDO.3..R.   GIS.PSEUDO.4..R.
+----------------- --------------- -------------- ------------------ ------------------
+             Mean            4.65           3.66               4.54               4.20
+          Std.Dev            1.19           1.33               1.26               1.39
+              Min            1.00           1.00               1.00               1.00
+               Q1            4.00           3.00               4.00               3.00
+           Median            5.00           4.00               5.00               5.00
+               Q3            5.00           5.00               5.00               5.00
+              Max            6.00           6.00               6.00               6.00
+              MAD            1.48           1.48               1.48               1.48
+              IQR            1.00           2.00               1.00               2.00
+               CV            0.26           0.36               0.28               0.33
+         Skewness           -1.17          -0.24              -0.77              -0.53
+      SE.Skewness            0.07           0.07               0.07               0.07
+         Kurtosis            1.40          -0.66               0.01              -0.62
+          N.Valid         1120.00        1120.00            1120.00            1120.00
+        Pct.Valid          100.00         100.00             100.00             100.00
+
+Table: Table continues below
+
+ 
+
+                    GIS.PSEUDO.5   GIS.PSEUDO.6..R.   GIS.PSEUDO.7   GIS.PSEUDO.8..R.   GIS.PSEUDO.9
+----------------- -------------- ------------------ -------------- ------------------ --------------
+             Mean           3.33               4.11           3.95               3.19           4.30
+          Std.Dev           1.44               1.49           1.48               1.47           1.22
+              Min           1.00               1.00           1.00               1.00           1.00
+               Q1           2.00               3.00           3.00               2.00           4.00
+           Median           3.00               4.00           4.00               3.00           4.00
+               Q3           4.00               5.00           5.00               4.00           5.00
+              Max           6.00               6.00           6.00               6.00           6.00
+              MAD           1.48               1.48           1.48               1.48           1.48
+              IQR           2.00               2.00           2.00               2.00           1.00
+               CV           0.43               0.36           0.37               0.46           0.28
+         Skewness          -0.08              -0.50          -0.48               0.21          -0.72
+      SE.Skewness           0.07               0.07           0.07               0.07           0.07
+         Kurtosis          -1.02              -0.80          -0.76              -0.96           0.24
+          N.Valid        1120.00            1120.00        1120.00            1120.00        1120.00
+        Pct.Valid         100.00             100.00         100.00             100.00         100.00
 
 Table: Table continues below
 
@@ -872,8 +912,8 @@ Table: Table continues below
 
                     IAS.PSEUDO.1..R.   IAS.PSEUDO.2   IAS.PSEUDO.3   IAS.PSEUDO.4..R.
 ----------------- ------------------ -------------- -------------- ------------------
-             Mean               3.22           2.52           1.99               2.43
-          Std.Dev               0.90           0.97           0.92               1.05
+             Mean               3.21           2.54           1.99               2.41
+          Std.Dev               0.91           0.97           0.92               1.05
               Min               1.00           1.00           1.00               1.00
                Q1               3.00           2.00           1.00               2.00
            Median               3.00           3.00           2.00               2.00
@@ -881,11 +921,11 @@ Table: Table continues below
               Max               4.00           4.00           4.00               4.00
               MAD               1.48           1.48           1.48               1.48
               IQR               1.00           1.00           2.00               1.00
-               CV               0.28           0.38           0.46               0.43
-         Skewness              -0.75          -0.04           0.48               0.20
+               CV               0.28           0.38           0.46               0.44
+         Skewness              -0.76          -0.06           0.47               0.21
       SE.Skewness               0.07           0.07           0.07               0.07
-         Kurtosis              -0.63          -0.97          -0.78              -1.15
-          N.Valid            1215.00        1215.00        1215.00            1215.00
+         Kurtosis              -0.61          -0.98          -0.79              -1.15
+          N.Valid            1120.00        1120.00        1120.00            1120.00
         Pct.Valid             100.00         100.00         100.00             100.00
 
 Table: Table continues below
@@ -894,8 +934,8 @@ Table: Table continues below
 
                     IAS.PSEUDO.5..R.   IAS.PSEUDO.6   PITS.PSEUDO.1   PITS.PSEUDO.10   PITS.PSEUDO.2
 ----------------- ------------------ -------------- --------------- ---------------- ---------------
-             Mean               2.90           2.38            4.12             3.19            4.33
-          Std.Dev               0.93           0.91            0.99             1.23            0.97
+             Mean               2.91           2.38            4.15             3.20            4.37
+          Std.Dev               0.93           0.91            0.99             1.24            0.96
               Min               1.00           1.00            1.00             1.00            1.00
                Q1               2.00           2.00            4.00             2.00            4.00
            Median               3.00           2.00            4.00             3.00            5.00
@@ -904,10 +944,10 @@ Table: Table continues below
               MAD               1.48           1.48            1.48             1.48            0.00
               IQR               2.00           1.00            1.00             2.00            1.00
                CV               0.32           0.38            0.24             0.39            0.22
-         Skewness              -0.27           0.02           -1.24            -0.03           -1.77
+         Skewness              -0.30           0.03           -1.30            -0.04           -1.89
       SE.Skewness               0.07           0.07            0.07             0.07            0.07
-         Kurtosis              -1.02          -0.83            1.30            -1.02            2.99
-          N.Valid            1215.00        1215.00         1215.00          1215.00         1215.00
+         Kurtosis              -1.00          -0.84            1.46            -1.04            3.50
+          N.Valid            1120.00        1120.00         1120.00          1120.00         1120.00
         Pct.Valid             100.00         100.00          100.00           100.00          100.00
 
 Table: Table continues below
@@ -916,20 +956,20 @@ Table: Table continues below
 
                     PITS.PSEUDO.3   PITS.PSEUDO.4   PITS.PSEUDO.5   PITS.PSEUDO.6   PITS.PSEUDO.7
 ----------------- --------------- --------------- --------------- --------------- ---------------
-             Mean            3.89            4.09            4.20            3.20            3.96
-          Std.Dev            1.05            1.06            1.01            1.21            1.06
+             Mean            3.92            4.13            4.22            3.22            4.00
+          Std.Dev            1.04            1.05            1.01            1.21            1.05
               Min            1.00            1.00            1.00            1.00            1.00
-               Q1            3.00            4.00            4.00            2.00            3.00
-           Median            4.00            4.00            4.00            3.00            4.00
+               Q1            3.00            4.00            4.00            2.00            4.00
+           Median            4.00            4.00            5.00            3.00            4.00
                Q3            5.00            5.00            5.00            4.00            5.00
               Max            5.00            5.00            5.00            5.00            5.00
-              MAD            1.48            1.48            1.48            1.48            1.48
-              IQR            2.00            1.00            1.00            2.00            2.00
-               CV            0.27            0.26            0.24            0.38            0.27
-         Skewness           -0.95           -1.28           -1.41           -0.12           -1.01
+              MAD            1.48            1.48            0.00            1.48            1.48
+              IQR            2.00            1.00            1.00            2.00            1.00
+               CV            0.27            0.25            0.24            0.38            0.26
+         Skewness           -0.97           -1.32           -1.45           -0.12           -1.05
       SE.Skewness            0.07            0.07            0.07            0.07            0.07
-         Kurtosis            0.42            1.13            1.59           -0.93            0.40
-          N.Valid         1215.00         1215.00         1215.00         1215.00         1215.00
+         Kurtosis            0.45            1.26            1.68           -0.95            0.53
+          N.Valid         1120.00         1120.00         1120.00         1120.00         1120.00
         Pct.Valid          100.00          100.00          100.00          100.00          100.00
 
 Table: Table continues below
@@ -938,8 +978,8 @@ Table: Table continues below
 
                     PITS.PSEUDO.8   PITS.PSEUDO.9   Political.tendency..1...Left.wing.   PSEUDO.1
 ----------------- --------------- --------------- ------------------------------------ ----------
-             Mean            3.50            3.86                                 3.78       2.00
-          Std.Dev            1.11            1.06                                 1.96       1.27
+             Mean            3.51            3.88                                 3.75       1.95
+          Std.Dev            1.11            1.06                                 1.94       1.24
               Min            1.00            1.00                                 1.00       1.00
                Q1            3.00            3.00                                 3.00       1.00
            Median            4.00            4.00                                 3.00       1.00
@@ -947,11 +987,11 @@ Table: Table continues below
               Max            5.00            5.00                                10.00       5.00
               MAD            1.48            1.48                                 1.48       0.00
               IQR            1.00            2.00                                 2.00       2.00
-               CV            0.32            0.28                                 0.52       0.63
-         Skewness           -0.41           -0.87                                 0.85       0.98
+               CV            0.32            0.27                                 0.52       0.64
+         Skewness           -0.42           -0.89                                 0.87       1.06
       SE.Skewness            0.07            0.07                                 0.07       0.07
-         Kurtosis           -0.56            0.18                                 0.43      -0.32
-          N.Valid         1215.00         1215.00                              1215.00    1215.00
+         Kurtosis           -0.55            0.22                                 0.50      -0.12
+          N.Valid         1120.00         1120.00                              1120.00    1120.00
         Pct.Valid          100.00          100.00                               100.00     100.00
 
 Table: Table continues below
@@ -960,20 +1000,20 @@ Table: Table continues below
 
                     PSEUDO.10   PSEUDO.11..R.   PSEUDO.12   PSEUDO.13   PSEUDO.14   PSEUDO.15
 ----------------- ----------- --------------- ----------- ----------- ----------- -----------
-             Mean        1.63            1.37        1.52        3.62        1.82        1.40
-          Std.Dev        1.17            0.78        0.96        1.11        1.10        0.85
+             Mean        1.58            1.33        1.47        3.62        1.78        1.37
+          Std.Dev        1.13            0.73        0.92        1.11        1.08        0.84
               Min        1.00            1.00        1.00        1.00        1.00        1.00
                Q1        1.00            1.00        1.00        3.00        1.00        1.00
            Median        1.00            1.00        1.00        4.00        1.00        1.00
-               Q3        2.00            2.00        2.00        4.00        2.00        1.00
+               Q3        2.00            1.00        2.00        4.00        2.00        1.00
               Max        5.00            5.00        5.00        5.00        5.00        5.00
               MAD        0.00            0.00        0.00        1.48        0.00        0.00
-              IQR        1.00            1.00        1.00        1.00        1.00        0.00
-               CV        0.72            0.57        0.63        0.31        0.60        0.61
-         Skewness        1.75            2.76        1.96       -0.76        1.25        2.61
+              IQR        1.00            0.00        1.00        1.00        1.00        0.00
+               CV        0.72            0.55        0.62        0.31        0.61        0.61
+         Skewness        1.90            2.96        2.10       -0.78        1.32        2.75
       SE.Skewness        0.07            0.07        0.07        0.07        0.07        0.07
-         Kurtosis        1.71            8.50        3.11        0.09        0.63        6.81
-          N.Valid     1215.00         1215.00     1215.00     1215.00     1215.00     1215.00
+         Kurtosis        2.33           10.17        3.77        0.13        0.84        7.62
+          N.Valid     1120.00         1120.00     1120.00     1120.00     1120.00     1120.00
         Pct.Valid      100.00          100.00      100.00      100.00      100.00      100.00
 
 Table: Table continues below
@@ -982,8 +1022,8 @@ Table: Table continues below
 
                     PSEUDO.16   PSEUDO.17   PSEUDO.18   PSEUDO.19   PSEUDO.2   PSEUDO.20   PSEUDO.21
 ----------------- ----------- ----------- ----------- ----------- ---------- ----------- -----------
-             Mean        2.55        1.48        2.24        1.29       2.26        2.15        1.48
-          Std.Dev        1.06        1.13        1.15        0.84       1.20        1.17        0.80
+             Mean        2.54        1.46        2.23        1.27       2.21        2.12        1.46
+          Std.Dev        1.06        1.12        1.15        0.82       1.19        1.17        0.79
               Min        1.00        1.00        1.00        1.00       1.00        1.00        1.00
                Q1        2.00        1.00        1.00        1.00       1.00        1.00        1.00
            Median        3.00        1.00        2.00        1.00       2.00        2.00        1.00
@@ -991,11 +1031,11 @@ Table: Table continues below
               Max        5.00        5.00        5.00        5.00       5.00        5.00        5.00
               MAD        1.48        0.00        1.48        0.00       1.48        1.48        0.00
               IQR        1.00        0.00        2.00        0.00       2.00        2.00        1.00
-               CV        0.42        0.76        0.51        0.65       0.53        0.54        0.54
-         Skewness       -0.07        2.34        0.56        3.45       0.42        0.78        1.72
+               CV        0.42        0.77        0.52        0.64       0.54        0.55        0.54
+         Skewness       -0.07        2.41        0.59        3.64       0.48        0.82        1.80
       SE.Skewness        0.07        0.07        0.07        0.07       0.07        0.07        0.07
-         Kurtosis       -0.67        4.08       -0.62       11.53      -0.94       -0.36        2.62
-          N.Valid     1215.00     1215.00     1215.00     1215.00    1215.00     1215.00     1215.00
+         Kurtosis       -0.68        4.35       -0.57       12.94      -0.89       -0.30        2.94
+          N.Valid     1120.00     1120.00     1120.00     1120.00    1120.00     1120.00     1120.00
         Pct.Valid      100.00      100.00      100.00      100.00     100.00      100.00      100.00
 
 Table: Table continues below
@@ -1004,20 +1044,20 @@ Table: Table continues below
 
                     PSEUDO.22   PSEUDO.23   PSEUDO.24..R.   PSEUDO.25..R.   PSEUDO.26
 ----------------- ----------- ----------- --------------- --------------- -----------
-             Mean        1.98        1.55            2.33            1.50        1.46
-          Std.Dev        1.02        0.97            1.19            0.91        0.91
+             Mean        1.94        1.51            2.29            1.46        1.41
+          Std.Dev        1.01        0.94            1.18            0.88        0.87
               Min        1.00        1.00            1.00            1.00        1.00
                Q1        1.00        1.00            1.00            1.00        1.00
            Median        2.00        1.00            2.00            1.00        1.00
-               Q3        3.00        2.00            3.00            2.00        2.00
+               Q3        3.00        2.00            3.00            2.00        1.00
               Max        5.00        5.00            5.00            5.00        5.00
               MAD        1.48        0.00            1.48            0.00        0.00
-              IQR        2.00        1.00            2.00            1.00        1.00
-               CV        0.51        0.62            0.51            0.61        0.62
-         Skewness        0.58        1.85            0.67            2.17        2.12
+              IQR        2.00        1.00            2.00            1.00        0.00
+               CV        0.52        0.62            0.51            0.60        0.61
+         Skewness        0.64        1.98            0.72            2.29        2.34
       SE.Skewness        0.07        0.07            0.07            0.07        0.07
-         Kurtosis       -0.64        2.69           -0.44            4.66        3.96
-          N.Valid     1215.00     1215.00         1215.00         1215.00     1215.00
+         Kurtosis       -0.55        3.27           -0.33            5.34        5.17
+          N.Valid     1120.00     1120.00         1120.00         1120.00     1120.00
         Pct.Valid      100.00      100.00          100.00          100.00      100.00
 
 Table: Table continues below
@@ -1026,20 +1066,20 @@ Table: Table continues below
 
                     PSEUDO.27..R.   PSEUDO.28   PSEUDO.29   PSEUDO.3   PSEUDO.30   PSEUDO.4..R.
 ----------------- --------------- ----------- ----------- ---------- ----------- --------------
-             Mean            1.70        1.98        2.84       2.05        1.17           1.80
-          Std.Dev            1.35        1.05        1.34       1.12        0.60           1.43
+             Mean            1.65        1.95        2.81       2.02        1.14           1.75
+          Std.Dev            1.32        1.06        1.33       1.12        0.56           1.41
               Min            1.00        1.00        1.00       1.00        1.00           1.00
                Q1            1.00        1.00        2.00       1.00        1.00           1.00
            Median            1.00        2.00        3.00       2.00        1.00           1.00
-               Q3            2.00        3.00        4.00       3.00        1.00           2.00
+               Q3            1.00        3.00        4.00       3.00        1.00           2.00
               Max            5.00        5.00        5.00       5.00        5.00           5.00
               MAD            0.00        1.48        1.48       1.48        0.00           0.00
-              IQR            1.00        2.00        2.00       2.00        0.00           1.00
-               CV            0.79        0.53        0.47       0.55        0.51           0.80
-         Skewness            1.72        0.80        0.18       0.69        4.54           1.52
+              IQR            0.00        2.00        2.00       2.00        0.00           1.00
+               CV            0.80        0.54        0.47       0.55        0.49           0.81
+         Skewness            1.85        0.85        0.20       0.74        5.04           1.63
       SE.Skewness            0.07        0.07        0.07       0.07        0.07           0.07
-         Kurtosis            1.33       -0.20       -1.20      -0.51       22.78           0.63
-          N.Valid         1215.00     1215.00     1215.00    1215.00     1215.00        1215.00
+         Kurtosis            1.79       -0.11       -1.18      -0.43       27.78           0.97
+          N.Valid         1120.00     1120.00     1120.00    1120.00     1120.00        1120.00
         Pct.Valid          100.00      100.00      100.00     100.00      100.00         100.00
 
 Table: Table continues below
@@ -1048,20 +1088,20 @@ Table: Table continues below
 
                     PSEUDO.5   PSEUDO.6   PSEUDO.7..R.   PSEUDO.8   PSEUDO.9   SDQ.PSEUDO.1..R.
 ----------------- ---------- ---------- -------------- ---------- ---------- ------------------
-             Mean       2.00       1.66           2.13       1.28       2.06               6.01
-          Std.Dev       1.11       1.03           1.24       0.76       1.03               1.09
+             Mean       1.97       1.61           2.07       1.24       2.04               6.05
+          Std.Dev       1.09       0.99           1.22       0.72       1.02               1.07
               Min       1.00       1.00           1.00       1.00       1.00               1.00
-               Q1       1.00       1.00           1.00       1.00       1.00               5.00
+               Q1       1.00       1.00           1.00       1.00       1.00               6.00
            Median       2.00       1.00           2.00       1.00       2.00               6.00
                Q3       3.00       2.00           3.00       1.00       3.00               7.00
               Max       5.00       5.00           5.00       5.00       5.00               7.00
               MAD       1.48       0.00           1.48       0.00       1.48               1.48
-              IQR       2.00       1.00           2.00       0.00       2.00               2.00
-               CV       0.55       0.62           0.58       0.59       0.50               0.18
-         Skewness       0.80       1.50           0.75       3.26       0.74              -1.34
+              IQR       2.00       1.00           2.00       0.00       2.00               1.00
+               CV       0.55       0.62           0.59       0.58       0.50               0.18
+         Skewness       0.83       1.64           0.84       3.56       0.78              -1.37
       SE.Skewness       0.07       0.07           0.07       0.07       0.07               0.07
-         Kurtosis      -0.37       1.38          -0.58      10.94      -0.26               2.24
-          N.Valid    1215.00    1215.00        1215.00    1215.00    1215.00            1215.00
+         Kurtosis      -0.29       1.93          -0.40      13.22      -0.17               2.39
+          N.Valid    1120.00    1120.00        1120.00    1120.00    1120.00            1120.00
         Pct.Valid     100.00     100.00         100.00     100.00     100.00             100.00
 
 Table: Table continues below
@@ -1070,8 +1110,8 @@ Table: Table continues below
 
                     SDQ.PSEUDO.2   SDQ.PSEUDO.3   SDQ.PSEUDO.4..R.   SDQ.PSEUDO.5   SDQ.PSEUDO.6..R.
 ----------------- -------------- -------------- ------------------ -------------- ------------------
-             Mean           5.51           5.52               4.95           6.09               4.98
-          Std.Dev           1.18           1.34               1.63           1.25               1.20
+             Mean           5.53           5.52               4.95           6.11               5.00
+          Std.Dev           1.18           1.35               1.64           1.24               1.19
               Min           1.00           1.00               1.00           1.00               1.00
                Q1           5.00           5.00               4.00           6.00               4.00
            Median           6.00           6.00               5.00           7.00               5.00
@@ -1079,11 +1119,11 @@ Table: Table continues below
               Max           7.00           7.00               7.00           7.00               7.00
               MAD           1.48           1.48               1.48           0.00               1.48
               IQR           1.00           2.00               2.00           1.00               2.00
-               CV           0.21           0.24               0.33           0.21               0.24
-         Skewness          -0.56          -1.00              -0.46          -1.72              -0.03
+               CV           0.21           0.25               0.33           0.20               0.24
+         Skewness          -0.59          -1.01              -0.45          -1.81              -0.01
       SE.Skewness           0.07           0.07               0.07           0.07               0.07
-         Kurtosis           0.04           0.90              -0.53           2.92              -0.26
-          N.Valid        1215.00        1215.00            1215.00        1215.00            1215.00
+         Kurtosis           0.09           0.90              -0.54           3.37              -0.31
+          N.Valid        1120.00        1120.00            1120.00        1120.00            1120.00
         Pct.Valid         100.00         100.00             100.00         100.00             100.00
 
 Table: Table continues below
@@ -1092,352 +1132,831 @@ Table: Table continues below
 
                     SDQ.PSEUDO.7   SDQ.PSEUDO.8   SDQ.PSEUDO.9
 ----------------- -------------- -------------- --------------
-             Mean           5.47           5.45           5.70
-          Std.Dev           1.16           1.70           1.28
+             Mean           5.48           5.50           5.73
+          Std.Dev           1.16           1.69           1.28
               Min           1.00           1.00           1.00
-               Q1           5.00           4.00           5.00
+               Q1           5.00           5.00           5.00
            Median           6.00           6.00           6.00
                Q3           6.00           7.00           7.00
               Max           7.00           7.00           7.00
               MAD           1.48           1.48           1.48
-              IQR           1.00           3.00           2.00
-               CV           0.21           0.31           0.23
-         Skewness          -0.74          -1.06          -0.81
+              IQR           1.00           2.00           2.00
+               CV           0.21           0.31           0.22
+         Skewness          -0.78          -1.10          -0.86
       SE.Skewness           0.07           0.07           0.07
-         Kurtosis           0.81           0.18           0.08
-          N.Valid        1215.00        1215.00        1215.00
+         Kurtosis           0.93           0.28           0.23
+          N.Valid        1120.00        1120.00        1120.00
         Pct.Valid         100.00         100.00         100.00</code></pre>
 <pre class="r"><code># correlations after reverse scoring
 sapply(itemclusters,FUN=function(cluster) {
   angelo2r %&gt;% select(starts_with(cluster)) %&gt;% cor 
 })</code></pre>
 <pre><code>$PSEUDO
-                PSEUDO.1    PSEUDO.2   PSEUDO.3 PSEUDO.4..R.    PSEUDO.5
-PSEUDO.1      1.00000000  0.51710237 0.41019000   0.18480265 0.335302752
-PSEUDO.2      0.51710237  1.00000000 0.38452183   0.12583427 0.300673648
-PSEUDO.3      0.41019000  0.38452183 1.00000000   0.08960205 0.314027054
-PSEUDO.4..R.  0.18480265  0.12583427 0.08960205   1.00000000 0.109033265
-PSEUDO.5      0.33530275  0.30067365 0.31402705   0.10903326 1.000000000
-PSEUDO.6      0.51159400  0.42300437 0.40758489   0.21397569 0.449589097
-PSEUDO.7..R.  0.34194316  0.28252301 0.27227872   0.18466201 0.398567467
-PSEUDO.8      0.39281403  0.32482009 0.34460222   0.21881579 0.268502354
-PSEUDO.9      0.22153763  0.21743636 0.21750937   0.04484591 0.280623404
-PSEUDO.10     0.42460447  0.35421016 0.32084269   0.12871473 0.245030012
-PSEUDO.11..R. 0.15726946  0.12602898 0.09149990   0.15195248 0.114995506
-PSEUDO.12     0.46412325  0.40285237 0.35982365   0.21424567 0.371613675
-PSEUDO.13     0.18062155  0.18579397 0.17167638   0.04037683 0.214744669
-PSEUDO.14     0.43775393  0.35631204 0.36440656   0.17589454 0.385935378
-PSEUDO.15     0.10790266  0.08922477 0.07722061   0.04305401 0.057211971
-PSEUDO.16     0.29350851  0.29073377 0.31918273   0.08726702 0.402657153
-PSEUDO.17     0.10954778  0.05180706 0.08423185   0.07771789 0.096266456
-PSEUDO.18     0.31655074  0.33527982 0.28775537   0.09857797 0.385136416
-PSEUDO.19     0.01621441 -0.02494020 0.02545083   0.02593873 0.008542357
-PSEUDO.20     0.10863455  0.08880901 0.08156809   0.06319870 0.015140766
-PSEUDO.21     0.33751547  0.28026525 0.32107306   0.14131832 0.277185038
-PSEUDO.22     0.36057301  0.28688480 0.35200316   0.10483948 0.314013129
-PSEUDO.23     0.26706212  0.20252458 0.18447888   0.12547844 0.210388839
-PSEUDO.24..R. 0.36867623  0.29344609 0.28929579   0.17811497 0.348343342
-PSEUDO.25..R. 0.20310716  0.13119726 0.12958978   0.09783617 0.132433089
-PSEUDO.26     0.46054105  0.37209864 0.37155204   0.19205924 0.349770585
-PSEUDO.27..R. 0.19111449  0.15213303 0.14504102   0.19396738 0.112357360
-PSEUDO.28     0.32955933  0.28033868 0.31581103   0.09265517 0.266650524
-PSEUDO.29     0.33043196  0.27565399 0.27121607   0.10753606 0.348311965
-PSEUDO.30     0.26784035  0.20572513 0.23801460   0.17477775 0.182921960
-                PSEUDO.6 PSEUDO.7..R.   PSEUDO.8    PSEUDO.9  PSEUDO.10
-PSEUDO.1      0.51159400  0.341943157 0.39281403  0.22153763 0.42460447
-PSEUDO.2      0.42300437  0.282523008 0.32482009  0.21743636 0.35421016
-PSEUDO.3      0.40758489  0.272278717 0.34460222  0.21750937 0.32084269
-PSEUDO.4..R.  0.21397569  0.184662008 0.21881579  0.04484591 0.12871473
-PSEUDO.5      0.44958910  0.398567467 0.26850235  0.28062340 0.24503001
-PSEUDO.6      1.00000000  0.454481548 0.49926850  0.26104682 0.39361028
-PSEUDO.7..R.  0.45448155  1.000000000 0.27392252  0.22021521 0.25554899
-PSEUDO.8      0.49926850  0.273922517 1.00000000  0.15929817 0.44413736
-PSEUDO.9      0.26104682  0.220215206 0.15929817  1.00000000 0.18953470
-PSEUDO.10     0.39361028  0.255548993 0.44413736  0.18953470 1.00000000
-PSEUDO.11..R. 0.18235730  0.210207984 0.17850946  0.11460882 0.19578653
-PSEUDO.12     0.56085875  0.421483730 0.47192621  0.24338050 0.42425626
-PSEUDO.13     0.15850229  0.124263568 0.08583106  0.17027423 0.09732277
-PSEUDO.14     0.50695750  0.330703958 0.42246213  0.25902723 0.35670752
-PSEUDO.15     0.11540842  0.075922751 0.16623471  0.08419840 0.20532186
-PSEUDO.16     0.31201381  0.251940863 0.21745031  0.22703287 0.22518306
-PSEUDO.17     0.12119625  0.052160871 0.12521523  0.02471122 0.14905376
-PSEUDO.18     0.32891688  0.279991623 0.19924018  0.30952986 0.20673588
-PSEUDO.19     0.03306448  0.037158355 0.07549963  0.01689391 0.01949380
-PSEUDO.20     0.10497830  0.008990738 0.15664280 -0.06255608 0.13619004
-PSEUDO.21     0.41881754  0.249785603 0.42058327  0.19579570 0.26642308
-PSEUDO.22     0.36575132  0.289789965 0.30001369  0.21252051 0.27280416
-PSEUDO.23     0.29427680  0.167830454 0.28547084  0.14017799 0.29084554
-PSEUDO.24..R. 0.39601956  0.409662256 0.28872910  0.22889473 0.27234452
-PSEUDO.25..R. 0.22621881  0.243129499 0.17571276  0.06307377 0.18166260
-PSEUDO.26     0.52402958  0.354252658 0.49446524  0.22536613 0.43950587
-PSEUDO.27..R. 0.26836312  0.249852697 0.24049809  0.08505014 0.16979408
-PSEUDO.28     0.34893718  0.282199708 0.23520730  0.17275222 0.19406935
-PSEUDO.29     0.36700168  0.320343471 0.25168141  0.23618338 0.27918631
-PSEUDO.30     0.33054950  0.224393740 0.34170233  0.09535512 0.30308772
-              PSEUDO.11..R.  PSEUDO.12   PSEUDO.13   PSEUDO.14  PSEUDO.15
-PSEUDO.1         0.15726946 0.46412325  0.18062155 0.437753930 0.10790266
-PSEUDO.2         0.12602898 0.40285237  0.18579397 0.356312041 0.08922477
-PSEUDO.3         0.09149990 0.35982365  0.17167638 0.364406560 0.07722061
-PSEUDO.4..R.     0.15195248 0.21424567  0.04037683 0.175894545 0.04305401
-PSEUDO.5         0.11499551 0.37161367  0.21474467 0.385935378 0.05721197
-PSEUDO.6         0.18235730 0.56085875  0.15850229 0.506957496 0.11540842
-PSEUDO.7..R.     0.21020798 0.42148373  0.12426357 0.330703958 0.07592275
-PSEUDO.8         0.17850946 0.47192621  0.08583106 0.422462128 0.16623471
-PSEUDO.9         0.11460882 0.24338050  0.17027423 0.259027228 0.08419840
-PSEUDO.10        0.19578653 0.42425626  0.09732277 0.356707524 0.20532186
-PSEUDO.11..R.    1.00000000 0.16255140 -0.08025026 0.125000010 0.11028445
-PSEUDO.12        0.16255140 1.00000000  0.14142291 0.468937678 0.13960539
-PSEUDO.13       -0.08025026 0.14142291  1.00000000 0.193228818 0.01260386
-PSEUDO.14        0.12500001 0.46893768  0.19322882 1.000000000 0.14942123
-PSEUDO.15        0.11028445 0.13960539  0.01260386 0.149421226 1.00000000
-PSEUDO.16        0.03960721 0.25688767  0.30163150 0.284552370 0.05254239
-PSEUDO.17        0.07883216 0.09209656  0.05282059 0.136303218 0.10044113
-PSEUDO.18        0.05004345 0.33294581  0.26827003 0.264316003 0.02166147
-PSEUDO.19        0.01780527 0.05995635 -0.02451040 0.004433484 0.06449508
-PSEUDO.20        0.04563653 0.13412299  0.01667355 0.091722124 0.17462837
-PSEUDO.21        0.16179877 0.31971119  0.07146264 0.410112137 0.13976620
-PSEUDO.22        0.09616936 0.30310832  0.11998459 0.344575089 0.09424049
-PSEUDO.23        0.18175445 0.27702918  0.09842140 0.256796363 0.27430780
-PSEUDO.24..R.    0.22113646 0.38846419  0.12105896 0.348454224 0.04111910
-PSEUDO.25..R.    0.24576527 0.23000379 -0.03763298 0.130962322 0.07639335
-PSEUDO.26        0.18311509 0.60632341  0.12264709 0.431619884 0.16924828
-PSEUDO.27..R.    0.12490393 0.24619106  0.02164935 0.226456386 0.07783352
-PSEUDO.28        0.15301876 0.30868184  0.12977164 0.286100682 0.12120462
-PSEUDO.29        0.06979469 0.32380163  0.20327510 0.319756922 0.04062906
-PSEUDO.30        0.24577362 0.36844526  0.04943533 0.322680671 0.20819537
-                PSEUDO.16  PSEUDO.17   PSEUDO.18    PSEUDO.19    PSEUDO.20
-PSEUDO.1       0.29350851 0.10954778  0.31655074  0.016214411  0.108634548
-PSEUDO.2       0.29073377 0.05180706  0.33527982 -0.024940199  0.088809005
-PSEUDO.3       0.31918273 0.08423185  0.28775537  0.025450831  0.081568086
-PSEUDO.4..R.   0.08726702 0.07771789  0.09857797  0.025938726  0.063198701
-PSEUDO.5       0.40265715 0.09626646  0.38513642  0.008542357  0.015140766
-PSEUDO.6       0.31201381 0.12119625  0.32891688  0.033064482  0.104978298
-PSEUDO.7..R.   0.25194086 0.05216087  0.27999162  0.037158355  0.008990738
-PSEUDO.8       0.21745031 0.12521523  0.19924018  0.075499630  0.156642802
-PSEUDO.9       0.22703287 0.02471122  0.30952986  0.016893908 -0.062556077
-PSEUDO.10      0.22518306 0.14905376  0.20673588  0.019493801  0.136190045
-PSEUDO.11..R.  0.03960721 0.07883216  0.05004345  0.017805267  0.045636529
-PSEUDO.12      0.25688767 0.09209656  0.33294581  0.059956348  0.134122985
-PSEUDO.13      0.30163150 0.05282059  0.26827003 -0.024510399  0.016673545
-PSEUDO.14      0.28455237 0.13630322  0.26431600  0.004433484  0.091722124
-PSEUDO.15      0.05254239 0.10044113  0.02166147  0.064495085  0.174628374
-PSEUDO.16      1.00000000 0.10071566  0.41153924 -0.013633748  0.018477181
-PSEUDO.17      0.10071566 1.00000000  0.03466095  0.045843883  0.067804741
-PSEUDO.18      0.41153924 0.03466095  1.00000000 -0.011523703 -0.108581844
-PSEUDO.19     -0.01363375 0.04584388 -0.01152370  1.000000000 -0.003611156
-PSEUDO.20      0.01847718 0.06780474 -0.10858184 -0.003611156  1.000000000
-PSEUDO.21      0.24260504 0.12503032  0.20774071  0.062481173  0.126524948
-PSEUDO.22      0.26459602 0.10971586  0.19926261  0.036178273  0.101408696
-PSEUDO.23      0.18752920 0.09596144  0.16299685  0.063988673  0.148903894
-PSEUDO.24..R.  0.23956592 0.06908599  0.25825963 -0.033031737  0.058471594
-PSEUDO.25..R.  0.08342472 0.07956473  0.09257595  0.009504741  0.059967506
-PSEUDO.26      0.24560647 0.12705067  0.27075491  0.098409856  0.136815471
-PSEUDO.27..R.  0.04883504 0.06890170  0.06904868  0.048362883  0.128929278
-PSEUDO.28      0.19956938 0.07621538  0.17272586  0.028483155  0.087995729
-PSEUDO.29      0.23378002 0.08150724  0.26802054 -0.035980302  0.090979716
-PSEUDO.30      0.11042263 0.10777939  0.11078433  0.067723506  0.157613757
-               PSEUDO.21  PSEUDO.22  PSEUDO.23 PSEUDO.24..R. PSEUDO.25..R.
-PSEUDO.1      0.33751547 0.36057301 0.26706212    0.36867623   0.203107160
-PSEUDO.2      0.28026525 0.28688480 0.20252458    0.29344609   0.131197260
-PSEUDO.3      0.32107306 0.35200316 0.18447888    0.28929579   0.129589780
-PSEUDO.4..R.  0.14131832 0.10483948 0.12547844    0.17811497   0.097836165
-PSEUDO.5      0.27718504 0.31401313 0.21038884    0.34834334   0.132433089
-PSEUDO.6      0.41881754 0.36575132 0.29427680    0.39601956   0.226218810
-PSEUDO.7..R.  0.24978560 0.28978997 0.16783045    0.40966226   0.243129499
-PSEUDO.8      0.42058327 0.30001369 0.28547084    0.28872910   0.175712763
-PSEUDO.9      0.19579570 0.21252051 0.14017799    0.22889473   0.063073765
-PSEUDO.10     0.26642308 0.27280416 0.29084554    0.27234452   0.181662600
-PSEUDO.11..R. 0.16179877 0.09616936 0.18175445    0.22113646   0.245765267
-PSEUDO.12     0.31971119 0.30310832 0.27702918    0.38846419   0.230003787
-PSEUDO.13     0.07146264 0.11998459 0.09842140    0.12105896  -0.037632975
-PSEUDO.14     0.41011214 0.34457509 0.25679636    0.34845422   0.130962322
-PSEUDO.15     0.13976620 0.09424049 0.27430780    0.04111910   0.076393352
-PSEUDO.16     0.24260504 0.26459602 0.18752920    0.23956592   0.083424724
-PSEUDO.17     0.12503032 0.10971586 0.09596144    0.06908599   0.079564727
-PSEUDO.18     0.20774071 0.19926261 0.16299685    0.25825963   0.092575949
-PSEUDO.19     0.06248117 0.03617827 0.06398867   -0.03303174   0.009504741
-PSEUDO.20     0.12652495 0.10140870 0.14890389    0.05847159   0.059967506
-PSEUDO.21     1.00000000 0.30582028 0.26357819    0.25053308   0.186527046
-PSEUDO.22     0.30582028 1.00000000 0.25051837    0.25909409   0.150664599
-PSEUDO.23     0.26357819 0.25051837 1.00000000    0.10841368   0.167151584
-PSEUDO.24..R. 0.25053308 0.25909409 0.10841368    1.00000000   0.209454944
-PSEUDO.25..R. 0.18652705 0.15066460 0.16715158    0.20945494   1.000000000
-PSEUDO.26     0.38174394 0.30891952 0.32580565    0.33447829   0.212371842
-PSEUDO.27..R. 0.17380528 0.09664533 0.07988504    0.20717554   0.188977627
-PSEUDO.28     0.28266564 0.26187814 0.15688339    0.23043982   0.150147532
-PSEUDO.29     0.22192993 0.26245816 0.11931613    0.53877527   0.110837409
-PSEUDO.30     0.29208403 0.19413049 0.17340467    0.28612832   0.211896883
-               PSEUDO.26 PSEUDO.27..R.  PSEUDO.28   PSEUDO.29  PSEUDO.30
-PSEUDO.1      0.46054105    0.19111449 0.32955933  0.33043196 0.26784035
-PSEUDO.2      0.37209864    0.15213303 0.28033868  0.27565399 0.20572513
-PSEUDO.3      0.37155204    0.14504102 0.31581103  0.27121607 0.23801460
-PSEUDO.4..R.  0.19205924    0.19396738 0.09265517  0.10753606 0.17477775
-PSEUDO.5      0.34977058    0.11235736 0.26665052  0.34831196 0.18292196
-PSEUDO.6      0.52402958    0.26836312 0.34893718  0.36700168 0.33054950
-PSEUDO.7..R.  0.35425266    0.24985270 0.28219971  0.32034347 0.22439374
-PSEUDO.8      0.49446524    0.24049809 0.23520730  0.25168141 0.34170233
-PSEUDO.9      0.22536613    0.08505014 0.17275222  0.23618338 0.09535512
-PSEUDO.10     0.43950587    0.16979408 0.19406935  0.27918631 0.30308772
-PSEUDO.11..R. 0.18311509    0.12490393 0.15301876  0.06979469 0.24577362
-PSEUDO.12     0.60632341    0.24619106 0.30868184  0.32380163 0.36844526
-PSEUDO.13     0.12264709    0.02164935 0.12977164  0.20327510 0.04943533
-PSEUDO.14     0.43161988    0.22645639 0.28610068  0.31975692 0.32268067
-PSEUDO.15     0.16924828    0.07783352 0.12120462  0.04062906 0.20819537
-PSEUDO.16     0.24560647    0.04883504 0.19956938  0.23378002 0.11042263
-PSEUDO.17     0.12705067    0.06890170 0.07621538  0.08150724 0.10777939
-PSEUDO.18     0.27075491    0.06904868 0.17272586  0.26802054 0.11078433
-PSEUDO.19     0.09840986    0.04836288 0.02848315 -0.03598030 0.06772351
-PSEUDO.20     0.13681547    0.12892928 0.08799573  0.09097972 0.15761376
-PSEUDO.21     0.38174394    0.17380528 0.28266564  0.22192993 0.29208403
-PSEUDO.22     0.30891952    0.09664533 0.26187814  0.26245816 0.19413049
-PSEUDO.23     0.32580565    0.07988504 0.15688339  0.11931613 0.17340467
-PSEUDO.24..R. 0.33447829    0.20717554 0.23043982  0.53877527 0.28612832
-PSEUDO.25..R. 0.21237184    0.18897763 0.15014753  0.11083741 0.21189688
-PSEUDO.26     1.00000000    0.23022242 0.27958787  0.32174953 0.32121420
-PSEUDO.27..R. 0.23022242    1.00000000 0.17947818  0.15031440 0.22077076
-PSEUDO.28     0.27958787    0.17947818 1.00000000  0.22569576 0.18648944
-PSEUDO.29     0.32174953    0.15031440 0.22569576  1.00000000 0.23397914
-PSEUDO.30     0.32121420    0.22077076 0.18648944  0.23397914 1.00000000
+                  PSEUDO.1    PSEUDO.2   PSEUDO.3 PSEUDO.4..R.
+PSEUDO.1       1.000000000  0.51198646 0.40079174   0.15974072
+PSEUDO.2       0.511986456  1.00000000 0.37161046   0.11727455
+PSEUDO.3       0.400791738  0.37161046 1.00000000   0.06869871
+PSEUDO.4..R.   0.159740725  0.11727455 0.06869871   1.00000000
+PSEUDO.5       0.311029970  0.28991118 0.28742277   0.07451794
+PSEUDO.6       0.504473443  0.41461342 0.38859251   0.19472394
+PSEUDO.7..R.   0.314255788  0.27928464 0.25867634   0.15406087
+PSEUDO.8       0.360762750  0.29974275 0.32048816   0.18079099
+PSEUDO.9       0.202541021  0.19925110 0.19589220   0.02451306
+PSEUDO.10      0.416302735  0.33340142 0.29902319   0.10345522
+PSEUDO.11..R.  0.131398015  0.13103301 0.07743483   0.12602358
+PSEUDO.12      0.441624666  0.39083216 0.33283793   0.19635546
+PSEUDO.13      0.171708190  0.18854163 0.16866281   0.05399078
+PSEUDO.14      0.420842548  0.33884525 0.34895544   0.16064500
+PSEUDO.15      0.116867369  0.07584676 0.06802184   0.03341069
+PSEUDO.16      0.280978055  0.28238171 0.30403833   0.08242330
+PSEUDO.17      0.104055668  0.04247546 0.06753579   0.05832504
+PSEUDO.18      0.299911534  0.33133619 0.27618571   0.08583346
+PSEUDO.19     -0.007626306 -0.03751479 0.01756681   0.02519654
+PSEUDO.20      0.091623636  0.06777581 0.06679054   0.05553408
+PSEUDO.21      0.331571670  0.27203333 0.30154103   0.12392074
+PSEUDO.22      0.352401235  0.27416858 0.33672217   0.07460444
+PSEUDO.23      0.240366792  0.16586548 0.15647330   0.10716742
+PSEUDO.24..R.  0.354838380  0.28444566 0.26990907   0.14721332
+PSEUDO.25..R.  0.194432665  0.12669533 0.11728693   0.07077699
+PSEUDO.26      0.431674988  0.34854460 0.35845740   0.16874022
+PSEUDO.27..R.  0.169319982  0.13406812 0.11264070   0.16178162
+PSEUDO.28      0.340259009  0.28099471 0.30661835   0.08348659
+PSEUDO.29      0.315932370  0.27284606 0.26602009   0.08763597
+PSEUDO.30      0.234466020  0.19461135 0.21403426   0.13780856
+                  PSEUDO.5   PSEUDO.6 PSEUDO.7..R.   PSEUDO.8    PSEUDO.9
+PSEUDO.1       0.311029970 0.50447344   0.31425579 0.36076275  0.20254102
+PSEUDO.2       0.289911177 0.41461342   0.27928464 0.29974275  0.19925110
+PSEUDO.3       0.287422770 0.38859251   0.25867634 0.32048816  0.19589220
+PSEUDO.4..R.   0.074517937 0.19472394   0.15406087 0.18079099  0.02451306
+PSEUDO.5       1.000000000 0.42231572   0.38148130 0.22646737  0.25229061
+PSEUDO.6       0.422315722 1.00000000   0.43358215 0.48051303  0.24241669
+PSEUDO.7..R.   0.381481295 0.43358215   1.00000000 0.22732035  0.20234969
+PSEUDO.8       0.226467370 0.48051303   0.22732035 1.00000000  0.13006921
+PSEUDO.9       0.252290609 0.24241669   0.20234969 0.13006921  1.00000000
+PSEUDO.10      0.221700795 0.38179083   0.23504471 0.42115757  0.17190074
+PSEUDO.11..R.  0.090182865 0.16933033   0.16485769 0.14395263  0.08943639
+PSEUDO.12      0.354332742 0.54500263   0.40583838 0.44290746  0.23006110
+PSEUDO.13      0.199533943 0.15681419   0.12847663 0.07573444  0.16454300
+PSEUDO.14      0.359931393 0.49338343   0.31745210 0.39556365  0.23856708
+PSEUDO.15      0.049437612 0.08915701   0.06817997 0.16443820  0.08722015
+PSEUDO.16      0.389990349 0.31151049   0.23741261 0.19513609  0.21550287
+PSEUDO.17      0.057821240 0.10470524   0.02735321 0.08036061  0.01056011
+PSEUDO.18      0.375054728 0.31937106   0.26751993 0.17916844  0.30013982
+PSEUDO.19      0.004493142 0.01258941   0.01628718 0.06720238  0.01359718
+PSEUDO.20     -0.002968973 0.09431519  -0.01010557 0.14364593 -0.08022863
+PSEUDO.21      0.254840770 0.40277508   0.24179133 0.40088174  0.18549699
+PSEUDO.22      0.277852807 0.34634193   0.25645717 0.27734053  0.18532888
+PSEUDO.23      0.182758588 0.27400186   0.14468699 0.24027279  0.11387112
+PSEUDO.24..R.  0.322662190 0.38496482   0.39068989 0.26669306  0.21010453
+PSEUDO.25..R.  0.119705283 0.20630097   0.20607733 0.13571768  0.05243513
+PSEUDO.26      0.319069273 0.50984929   0.33156624 0.46320597  0.20066855
+PSEUDO.27..R.  0.080123811 0.23083925   0.21918941 0.19763127  0.05258693
+PSEUDO.28      0.262489556 0.34154440   0.27101039 0.22533684  0.16385045
+PSEUDO.29      0.330024652 0.36482057   0.31105875 0.23378480  0.21157672
+PSEUDO.30      0.137411850 0.30416062   0.18851714 0.30398787  0.07767335
+               PSEUDO.10 PSEUDO.11..R.  PSEUDO.12   PSEUDO.13
+PSEUDO.1      0.41630274    0.13139802 0.44162467  0.17170819
+PSEUDO.2      0.33340142    0.13103301 0.39083216  0.18854163
+PSEUDO.3      0.29902319    0.07743483 0.33283793  0.16866281
+PSEUDO.4..R.  0.10345522    0.12602358 0.19635546  0.05399078
+PSEUDO.5      0.22170080    0.09018287 0.35433274  0.19953394
+PSEUDO.6      0.38179083    0.16933033 0.54500263  0.15681419
+PSEUDO.7..R.  0.23504471    0.16485769 0.40583838  0.12847663
+PSEUDO.8      0.42115757    0.14395263 0.44290746  0.07573444
+PSEUDO.9      0.17190074    0.08943639 0.23006110  0.16454300
+PSEUDO.10     1.00000000    0.16925075 0.40586700  0.08419394
+PSEUDO.11..R. 0.16925075    1.00000000 0.15961828 -0.05733538
+PSEUDO.12     0.40586700    0.15961828 1.00000000  0.14087521
+PSEUDO.13     0.08419394   -0.05733538 0.14087521  1.00000000
+PSEUDO.14     0.33182302    0.08966192 0.44479687  0.19457934
+PSEUDO.15     0.18626412    0.09663940 0.12082295  0.03954710
+PSEUDO.16     0.20431244    0.01730979 0.24214148  0.30693479
+PSEUDO.17     0.12001727    0.06203972 0.06066448  0.05634077
+PSEUDO.18     0.19447504    0.04773021 0.32173384  0.27040207
+PSEUDO.19     0.01194576   -0.01340661 0.04334565 -0.01481482
+PSEUDO.20     0.10328463    0.02635062 0.11392951  0.01644668
+PSEUDO.21     0.24833813    0.15952723 0.29276245  0.07347912
+PSEUDO.22     0.24783471    0.07047566 0.27407470  0.11809033
+PSEUDO.23     0.24928333    0.16926412 0.24564531  0.10187212
+PSEUDO.24..R. 0.24216473    0.19587859 0.38831051  0.11557319
+PSEUDO.25..R. 0.15936032    0.20198221 0.20366476 -0.02560879
+PSEUDO.26     0.41071524    0.15861763 0.60660924  0.10829334
+PSEUDO.27..R. 0.15001984    0.08942450 0.21158209  0.03425462
+PSEUDO.28     0.18840983    0.14779441 0.30166007  0.14681886
+PSEUDO.29     0.25937045    0.06324753 0.32171676  0.17851413
+PSEUDO.30     0.26413217    0.22519605 0.32953333  0.05255443
+                  PSEUDO.14  PSEUDO.15    PSEUDO.16  PSEUDO.17   PSEUDO.18
+PSEUDO.1       0.4208425483 0.11686737  0.280978055 0.10405567  0.29991153
+PSEUDO.2       0.3388452490 0.07584676  0.282381715 0.04247546  0.33133619
+PSEUDO.3       0.3489554429 0.06802184  0.304038332 0.06753579  0.27618571
+PSEUDO.4..R.   0.1606450039 0.03341069  0.082423295 0.05832504  0.08583346
+PSEUDO.5       0.3599313934 0.04943761  0.389990349 0.05782124  0.37505473
+PSEUDO.6       0.4933834350 0.08915701  0.311510486 0.10470524  0.31937106
+PSEUDO.7..R.   0.3174520978 0.06817997  0.237412605 0.02735321  0.26751993
+PSEUDO.8       0.3955636469 0.16443820  0.195136092 0.08036061  0.17916844
+PSEUDO.9       0.2385670842 0.08722015  0.215502869 0.01056011  0.30013982
+PSEUDO.10      0.3318230166 0.18626412  0.204312435 0.12001727  0.19447504
+PSEUDO.11..R.  0.0896619226 0.09663940  0.017309790 0.06203972  0.04773021
+PSEUDO.12      0.4447968674 0.12082295  0.242141482 0.06066448  0.32173384
+PSEUDO.13      0.1945793426 0.03954710  0.306934788 0.05634077  0.27040207
+PSEUDO.14      1.0000000000 0.13937278  0.274366464 0.10409393  0.25096107
+PSEUDO.15      0.1393727817 1.00000000  0.040092004 0.09498312  0.01383178
+PSEUDO.16      0.2743664643 0.04009200  1.000000000 0.08819202  0.39929419
+PSEUDO.17      0.1040939301 0.09498312  0.088192020 1.00000000  0.01615688
+PSEUDO.18      0.2509610671 0.01383178  0.399294192 0.01615688  1.00000000
+PSEUDO.19     -0.0000820227 0.04894897 -0.015766451 0.05022431 -0.02021796
+PSEUDO.20      0.0660537232 0.14838607  0.002610943 0.05427110 -0.12986214
+PSEUDO.21      0.3966217256 0.11873049  0.231047240 0.09602227  0.19626175
+PSEUDO.22      0.3256654982 0.07160743  0.250745270 0.07827436  0.18100455
+PSEUDO.23      0.2384196776 0.26369687  0.164406449 0.06637874  0.15071205
+PSEUDO.24..R.  0.3241236303 0.03954026  0.226841644 0.04428202  0.25248756
+PSEUDO.25..R.  0.1074630862 0.06220160  0.080496262 0.07177854  0.08558307
+PSEUDO.26      0.4150737509 0.16303703  0.221612618 0.10067148  0.23382258
+PSEUDO.27..R.  0.1965340030 0.05768263  0.044002139 0.04738729  0.04664528
+PSEUDO.28      0.2872866570 0.10505946  0.201917848 0.07291732  0.15865720
+PSEUDO.29      0.3133226063 0.04590433  0.229999887 0.06216661  0.25817347
+PSEUDO.30      0.2871314645 0.18842377  0.090495284 0.08169376  0.08296991
+                  PSEUDO.19    PSEUDO.20  PSEUDO.21  PSEUDO.22  PSEUDO.23
+PSEUDO.1      -0.0076263064  0.091623636 0.33157167 0.35240124 0.24036679
+PSEUDO.2      -0.0375147918  0.067775807 0.27203333 0.27416858 0.16586548
+PSEUDO.3       0.0175668110  0.066790540 0.30154103 0.33672217 0.15647330
+PSEUDO.4..R.   0.0251965418  0.055534082 0.12392074 0.07460444 0.10716742
+PSEUDO.5       0.0044931423 -0.002968973 0.25484077 0.27785281 0.18275859
+PSEUDO.6       0.0125894118  0.094315191 0.40277508 0.34634193 0.27400186
+PSEUDO.7..R.   0.0162871759 -0.010105567 0.24179133 0.25645717 0.14468699
+PSEUDO.8       0.0672023822  0.143645932 0.40088174 0.27734053 0.24027279
+PSEUDO.9       0.0135971818 -0.080228633 0.18549699 0.18532888 0.11387112
+PSEUDO.10      0.0119457589  0.103284629 0.24833813 0.24783471 0.24928333
+PSEUDO.11..R. -0.0134066144  0.026350619 0.15952723 0.07047566 0.16926412
+PSEUDO.12      0.0433456514  0.113929506 0.29276245 0.27407470 0.24564531
+PSEUDO.13     -0.0148148158  0.016446676 0.07347912 0.11809033 0.10187212
+PSEUDO.14     -0.0000820227  0.066053723 0.39662173 0.32566550 0.23841968
+PSEUDO.15      0.0489489691  0.148386075 0.11873049 0.07160743 0.26369687
+PSEUDO.16     -0.0157664512  0.002610943 0.23104724 0.25074527 0.16440645
+PSEUDO.17      0.0502243061  0.054271099 0.09602227 0.07827436 0.06637874
+PSEUDO.18     -0.0202179553 -0.129862136 0.19626175 0.18100455 0.15071205
+PSEUDO.19      1.0000000000 -0.004509632 0.04716425 0.01034916 0.02733140
+PSEUDO.20     -0.0045096315  1.000000000 0.10472612 0.08308694 0.13097803
+PSEUDO.21      0.0471642515  0.104726122 1.00000000 0.29886668 0.24177005
+PSEUDO.22      0.0103491600  0.083086944 0.29886668 1.00000000 0.22524551
+PSEUDO.23      0.0273313957  0.130978032 0.24177005 0.22524551 1.00000000
+PSEUDO.24..R. -0.0393137894  0.043710824 0.24680079 0.23124634 0.08168625
+PSEUDO.25..R. -0.0015112753  0.035461637 0.16587883 0.12225943 0.14820212
+PSEUDO.26      0.0657601406  0.119821294 0.37423555 0.27376952 0.28274536
+PSEUDO.27..R.  0.0435896964  0.113666700 0.12938012 0.06559999 0.03715188
+PSEUDO.28      0.0183197598  0.079853876 0.27419983 0.24581006 0.15275444
+PSEUDO.29     -0.0273471159  0.080975141 0.21792475 0.24721402 0.10098959
+PSEUDO.30      0.0611360181  0.123060547 0.26979688 0.15684192 0.14553765
+              PSEUDO.24..R. PSEUDO.25..R.  PSEUDO.26 PSEUDO.27..R.
+PSEUDO.1         0.35483838   0.194432665 0.43167499    0.16931998
+PSEUDO.2         0.28444566   0.126695331 0.34854460    0.13406812
+PSEUDO.3         0.26990907   0.117286926 0.35845740    0.11264070
+PSEUDO.4..R.     0.14721332   0.070776990 0.16874022    0.16178162
+PSEUDO.5         0.32266219   0.119705283 0.31906927    0.08012381
+PSEUDO.6         0.38496482   0.206300972 0.50984929    0.23083925
+PSEUDO.7..R.     0.39068989   0.206077333 0.33156624    0.21918941
+PSEUDO.8         0.26669306   0.135717677 0.46320597    0.19763127
+PSEUDO.9         0.21010453   0.052435130 0.20066855    0.05258693
+PSEUDO.10        0.24216473   0.159360320 0.41071524    0.15001984
+PSEUDO.11..R.    0.19587859   0.201982215 0.15861763    0.08942450
+PSEUDO.12        0.38831051   0.203664764 0.60660924    0.21158209
+PSEUDO.13        0.11557319  -0.025608792 0.10829334    0.03425462
+PSEUDO.14        0.32412363   0.107463086 0.41507375    0.19653400
+PSEUDO.15        0.03954026   0.062201599 0.16303703    0.05768263
+PSEUDO.16        0.22684164   0.080496262 0.22161262    0.04400214
+PSEUDO.17        0.04428202   0.071778545 0.10067148    0.04738729
+PSEUDO.18        0.25248756   0.085583067 0.23382258    0.04664528
+PSEUDO.19       -0.03931379  -0.001511275 0.06576014    0.04358970
+PSEUDO.20        0.04371082   0.035461637 0.11982129    0.11366670
+PSEUDO.21        0.24680079   0.165878827 0.37423555    0.12938012
+PSEUDO.22        0.23124634   0.122259434 0.27376952    0.06559999
+PSEUDO.23        0.08168625   0.148202116 0.28274536    0.03715188
+PSEUDO.24..R.    1.00000000   0.194517927 0.32278119    0.18469307
+PSEUDO.25..R.    0.19451793   1.000000000 0.18685914    0.14189735
+PSEUDO.26        0.32278119   0.186859145 1.00000000    0.20068075
+PSEUDO.27..R.    0.18469307   0.141897349 0.20068075    1.00000000
+PSEUDO.28        0.23413263   0.144315713 0.27058054    0.15922938
+PSEUDO.29        0.53128012   0.116867272 0.31784033    0.13872639
+PSEUDO.30        0.24795033   0.178813818 0.29277498    0.18315653
+               PSEUDO.28   PSEUDO.29  PSEUDO.30
+PSEUDO.1      0.34025901  0.31593237 0.23446602
+PSEUDO.2      0.28099471  0.27284606 0.19461135
+PSEUDO.3      0.30661835  0.26602009 0.21403426
+PSEUDO.4..R.  0.08348659  0.08763597 0.13780856
+PSEUDO.5      0.26248956  0.33002465 0.13741185
+PSEUDO.6      0.34154440  0.36482057 0.30416062
+PSEUDO.7..R.  0.27101039  0.31105875 0.18851714
+PSEUDO.8      0.22533684  0.23378480 0.30398787
+PSEUDO.9      0.16385045  0.21157672 0.07767335
+PSEUDO.10     0.18840983  0.25937045 0.26413217
+PSEUDO.11..R. 0.14779441  0.06324753 0.22519605
+PSEUDO.12     0.30166007  0.32171676 0.32953333
+PSEUDO.13     0.14681886  0.17851413 0.05255443
+PSEUDO.14     0.28728666  0.31332261 0.28713146
+PSEUDO.15     0.10505946  0.04590433 0.18842377
+PSEUDO.16     0.20191785  0.22999989 0.09049528
+PSEUDO.17     0.07291732  0.06216661 0.08169376
+PSEUDO.18     0.15865720  0.25817347 0.08296991
+PSEUDO.19     0.01831976 -0.02734712 0.06113602
+PSEUDO.20     0.07985388  0.08097514 0.12306055
+PSEUDO.21     0.27419983  0.21792475 0.26979688
+PSEUDO.22     0.24581006  0.24721402 0.15684192
+PSEUDO.23     0.15275444  0.10098959 0.14553765
+PSEUDO.24..R. 0.23413263  0.53128012 0.24795033
+PSEUDO.25..R. 0.14431571  0.11686727 0.17881382
+PSEUDO.26     0.27058054  0.31784033 0.29277498
+PSEUDO.27..R. 0.15922938  0.13872639 0.18315653
+PSEUDO.28     1.00000000  0.22849339 0.18334899
+PSEUDO.29     0.22849339  1.00000000 0.21413601
+PSEUDO.30     0.18334899  0.21413601 1.00000000
 
 $PITS.PSEUDO
                PITS.PSEUDO.1 PITS.PSEUDO.2 PITS.PSEUDO.3 PITS.PSEUDO.4
-PITS.PSEUDO.1      1.0000000     0.6174151     0.5535850     0.5879927
-PITS.PSEUDO.2      0.6174151     1.0000000     0.4822927     0.5634154
-PITS.PSEUDO.3      0.5535850     0.4822927     1.0000000     0.5061239
-PITS.PSEUDO.4      0.5879927     0.5634154     0.5061239     1.0000000
-PITS.PSEUDO.5      0.5775853     0.5949228     0.4676922     0.5393125
-PITS.PSEUDO.6      0.3524991     0.3338378     0.4509021     0.3715138
-PITS.PSEUDO.7      0.4965416     0.4813870     0.5111159     0.4755800
-PITS.PSEUDO.8      0.4470862     0.4071814     0.5203333     0.4600914
-PITS.PSEUDO.9      0.4627491     0.4454073     0.4393022     0.4220258
-PITS.PSEUDO.10     0.3584155     0.3127728     0.4449935     0.4130797
+PITS.PSEUDO.1      1.0000000     0.6106472     0.5545712     0.5839400
+PITS.PSEUDO.2      0.6106472     1.0000000     0.4709487     0.5671582
+PITS.PSEUDO.3      0.5545712     0.4709487     1.0000000     0.4979628
+PITS.PSEUDO.4      0.5839400     0.5671582     0.4979628     1.0000000
+PITS.PSEUDO.5      0.5793820     0.5830891     0.4730381     0.5466532
+PITS.PSEUDO.6      0.3570081     0.3353941     0.4517491     0.3674545
+PITS.PSEUDO.7      0.4950781     0.4643512     0.5167577     0.4714351
+PITS.PSEUDO.8      0.4504398     0.4058354     0.5198192     0.4660790
+PITS.PSEUDO.9      0.4518911     0.4439825     0.4445551     0.4045448
+PITS.PSEUDO.10     0.3627820     0.3273667     0.4470140     0.4119497
                PITS.PSEUDO.5 PITS.PSEUDO.6 PITS.PSEUDO.7 PITS.PSEUDO.8
-PITS.PSEUDO.1      0.5775853     0.3524991     0.4965416     0.4470862
-PITS.PSEUDO.2      0.5949228     0.3338378     0.4813870     0.4071814
-PITS.PSEUDO.3      0.4676922     0.4509021     0.5111159     0.5203333
-PITS.PSEUDO.4      0.5393125     0.3715138     0.4755800     0.4600914
-PITS.PSEUDO.5      1.0000000     0.3360825     0.4206626     0.4055590
-PITS.PSEUDO.6      0.3360825     1.0000000     0.4848472     0.5471801
-PITS.PSEUDO.7      0.4206626     0.4848472     1.0000000     0.5403894
-PITS.PSEUDO.8      0.4055590     0.5471801     0.5403894     1.0000000
-PITS.PSEUDO.9      0.4087089     0.4640462     0.4895015     0.5635993
-PITS.PSEUDO.10     0.3119378     0.5752624     0.4424320     0.5898590
+PITS.PSEUDO.1      0.5793820     0.3570081     0.4950781     0.4504398
+PITS.PSEUDO.2      0.5830891     0.3353941     0.4643512     0.4058354
+PITS.PSEUDO.3      0.4730381     0.4517491     0.5167577     0.5198192
+PITS.PSEUDO.4      0.5466532     0.3674545     0.4714351     0.4660790
+PITS.PSEUDO.5      1.0000000     0.3391865     0.4099160     0.4158916
+PITS.PSEUDO.6      0.3391865     1.0000000     0.4793939     0.5420421
+PITS.PSEUDO.7      0.4099160     0.4793939     1.0000000     0.5342267
+PITS.PSEUDO.8      0.4158916     0.5420421     0.5342267     1.0000000
+PITS.PSEUDO.9      0.4045414     0.4677803     0.4763242     0.5746451
+PITS.PSEUDO.10     0.3292807     0.5738314     0.4527050     0.5940360
                PITS.PSEUDO.9 PITS.PSEUDO.10
-PITS.PSEUDO.1      0.4627491      0.3584155
-PITS.PSEUDO.2      0.4454073      0.3127728
-PITS.PSEUDO.3      0.4393022      0.4449935
-PITS.PSEUDO.4      0.4220258      0.4130797
-PITS.PSEUDO.5      0.4087089      0.3119378
-PITS.PSEUDO.6      0.4640462      0.5752624
-PITS.PSEUDO.7      0.4895015      0.4424320
-PITS.PSEUDO.8      0.5635993      0.5898590
-PITS.PSEUDO.9      1.0000000      0.4624464
-PITS.PSEUDO.10     0.4624464      1.0000000
+PITS.PSEUDO.1      0.4518911      0.3627820
+PITS.PSEUDO.2      0.4439825      0.3273667
+PITS.PSEUDO.3      0.4445551      0.4470140
+PITS.PSEUDO.4      0.4045448      0.4119497
+PITS.PSEUDO.5      0.4045414      0.3292807
+PITS.PSEUDO.6      0.4677803      0.5738314
+PITS.PSEUDO.7      0.4763242      0.4527050
+PITS.PSEUDO.8      0.5746451      0.5940360
+PITS.PSEUDO.9      1.0000000      0.4674083
+PITS.PSEUDO.10     0.4674083      1.0000000
 
 $IAS.PSEUDO
                  IAS.PSEUDO.1..R. IAS.PSEUDO.2 IAS.PSEUDO.3
-IAS.PSEUDO.1..R.        1.0000000    0.3452103    0.1600293
-IAS.PSEUDO.2            0.3452103    1.0000000    0.4274913
-IAS.PSEUDO.3            0.1600293    0.4274913    1.0000000
-IAS.PSEUDO.4..R.        0.3221256    0.2767822    0.2769782
-IAS.PSEUDO.5..R.        0.4393601    0.4581236    0.3058756
-IAS.PSEUDO.6            0.2191066    0.3846296    0.3598935
+IAS.PSEUDO.1..R.        1.0000000    0.3556153    0.1704356
+IAS.PSEUDO.2            0.3556153    1.0000000    0.4321569
+IAS.PSEUDO.3            0.1704356    0.4321569    1.0000000
+IAS.PSEUDO.4..R.        0.3235350    0.2743349    0.2896305
+IAS.PSEUDO.5..R.        0.4492261    0.4672530    0.3209841
+IAS.PSEUDO.6            0.2205235    0.3849756    0.3511805
                  IAS.PSEUDO.4..R. IAS.PSEUDO.5..R. IAS.PSEUDO.6
-IAS.PSEUDO.1..R.        0.3221256        0.4393601    0.2191066
-IAS.PSEUDO.2            0.2767822        0.4581236    0.3846296
-IAS.PSEUDO.3            0.2769782        0.3058756    0.3598935
-IAS.PSEUDO.4..R.        1.0000000        0.4099186    0.2121370
-IAS.PSEUDO.5..R.        0.4099186        1.0000000    0.3824022
-IAS.PSEUDO.6            0.2121370        0.3824022    1.0000000
+IAS.PSEUDO.1..R.        0.3235350        0.4492261    0.2205235
+IAS.PSEUDO.2            0.2743349        0.4672530    0.3849756
+IAS.PSEUDO.3            0.2896305        0.3209841    0.3511805
+IAS.PSEUDO.4..R.        1.0000000        0.3975291    0.2016126
+IAS.PSEUDO.5..R.        0.3975291        1.0000000    0.3915477
+IAS.PSEUDO.6            0.2016126        0.3915477    1.0000000
 
 $GIS.PSEUDO
                   GIS.PSEUDO.1 GIS.PSEUDO.2 GIS.PSEUDO.3..R.
-GIS.PSEUDO.1        1.00000000  0.503877831       0.05042624
-GIS.PSEUDO.2        0.50387783  1.000000000       0.01258164
-GIS.PSEUDO.3..R.    0.05042624  0.012581645       1.00000000
-GIS.PSEUDO.4..R.    0.22444001  0.285407668       0.21676112
-GIS.PSEUDO.5        0.37944385  0.426018415       0.06084176
-GIS.PSEUDO.6..R.    0.14749149  0.176224913       0.08502500
-GIS.PSEUDO.7        0.36306508  0.380092631       0.01609976
-GIS.PSEUDO.8..R.    0.11812171  0.239863634       0.12728145
-GIS.PSEUDO.9        0.45083688  0.489051649       0.09437947
-GIS.PSEUDO.10..R.   0.01417037 -0.004102055       0.17707522
-GIS.PSEUDO.11..R.   0.06243666  0.105852663       0.26117562
-GIS.PSEUDO.12       0.37775613  0.374391554       0.08268291
+GIS.PSEUDO.1        1.00000000  0.501974412       0.06419095
+GIS.PSEUDO.2        0.50197441  1.000000000       0.01990466
+GIS.PSEUDO.3..R.    0.06419095  0.019904660       1.00000000
+GIS.PSEUDO.4..R.    0.22768427  0.292737262       0.20470523
+GIS.PSEUDO.5        0.37743662  0.416058345       0.07036006
+GIS.PSEUDO.6..R.    0.15624035  0.185939859       0.05720359
+GIS.PSEUDO.7        0.36780476  0.380010879       0.01548812
+GIS.PSEUDO.8..R.    0.11762247  0.250966217       0.13388694
+GIS.PSEUDO.9        0.44966807  0.485164055       0.09057378
+GIS.PSEUDO.10..R.   0.01770895  0.008560719       0.16140117
+GIS.PSEUDO.11..R.   0.07170260  0.113520605       0.25031353
+GIS.PSEUDO.12       0.38117801  0.362362554       0.08181136
                   GIS.PSEUDO.4..R. GIS.PSEUDO.5 GIS.PSEUDO.6..R.
-GIS.PSEUDO.1             0.2244400   0.37944385        0.1474915
-GIS.PSEUDO.2             0.2854077   0.42601842        0.1762249
-GIS.PSEUDO.3..R.         0.2167611   0.06084176        0.0850250
-GIS.PSEUDO.4..R.         1.0000000   0.17786477        0.1952473
-GIS.PSEUDO.5             0.1778648   1.00000000        0.1520332
-GIS.PSEUDO.6..R.         0.1952473   0.15203322        1.0000000
-GIS.PSEUDO.7             0.1215434   0.32107642        0.2365041
-GIS.PSEUDO.8..R.         0.2017617   0.30162341        0.2024313
-GIS.PSEUDO.9             0.2675084   0.42177709        0.1922919
-GIS.PSEUDO.10..R.        0.1045483  -0.03493392        0.1187417
-GIS.PSEUDO.11..R.        0.2669213   0.08550569        0.2002953
-GIS.PSEUDO.12            0.1758018   0.38142230        0.1510980
+GIS.PSEUDO.1            0.22768427   0.37743662       0.15624035
+GIS.PSEUDO.2            0.29273726   0.41605835       0.18593986
+GIS.PSEUDO.3..R.        0.20470523   0.07036006       0.05720359
+GIS.PSEUDO.4..R.        1.00000000   0.17067488       0.17981266
+GIS.PSEUDO.5            0.17067488   1.00000000       0.16618229
+GIS.PSEUDO.6..R.        0.17981266   0.16618229       1.00000000
+GIS.PSEUDO.7            0.12721476   0.32056900       0.24552344
+GIS.PSEUDO.8..R.        0.19228709   0.31996982       0.18651410
+GIS.PSEUDO.9            0.26477264   0.41347988       0.19108457
+GIS.PSEUDO.10..R.       0.08642856  -0.02375864       0.09561681
+GIS.PSEUDO.11..R.       0.26838457   0.08822344       0.20227586
+GIS.PSEUDO.12           0.17541131   0.37057644       0.16779505
                   GIS.PSEUDO.7 GIS.PSEUDO.8..R. GIS.PSEUDO.9
-GIS.PSEUDO.1       0.363065077       0.11812171   0.45083688
-GIS.PSEUDO.2       0.380092631       0.23986363   0.48905165
-GIS.PSEUDO.3..R.   0.016099762       0.12728145   0.09437947
-GIS.PSEUDO.4..R.   0.121543441       0.20176168   0.26750841
-GIS.PSEUDO.5       0.321076425       0.30162341   0.42177709
-GIS.PSEUDO.6..R.   0.236504121       0.20243130   0.19229194
-GIS.PSEUDO.7       1.000000000       0.09579436   0.41286078
-GIS.PSEUDO.8..R.   0.095794361       1.00000000   0.14948163
-GIS.PSEUDO.9       0.412860778       0.14948163   1.00000000
-GIS.PSEUDO.10..R. -0.003123537       0.04032698   0.02285820
-GIS.PSEUDO.11..R.  0.113477563       0.12812969   0.22086326
-GIS.PSEUDO.12      0.403539814       0.05545046   0.54563222
+GIS.PSEUDO.1      0.3678047553       0.11762247   0.44966807
+GIS.PSEUDO.2      0.3800108789       0.25096622   0.48516405
+GIS.PSEUDO.3..R.  0.0154881192       0.13388694   0.09057378
+GIS.PSEUDO.4..R.  0.1272147623       0.19228709   0.26477264
+GIS.PSEUDO.5      0.3205690044       0.31996982   0.41347988
+GIS.PSEUDO.6..R.  0.2455234421       0.18651410   0.19108457
+GIS.PSEUDO.7      1.0000000000       0.09214599   0.41795792
+GIS.PSEUDO.8..R.  0.0921459870       1.00000000   0.14934084
+GIS.PSEUDO.9      0.4179579155       0.14934084   1.00000000
+GIS.PSEUDO.10..R. 0.0009949863       0.03964758   0.01727021
+GIS.PSEUDO.11..R. 0.1242705005       0.13124001   0.21059137
+GIS.PSEUDO.12     0.4053617239       0.05816998   0.54278874
                   GIS.PSEUDO.10..R. GIS.PSEUDO.11..R. GIS.PSEUDO.12
-GIS.PSEUDO.1            0.014170367        0.06243666    0.37775613
-GIS.PSEUDO.2           -0.004102055        0.10585266    0.37439155
-GIS.PSEUDO.3..R.        0.177075221        0.26117562    0.08268291
-GIS.PSEUDO.4..R.        0.104548303        0.26692128    0.17580184
-GIS.PSEUDO.5           -0.034933921        0.08550569    0.38142230
-GIS.PSEUDO.6..R.        0.118741655        0.20029533    0.15109799
-GIS.PSEUDO.7           -0.003123537        0.11347756    0.40353981
-GIS.PSEUDO.8..R.        0.040326981        0.12812969    0.05545046
-GIS.PSEUDO.9            0.022858202        0.22086326    0.54563222
-GIS.PSEUDO.10..R.       1.000000000        0.21758357   -0.05218283
-GIS.PSEUDO.11..R.       0.217583573        1.00000000    0.17166854
-GIS.PSEUDO.12          -0.052182830        0.17166854    1.00000000
+GIS.PSEUDO.1           0.0177089451        0.07170260    0.38117801
+GIS.PSEUDO.2           0.0085607189        0.11352060    0.36236255
+GIS.PSEUDO.3..R.       0.1614011663        0.25031353    0.08181136
+GIS.PSEUDO.4..R.       0.0864285578        0.26838457    0.17541131
+GIS.PSEUDO.5          -0.0237586445        0.08822344    0.37057644
+GIS.PSEUDO.6..R.       0.0956168122        0.20227586    0.16779505
+GIS.PSEUDO.7           0.0009949863        0.12427050    0.40536172
+GIS.PSEUDO.8..R.       0.0396475763        0.13124001    0.05816998
+GIS.PSEUDO.9           0.0172702091        0.21059137    0.54278874
+GIS.PSEUDO.10..R.      1.0000000000        0.21453288   -0.04561574
+GIS.PSEUDO.11..R.      0.2145328798        1.00000000    0.17342313
+GIS.PSEUDO.12         -0.0456157413        0.17342313    1.00000000
 
 $SDQ.PSEUDO
                  SDQ.PSEUDO.1..R. SDQ.PSEUDO.2 SDQ.PSEUDO.3
-SDQ.PSEUDO.1..R.        1.0000000    0.4591137    0.4058703
-SDQ.PSEUDO.2            0.4591137    1.0000000    0.5554988
-SDQ.PSEUDO.3            0.4058703    0.5554988    1.0000000
-SDQ.PSEUDO.4..R.        0.2080008    0.1383503    0.2124547
-SDQ.PSEUDO.5            0.4237093    0.3766406    0.3906511
-SDQ.PSEUDO.6..R.        0.3591168    0.4956695    0.4350018
-SDQ.PSEUDO.7            0.4434031    0.5364502    0.5099773
-SDQ.PSEUDO.8            0.2987360    0.2219741    0.2482109
-SDQ.PSEUDO.9            0.4316398    0.4382771    0.3692921
+SDQ.PSEUDO.1..R.        1.0000000    0.4769621    0.4130142
+SDQ.PSEUDO.2            0.4769621    1.0000000    0.5537807
+SDQ.PSEUDO.3            0.4130142    0.5537807    1.0000000
+SDQ.PSEUDO.4..R.        0.2245059    0.1447048    0.2152976
+SDQ.PSEUDO.5            0.4338134    0.3769268    0.3824236
+SDQ.PSEUDO.6..R.        0.3648373    0.4920615    0.4362944
+SDQ.PSEUDO.7            0.4560562    0.5383745    0.5053390
+SDQ.PSEUDO.8            0.3162280    0.2419474    0.2683539
+SDQ.PSEUDO.9            0.4620096    0.4358155    0.3669535
                  SDQ.PSEUDO.4..R. SDQ.PSEUDO.5 SDQ.PSEUDO.6..R.
-SDQ.PSEUDO.1..R.       0.20800082    0.4237093        0.3591168
-SDQ.PSEUDO.2           0.13835033    0.3766406        0.4956695
-SDQ.PSEUDO.3           0.21245466    0.3906511        0.4350018
-SDQ.PSEUDO.4..R.       1.00000000    0.1482575        0.1656520
-SDQ.PSEUDO.5           0.14825748    1.0000000        0.2831020
-SDQ.PSEUDO.6..R.       0.16565197    0.2831020        1.0000000
-SDQ.PSEUDO.7           0.24345786    0.4007451        0.5577713
-SDQ.PSEUDO.8           0.09389539    0.3914259        0.1325337
-SDQ.PSEUDO.9           0.16561559    0.5742989        0.3886578
+SDQ.PSEUDO.1..R.        0.2245059    0.4338134        0.3648373
+SDQ.PSEUDO.2            0.1447048    0.3769268        0.4920615
+SDQ.PSEUDO.3            0.2152976    0.3824236        0.4362944
+SDQ.PSEUDO.4..R.        1.0000000    0.1483115        0.1708793
+SDQ.PSEUDO.5            0.1483115    1.0000000        0.2972012
+SDQ.PSEUDO.6..R.        0.1708793    0.2972012        1.0000000
+SDQ.PSEUDO.7            0.2534184    0.3916677        0.5676131
+SDQ.PSEUDO.8            0.1055245    0.4060336        0.1687528
+SDQ.PSEUDO.9            0.1732847    0.5671863        0.3997715
                  SDQ.PSEUDO.7 SDQ.PSEUDO.8 SDQ.PSEUDO.9
-SDQ.PSEUDO.1..R.    0.4434031   0.29873596    0.4316398
-SDQ.PSEUDO.2        0.5364502   0.22197412    0.4382771
-SDQ.PSEUDO.3        0.5099773   0.24821091    0.3692921
-SDQ.PSEUDO.4..R.    0.2434579   0.09389539    0.1656156
-SDQ.PSEUDO.5        0.4007451   0.39142591    0.5742989
-SDQ.PSEUDO.6..R.    0.5577713   0.13253369    0.3886578
-SDQ.PSEUDO.7        1.0000000   0.26858410    0.4614100
-SDQ.PSEUDO.8        0.2685841   1.00000000    0.3641012
-SDQ.PSEUDO.9        0.4614100   0.36410121    1.0000000</code></pre>
+SDQ.PSEUDO.1..R.    0.4560562    0.3162280    0.4620096
+SDQ.PSEUDO.2        0.5383745    0.2419474    0.4358155
+SDQ.PSEUDO.3        0.5053390    0.2683539    0.3669535
+SDQ.PSEUDO.4..R.    0.2534184    0.1055245    0.1732847
+SDQ.PSEUDO.5        0.3916677    0.4060336    0.5671863
+SDQ.PSEUDO.6..R.    0.5676131    0.1687528    0.3997715
+SDQ.PSEUDO.7        1.0000000    0.2869714    0.4556818
+SDQ.PSEUDO.8        0.2869714    1.0000000    0.3812077
+SDQ.PSEUDO.9        0.4556818    0.3812077    1.0000000</code></pre>
+<pre class="r"><code># look at reliabilities
+sapply(itemclusters,FUN=function(cluster) {
+  angelo2r %&gt;% select(starts_with(cluster)) %&gt;% psych::alpha(.) %&gt;% print
+})</code></pre>
+<pre><code>
+Reliability analysis   
+Call: psych::alpha(x = .)
+
+  raw_alpha std.alpha G6(smc) average_r S/N    ase mean   sd median_r
+      0.87      0.87    0.89      0.19   7 0.0054  1.8 0.48     0.18
+
+ lower alpha upper     95% confidence boundaries
+0.86 0.87 0.88 
+
+ Reliability if an item is dropped:
+              raw_alpha std.alpha G6(smc) average_r S/N alpha se var.r
+PSEUDO.1           0.86      0.87    0.88      0.18 6.5   0.0058 0.015
+PSEUDO.2           0.86      0.87    0.88      0.18 6.6   0.0057 0.016
+PSEUDO.3           0.86      0.87    0.88      0.19 6.6   0.0057 0.016
+PSEUDO.4..R.       0.87      0.88    0.89      0.19 7.0   0.0053 0.016
+PSEUDO.5           0.86      0.87    0.88      0.19 6.6   0.0056 0.016
+PSEUDO.6           0.86      0.86    0.88      0.18 6.4   0.0058 0.014
+PSEUDO.7..R.       0.86      0.87    0.88      0.19 6.6   0.0057 0.016
+PSEUDO.8           0.86      0.87    0.88      0.18 6.5   0.0056 0.016
+PSEUDO.9           0.87      0.87    0.89      0.19 6.9   0.0055 0.016
+PSEUDO.10          0.86      0.87    0.88      0.19 6.6   0.0056 0.016
+PSEUDO.11..R.      0.87      0.87    0.89      0.19 7.0   0.0054 0.016
+PSEUDO.12          0.86      0.87    0.88      0.18 6.4   0.0058 0.015
+PSEUDO.13          0.87      0.87    0.89      0.19 7.0   0.0054 0.016
+PSEUDO.14          0.86      0.87    0.88      0.18 6.5   0.0057 0.015
+PSEUDO.15          0.87      0.88    0.89      0.20 7.0   0.0054 0.016
+PSEUDO.16          0.87      0.87    0.88      0.19 6.7   0.0056 0.016
+PSEUDO.17          0.87      0.88    0.89      0.20 7.1   0.0053 0.016
+PSEUDO.18          0.87      0.87    0.88      0.19 6.7   0.0055 0.016
+PSEUDO.19          0.87      0.88    0.89      0.20 7.3   0.0053 0.014
+PSEUDO.20          0.87      0.88    0.89      0.20 7.2   0.0052 0.015
+PSEUDO.21          0.87      0.87    0.88      0.19 6.6   0.0056 0.016
+PSEUDO.22          0.87      0.87    0.88      0.19 6.7   0.0056 0.016
+PSEUDO.23          0.87      0.87    0.88      0.19 6.8   0.0055 0.016
+PSEUDO.24..R.      0.86      0.87    0.88      0.19 6.6   0.0057 0.016
+PSEUDO.25..R.      0.87      0.87    0.89      0.19 6.9   0.0054 0.016
+PSEUDO.26          0.86      0.87    0.88      0.18 6.4   0.0057 0.015
+PSEUDO.27..R.      0.87      0.87    0.89      0.19 6.9   0.0053 0.016
+PSEUDO.28          0.87      0.87    0.88      0.19 6.7   0.0056 0.016
+PSEUDO.29          0.86      0.87    0.88      0.19 6.7   0.0056 0.016
+PSEUDO.30          0.87      0.87    0.88      0.19 6.7   0.0055 0.016
+              med.r
+PSEUDO.1       0.17
+PSEUDO.2       0.17
+PSEUDO.3       0.17
+PSEUDO.4..R.   0.19
+PSEUDO.5       0.17
+PSEUDO.6       0.17
+PSEUDO.7..R.   0.17
+PSEUDO.8       0.17
+PSEUDO.9       0.18
+PSEUDO.10      0.17
+PSEUDO.11..R.  0.19
+PSEUDO.12      0.17
+PSEUDO.13      0.19
+PSEUDO.14      0.17
+PSEUDO.15      0.19
+PSEUDO.16      0.17
+PSEUDO.17      0.19
+PSEUDO.18      0.18
+PSEUDO.19      0.19
+PSEUDO.20      0.19
+PSEUDO.21      0.17
+PSEUDO.22      0.17
+PSEUDO.23      0.18
+PSEUDO.24..R.  0.17
+PSEUDO.25..R.  0.19
+PSEUDO.26      0.17
+PSEUDO.27..R.  0.19
+PSEUDO.28      0.18
+PSEUDO.29      0.17
+PSEUDO.30      0.18
+
+ Item statistics 
+                 n raw.r std.r r.cor r.drop mean   sd
+PSEUDO.1      1120  0.67  0.66 0.659  0.620  1.9 1.24
+PSEUDO.2      1120  0.59  0.57 0.559  0.527  2.2 1.19
+PSEUDO.3      1120  0.56  0.56 0.538  0.505  2.0 1.12
+PSEUDO.4..R.  1120  0.32  0.30 0.244  0.225  1.7 1.41
+PSEUDO.5      1120  0.56  0.55 0.532  0.502  2.0 1.09
+PSEUDO.6      1120  0.72  0.73 0.735  0.690  1.6 0.99
+PSEUDO.7..R.  1120  0.56  0.55 0.533  0.502  2.1 1.22
+PSEUDO.8      1120  0.57  0.59 0.585  0.536  1.2 0.72
+PSEUDO.9      1120  0.39  0.38 0.344  0.323  2.0 1.02
+PSEUDO.10     1120  0.56  0.56 0.544  0.500  1.6 1.13
+PSEUDO.11..R. 1120  0.27  0.30 0.255  0.227  1.3 0.73
+PSEUDO.12     1120  0.68  0.69 0.692  0.643  1.5 0.92
+PSEUDO.13     1120  0.32  0.30 0.260  0.249  3.6 1.11
+PSEUDO.14     1120  0.64  0.64 0.629  0.589  1.8 1.08
+PSEUDO.15     1120  0.25  0.27 0.223  0.193  1.4 0.84
+PSEUDO.16     1120  0.48  0.47 0.449  0.425  2.5 1.06
+PSEUDO.17     1120  0.22  0.21 0.154  0.140  1.5 1.12
+PSEUDO.18     1120  0.48  0.46 0.440  0.412  2.2 1.15
+PSEUDO.19     1120  0.08  0.10 0.033  0.023  1.3 0.82
+PSEUDO.20     1120  0.20  0.20 0.141  0.119  2.1 1.17
+PSEUDO.21     1120  0.53  0.55 0.534  0.490  1.5 0.79
+PSEUDO.22     1120  0.50  0.50 0.473  0.444  1.9 1.01
+PSEUDO.23     1120  0.40  0.42 0.386  0.346  1.5 0.94
+PSEUDO.24..R. 1120  0.57  0.56 0.544  0.511  2.3 1.18
+PSEUDO.25..R. 1120  0.32  0.33 0.284  0.260  1.5 0.88
+PSEUDO.26     1120  0.65  0.66 0.666  0.614  1.4 0.87
+PSEUDO.27..R. 1120  0.35  0.33 0.287  0.265  1.7 1.32
+PSEUDO.28     1120  0.49  0.49 0.465  0.437  2.0 1.06
+PSEUDO.29     1120  0.55  0.52 0.507  0.477  2.8 1.33
+PSEUDO.30     1120  0.43  0.46 0.433  0.395  1.1 0.56
+
+Non missing response frequency for each item
+                 1    2    3    4    5 miss
+PSEUDO.1      0.54 0.17 0.13 0.10 0.05    0
+PSEUDO.2      0.40 0.16 0.28 0.12 0.03    0
+PSEUDO.3      0.46 0.18 0.26 0.07 0.03    0
+PSEUDO.4..R.  0.73 0.09 0.02 0.03 0.13    0
+PSEUDO.5      0.47 0.22 0.21 0.08 0.02    0
+PSEUDO.6      0.66 0.17 0.11 0.04 0.02    0
+PSEUDO.7..R.  0.47 0.19 0.19 0.10 0.05    0
+PSEUDO.8      0.86 0.08 0.03 0.01 0.02    0
+PSEUDO.9      0.37 0.36 0.17 0.10 0.01    0
+PSEUDO.10     0.74 0.10 0.04 0.07 0.04    0
+PSEUDO.11..R. 0.77 0.18 0.03 0.01 0.02    0
+PSEUDO.12     0.73 0.14 0.07 0.04 0.02    0
+PSEUDO.13     0.08 0.06 0.26 0.39 0.22    0
+PSEUDO.14     0.57 0.21 0.12 0.07 0.03    0
+PSEUDO.15     0.77 0.15 0.03 0.02 0.02    0
+PSEUDO.16     0.24 0.15 0.47 0.11 0.03    0
+PSEUDO.17     0.81 0.08 0.01 0.03 0.06    0
+PSEUDO.18     0.35 0.27 0.24 0.11 0.04    0
+PSEUDO.19     0.86 0.09 0.01 0.01 0.03    0
+PSEUDO.20     0.39 0.29 0.16 0.11 0.04    0
+PSEUDO.21     0.69 0.18 0.10 0.02 0.01    0
+PSEUDO.22     0.47 0.19 0.30 0.03 0.01    0
+PSEUDO.23     0.71 0.16 0.07 0.05 0.02    0
+PSEUDO.24..R. 0.30 0.34 0.20 0.10 0.06    0
+PSEUDO.25..R. 0.71 0.19 0.07 0.01 0.02    0
+PSEUDO.26     0.76 0.12 0.07 0.03 0.02    0
+PSEUDO.27..R. 0.76 0.08 0.03 0.03 0.11    0
+PSEUDO.28     0.45 0.25 0.21 0.06 0.02    0
+PSEUDO.29     0.19 0.29 0.17 0.21 0.13    0
+PSEUDO.30     0.92 0.05 0.01 0.01 0.01    0
+
+Reliability analysis   
+Call: psych::alpha(x = .)
+
+  raw_alpha std.alpha G6(smc) average_r S/N    ase mean   sd median_r
+       0.9       0.9     0.9      0.47 8.8 0.0046  3.9 0.77     0.47
+
+ lower alpha upper     95% confidence boundaries
+0.89 0.9 0.91 
+
+ Reliability if an item is dropped:
+               raw_alpha std.alpha G6(smc) average_r S/N alpha se  var.r
+PITS.PSEUDO.1       0.88      0.89    0.88      0.46 7.8   0.0052 0.0054
+PITS.PSEUDO.2       0.89      0.89    0.89      0.47 8.0   0.0051 0.0052
+PITS.PSEUDO.3       0.88      0.89    0.89      0.47 7.8   0.0052 0.0072
+PITS.PSEUDO.4       0.89      0.89    0.89      0.47 7.9   0.0051 0.0063
+PITS.PSEUDO.5       0.89      0.89    0.89      0.47 8.1   0.0050 0.0054
+PITS.PSEUDO.6       0.89      0.89    0.89      0.48 8.2   0.0050 0.0055
+PITS.PSEUDO.7       0.89      0.89    0.89      0.47 7.9   0.0052 0.0074
+PITS.PSEUDO.8       0.88      0.89    0.88      0.46 7.7   0.0053 0.0063
+PITS.PSEUDO.9       0.89      0.89    0.89      0.47 8.0   0.0051 0.0071
+PITS.PSEUDO.10      0.89      0.89    0.89      0.48 8.2   0.0050 0.0053
+               med.r
+PITS.PSEUDO.1   0.47
+PITS.PSEUDO.2   0.47
+PITS.PSEUDO.3   0.47
+PITS.PSEUDO.4   0.47
+PITS.PSEUDO.5   0.47
+PITS.PSEUDO.6   0.47
+PITS.PSEUDO.7   0.46
+PITS.PSEUDO.8   0.47
+PITS.PSEUDO.9   0.47
+PITS.PSEUDO.10  0.47
+
+ Item statistics 
+                  n raw.r std.r r.cor r.drop mean   sd
+PITS.PSEUDO.1  1120  0.74  0.75  0.73   0.67  4.1 0.99
+PITS.PSEUDO.2  1120  0.70  0.72  0.69   0.63  4.4 0.96
+PITS.PSEUDO.3  1120  0.74  0.74  0.71   0.67  3.9 1.04
+PITS.PSEUDO.4  1120  0.73  0.74  0.70   0.65  4.1 1.05
+PITS.PSEUDO.5  1120  0.69  0.70  0.66   0.61  4.2 1.01
+PITS.PSEUDO.6  1120  0.70  0.68  0.63   0.60  3.2 1.21
+PITS.PSEUDO.7  1120  0.73  0.73  0.69   0.66  4.0 1.05
+PITS.PSEUDO.8  1120  0.77  0.76  0.74   0.70  3.5 1.11
+PITS.PSEUDO.9  1120  0.71  0.71  0.67   0.63  3.9 1.06
+PITS.PSEUDO.10 1120  0.71  0.69  0.65   0.61  3.2 1.24
+
+Non missing response frequency for each item
+                  1    2    3    4    5 miss
+PITS.PSEUDO.1  0.03 0.04 0.12 0.36 0.44    0
+PITS.PSEUDO.2  0.03 0.03 0.05 0.30 0.58    0
+PITS.PSEUDO.3  0.03 0.07 0.16 0.40 0.33    0
+PITS.PSEUDO.4  0.04 0.05 0.11 0.35 0.45    0
+PITS.PSEUDO.5  0.03 0.05 0.09 0.33 0.50    0
+PITS.PSEUDO.6  0.09 0.21 0.27 0.25 0.18    0
+PITS.PSEUDO.7  0.03 0.08 0.13 0.38 0.38    0
+PITS.PSEUDO.8  0.05 0.14 0.27 0.34 0.21    0
+PITS.PSEUDO.9  0.03 0.08 0.17 0.39 0.32    0
+PITS.PSEUDO.10 0.09 0.24 0.27 0.22 0.19    0
+
+Reliability analysis   
+Call: psych::alpha(x = .)
+
+  raw_alpha std.alpha G6(smc) average_r S/N   ase mean   sd median_r
+      0.75      0.75    0.73      0.34   3 0.012  2.6 0.63     0.35
+
+ lower alpha upper     95% confidence boundaries
+0.73 0.75 0.77 
+
+ Reliability if an item is dropped:
+                 raw_alpha std.alpha G6(smc) average_r S/N alpha se  var.r
+IAS.PSEUDO.1..R.      0.73      0.73    0.70      0.35 2.7    0.013 0.0064
+IAS.PSEUDO.2          0.69      0.69    0.66      0.31 2.3    0.015 0.0084
+IAS.PSEUDO.3          0.72      0.73    0.69      0.35 2.7    0.013 0.0082
+IAS.PSEUDO.4..R.      0.73      0.73    0.70      0.35 2.7    0.013 0.0092
+IAS.PSEUDO.5..R.      0.68      0.68    0.65      0.30 2.1    0.015 0.0072
+IAS.PSEUDO.6          0.73      0.73    0.70      0.35 2.7    0.013 0.0084
+                 med.r
+IAS.PSEUDO.1..R.  0.37
+IAS.PSEUDO.2      0.32
+IAS.PSEUDO.3      0.37
+IAS.PSEUDO.4..R.  0.37
+IAS.PSEUDO.5..R.  0.31
+IAS.PSEUDO.6      0.34
+
+ Item statistics 
+                    n raw.r std.r r.cor r.drop mean   sd
+IAS.PSEUDO.1..R. 1120  0.62  0.63  0.52   0.44  3.2 0.91
+IAS.PSEUDO.2     1120  0.73  0.73  0.66   0.57  2.5 0.97
+IAS.PSEUDO.3     1120  0.64  0.64  0.53   0.45  2.0 0.92
+IAS.PSEUDO.4..R. 1120  0.64  0.62  0.50   0.43  2.4 1.05
+IAS.PSEUDO.5..R. 1120  0.75  0.76  0.70   0.61  2.9 0.93
+IAS.PSEUDO.6     1120  0.63  0.64  0.52   0.45  2.4 0.91
+
+Non missing response frequency for each item
+                    1    2    3    4 miss
+IAS.PSEUDO.1..R. 0.04 0.20 0.26 0.50    0
+IAS.PSEUDO.2     0.17 0.31 0.34 0.18    0
+IAS.PSEUDO.3     0.36 0.34 0.24 0.06    0
+IAS.PSEUDO.4..R. 0.22 0.36 0.21 0.21    0
+IAS.PSEUDO.5..R. 0.06 0.29 0.31 0.33    0
+IAS.PSEUDO.6     0.19 0.35 0.35 0.11    0
+
+Reliability analysis   
+Call: psych::alpha(x = .)
+
+  raw_alpha std.alpha G6(smc) average_r S/N   ase mean   sd median_r
+      0.74      0.75    0.77       0.2   3 0.011  4.1 0.69     0.17
+
+ lower alpha upper     95% confidence boundaries
+0.72 0.74 0.77 
+
+ Reliability if an item is dropped:
+                  raw_alpha std.alpha G6(smc) average_r S/N alpha se var.r
+GIS.PSEUDO.1           0.71      0.72    0.73      0.19 2.5    0.013 0.018
+GIS.PSEUDO.2           0.71      0.71    0.73      0.18 2.5    0.013 0.017
+GIS.PSEUDO.3..R.       0.75      0.75    0.77      0.22 3.0    0.011 0.021
+GIS.PSEUDO.4..R.       0.73      0.73    0.75      0.20 2.7    0.012 0.024
+GIS.PSEUDO.5           0.71      0.72    0.74      0.19 2.6    0.013 0.020
+GIS.PSEUDO.6..R.       0.73      0.74    0.76      0.20 2.8    0.012 0.024
+GIS.PSEUDO.7           0.72      0.72    0.74      0.19 2.6    0.012 0.020
+GIS.PSEUDO.8..R.       0.74      0.74    0.76      0.21 2.9    0.012 0.023
+GIS.PSEUDO.9           0.70      0.71    0.72      0.18 2.4    0.013 0.017
+GIS.PSEUDO.10..R.      0.76      0.76    0.78      0.23 3.2    0.011 0.018
+GIS.PSEUDO.11..R.      0.73      0.74    0.75      0.20 2.8    0.012 0.024
+GIS.PSEUDO.12          0.72      0.72    0.73      0.19 2.6    0.012 0.018
+                  med.r
+GIS.PSEUDO.1       0.17
+GIS.PSEUDO.2       0.17
+GIS.PSEUDO.3..R.   0.19
+GIS.PSEUDO.4..R.   0.17
+GIS.PSEUDO.5       0.17
+GIS.PSEUDO.6..R.   0.17
+GIS.PSEUDO.7       0.17
+GIS.PSEUDO.8..R.   0.18
+GIS.PSEUDO.9       0.17
+GIS.PSEUDO.10..R.  0.19
+GIS.PSEUDO.11..R.  0.18
+GIS.PSEUDO.12      0.17
+
+ Item statistics 
+                     n raw.r std.r r.cor r.drop mean  sd
+GIS.PSEUDO.1      1120  0.59  0.60  0.57  0.482  3.9 1.2
+GIS.PSEUDO.2      1120  0.65  0.65  0.63  0.539  3.7 1.3
+GIS.PSEUDO.3..R.  1120  0.34  0.35  0.23  0.196  4.5 1.3
+GIS.PSEUDO.4..R.  1120  0.52  0.52  0.44  0.381  4.2 1.4
+GIS.PSEUDO.5      1120  0.60  0.60  0.56  0.475  3.3 1.4
+GIS.PSEUDO.6..R.  1120  0.48  0.46  0.36  0.321  4.1 1.5
+GIS.PSEUDO.7      1120  0.57  0.57  0.52  0.435  4.0 1.5
+GIS.PSEUDO.8..R.  1120  0.45  0.43  0.34  0.293  3.2 1.5
+GIS.PSEUDO.9      1120  0.67  0.69  0.68  0.578  4.3 1.2
+GIS.PSEUDO.10..R. 1120  0.25  0.25  0.12  0.097  4.8 1.3
+GIS.PSEUDO.11..R. 1120  0.46  0.46  0.38  0.319  4.8 1.4
+GIS.PSEUDO.12     1120  0.58  0.60  0.56  0.470  4.6 1.2
+
+Non missing response frequency for each item
+                     1    2    3    4    5    6 miss
+GIS.PSEUDO.1      0.04 0.10 0.17 0.36 0.25 0.08    0
+GIS.PSEUDO.2      0.07 0.15 0.18 0.32 0.20 0.07    0
+GIS.PSEUDO.3..R.  0.02 0.05 0.12 0.21 0.34 0.25    0
+GIS.PSEUDO.4..R.  0.04 0.10 0.16 0.20 0.32 0.18    0
+GIS.PSEUDO.5      0.13 0.18 0.19 0.25 0.20 0.05    0
+GIS.PSEUDO.6..R.  0.06 0.12 0.15 0.18 0.30 0.19    0
+GIS.PSEUDO.7      0.08 0.13 0.12 0.25 0.28 0.14    0
+GIS.PSEUDO.8..R.  0.13 0.24 0.21 0.19 0.16 0.07    0
+GIS.PSEUDO.9      0.03 0.05 0.12 0.30 0.34 0.15    0
+GIS.PSEUDO.10..R. 0.02 0.06 0.10 0.13 0.30 0.40    0
+GIS.PSEUDO.11..R. 0.03 0.06 0.08 0.14 0.27 0.42    0
+GIS.PSEUDO.12     0.03 0.04 0.05 0.25 0.40 0.23    0
+
+Reliability analysis   
+Call: psych::alpha(x = .)
+
+  raw_alpha std.alpha G6(smc) average_r S/N    ase mean   sd median_r
+      0.82      0.83    0.84      0.36   5 0.0084  5.5 0.84     0.38
+
+ lower alpha upper     95% confidence boundaries
+0.8 0.82 0.83 
+
+ Reliability if an item is dropped:
+                 raw_alpha std.alpha G6(smc) average_r S/N alpha se  var.r
+SDQ.PSEUDO.1..R.      0.79      0.81    0.81      0.35 4.3   0.0096 0.0201
+SDQ.PSEUDO.2          0.79      0.81    0.80      0.34 4.2   0.0098 0.0161
+SDQ.PSEUDO.3          0.79      0.81    0.81      0.35 4.3   0.0098 0.0188
+SDQ.PSEUDO.4..R.      0.84      0.85    0.84      0.41 5.5   0.0075 0.0099
+SDQ.PSEUDO.5          0.79      0.81    0.81      0.35 4.4   0.0096 0.0188
+SDQ.PSEUDO.6..R.      0.80      0.82    0.81      0.36 4.4   0.0094 0.0172
+SDQ.PSEUDO.7          0.78      0.80    0.80      0.34 4.1   0.0100 0.0171
+SDQ.PSEUDO.8          0.82      0.83    0.83      0.38 5.0   0.0084 0.0171
+SDQ.PSEUDO.9          0.78      0.81    0.81      0.34 4.2   0.0099 0.0184
+                 med.r
+SDQ.PSEUDO.1..R.  0.38
+SDQ.PSEUDO.2      0.37
+SDQ.PSEUDO.3      0.38
+SDQ.PSEUDO.4..R.  0.41
+SDQ.PSEUDO.5      0.37
+SDQ.PSEUDO.6..R.  0.38
+SDQ.PSEUDO.7      0.37
+SDQ.PSEUDO.8      0.41
+SDQ.PSEUDO.9      0.37
+
+ Item statistics 
+                    n raw.r std.r r.cor r.drop mean  sd
+SDQ.PSEUDO.1..R. 1120  0.68  0.70  0.65   0.60  6.0 1.1
+SDQ.PSEUDO.2     1120  0.70  0.72  0.69   0.61  5.5 1.2
+SDQ.PSEUDO.3     1120  0.70  0.70  0.66   0.59  5.5 1.4
+SDQ.PSEUDO.4..R. 1120  0.45  0.41  0.28   0.25  5.0 1.6
+SDQ.PSEUDO.5     1120  0.68  0.68  0.63   0.57  6.1 1.2
+SDQ.PSEUDO.6..R. 1120  0.64  0.66  0.61   0.53  5.0 1.2
+SDQ.PSEUDO.7     1120  0.74  0.76  0.73   0.66  5.5 1.2
+SDQ.PSEUDO.8     1120  0.58  0.54  0.44   0.40  5.5 1.7
+SDQ.PSEUDO.9     1120  0.71  0.72  0.68   0.61  5.7 1.3
+
+Non missing response frequency for each item
+                    1    2    3    4    5    6    7 miss
+SDQ.PSEUDO.1..R. 0.00 0.01 0.01 0.06 0.15 0.35 0.41    0
+SDQ.PSEUDO.2     0.00 0.01 0.03 0.16 0.26 0.30 0.24    0
+SDQ.PSEUDO.3     0.01 0.03 0.03 0.12 0.23 0.30 0.27    0
+SDQ.PSEUDO.4..R. 0.03 0.05 0.06 0.29 0.12 0.21 0.23    0
+SDQ.PSEUDO.5     0.01 0.02 0.02 0.06 0.10 0.28 0.51    0
+SDQ.PSEUDO.6..R. 0.00 0.02 0.05 0.31 0.30 0.19 0.13    0
+SDQ.PSEUDO.7     0.01 0.02 0.03 0.12 0.31 0.32 0.20    0
+SDQ.PSEUDO.8     0.03 0.06 0.05 0.10 0.13 0.26 0.37    0
+SDQ.PSEUDO.9     0.01 0.01 0.02 0.17 0.16 0.27 0.36    0</code></pre>
+<pre><code>$PSEUDO
+                 1    2    3    4    5 miss
+PSEUDO.1      0.54 0.17 0.13 0.10 0.05    0
+PSEUDO.2      0.40 0.16 0.28 0.12 0.03    0
+PSEUDO.3      0.46 0.18 0.26 0.07 0.03    0
+PSEUDO.4..R.  0.73 0.09 0.02 0.03 0.13    0
+PSEUDO.5      0.47 0.22 0.21 0.08 0.02    0
+PSEUDO.6      0.66 0.17 0.11 0.04 0.02    0
+PSEUDO.7..R.  0.47 0.19 0.19 0.10 0.05    0
+PSEUDO.8      0.86 0.08 0.03 0.01 0.02    0
+PSEUDO.9      0.37 0.36 0.17 0.10 0.01    0
+PSEUDO.10     0.74 0.10 0.04 0.07 0.04    0
+PSEUDO.11..R. 0.77 0.18 0.03 0.01 0.02    0
+PSEUDO.12     0.73 0.14 0.07 0.04 0.02    0
+PSEUDO.13     0.08 0.06 0.26 0.39 0.22    0
+PSEUDO.14     0.57 0.21 0.12 0.07 0.03    0
+PSEUDO.15     0.77 0.15 0.03 0.02 0.02    0
+PSEUDO.16     0.24 0.15 0.47 0.11 0.03    0
+PSEUDO.17     0.81 0.08 0.01 0.03 0.06    0
+PSEUDO.18     0.35 0.27 0.24 0.11 0.04    0
+PSEUDO.19     0.86 0.09 0.01 0.01 0.03    0
+PSEUDO.20     0.39 0.29 0.16 0.11 0.04    0
+PSEUDO.21     0.69 0.18 0.10 0.02 0.01    0
+PSEUDO.22     0.47 0.19 0.30 0.03 0.01    0
+PSEUDO.23     0.71 0.16 0.07 0.05 0.02    0
+PSEUDO.24..R. 0.30 0.34 0.20 0.10 0.06    0
+PSEUDO.25..R. 0.71 0.19 0.07 0.01 0.02    0
+PSEUDO.26     0.76 0.12 0.07 0.03 0.02    0
+PSEUDO.27..R. 0.76 0.08 0.03 0.03 0.11    0
+PSEUDO.28     0.45 0.25 0.21 0.06 0.02    0
+PSEUDO.29     0.19 0.29 0.17 0.21 0.13    0
+PSEUDO.30     0.92 0.05 0.01 0.01 0.01    0
+
+$PITS.PSEUDO
+                  1    2    3    4    5 miss
+PITS.PSEUDO.1  0.03 0.04 0.12 0.36 0.44    0
+PITS.PSEUDO.2  0.03 0.03 0.05 0.30 0.58    0
+PITS.PSEUDO.3  0.03 0.07 0.16 0.40 0.33    0
+PITS.PSEUDO.4  0.04 0.05 0.11 0.35 0.45    0
+PITS.PSEUDO.5  0.03 0.05 0.09 0.33 0.50    0
+PITS.PSEUDO.6  0.09 0.21 0.27 0.25 0.18    0
+PITS.PSEUDO.7  0.03 0.08 0.13 0.38 0.38    0
+PITS.PSEUDO.8  0.05 0.14 0.27 0.34 0.21    0
+PITS.PSEUDO.9  0.03 0.08 0.17 0.39 0.32    0
+PITS.PSEUDO.10 0.09 0.24 0.27 0.22 0.19    0
+
+$IAS.PSEUDO
+                    1    2    3    4 miss
+IAS.PSEUDO.1..R. 0.04 0.20 0.26 0.50    0
+IAS.PSEUDO.2     0.17 0.31 0.34 0.18    0
+IAS.PSEUDO.3     0.36 0.34 0.24 0.06    0
+IAS.PSEUDO.4..R. 0.22 0.36 0.21 0.21    0
+IAS.PSEUDO.5..R. 0.06 0.29 0.31 0.33    0
+IAS.PSEUDO.6     0.19 0.35 0.35 0.11    0
+
+$GIS.PSEUDO
+                     1    2    3    4    5    6 miss
+GIS.PSEUDO.1      0.04 0.10 0.17 0.36 0.25 0.08    0
+GIS.PSEUDO.2      0.07 0.15 0.18 0.32 0.20 0.07    0
+GIS.PSEUDO.3..R.  0.02 0.05 0.12 0.21 0.34 0.25    0
+GIS.PSEUDO.4..R.  0.04 0.10 0.16 0.20 0.32 0.18    0
+GIS.PSEUDO.5      0.13 0.18 0.19 0.25 0.20 0.05    0
+GIS.PSEUDO.6..R.  0.06 0.12 0.15 0.18 0.30 0.19    0
+GIS.PSEUDO.7      0.08 0.13 0.12 0.25 0.28 0.14    0
+GIS.PSEUDO.8..R.  0.13 0.24 0.21 0.19 0.16 0.07    0
+GIS.PSEUDO.9      0.03 0.05 0.12 0.30 0.34 0.15    0
+GIS.PSEUDO.10..R. 0.02 0.06 0.10 0.13 0.30 0.40    0
+GIS.PSEUDO.11..R. 0.03 0.06 0.08 0.14 0.27 0.42    0
+GIS.PSEUDO.12     0.03 0.04 0.05 0.25 0.40 0.23    0
+
+$SDQ.PSEUDO
+                    1    2    3    4    5    6    7 miss
+SDQ.PSEUDO.1..R. 0.00 0.01 0.01 0.06 0.15 0.35 0.41    0
+SDQ.PSEUDO.2     0.00 0.01 0.03 0.16 0.26 0.30 0.24    0
+SDQ.PSEUDO.3     0.01 0.03 0.03 0.12 0.23 0.30 0.27    0
+SDQ.PSEUDO.4..R. 0.03 0.05 0.06 0.29 0.12 0.21 0.23    0
+SDQ.PSEUDO.5     0.01 0.02 0.02 0.06 0.10 0.28 0.51    0
+SDQ.PSEUDO.6..R. 0.00 0.02 0.05 0.31 0.30 0.19 0.13    0
+SDQ.PSEUDO.7     0.01 0.02 0.03 0.12 0.31 0.32 0.20    0
+SDQ.PSEUDO.8     0.03 0.06 0.05 0.10 0.13 0.26 0.37    0
+SDQ.PSEUDO.9     0.01 0.01 0.02 0.17 0.16 0.27 0.36    0</code></pre>
 </div>
 <div id="correlations-among-composites" class="section level2">
-<h2><span class="header-section-number">0.4</span> Correlations among composites</h2>
+<h2><span class="header-section-number">0.5</span> Correlations among composites</h2>
 <pre class="r"><code>angelocomps &lt;- NULL
 for (cluster in itemclusters) {
     angelocomps &lt;- cbind(angelocomps, angelo2r %&gt;% select(starts_with(cluster)) %&gt;% apply(.,1,mean,na.rm=TRUE))
@@ -1448,11 +1967,11 @@ angelocomps &lt;- cbind(select(angelo2r,1:6), angelocomps)
 
 cor(angelocomps %&gt;% select(-c(1:6)))</code></pre>
 <pre><code>                 PSEUDO PITS.PSEUDO  IAS.PSEUDO  GIS.PSEUDO SDQ.PSEUDO
-PSEUDO       1.00000000  -0.2138773 -0.05284815 -0.06062434 -0.2956240
-PITS.PSEUDO -0.21387727   1.0000000  0.12141010  0.14447101  0.4463382
-IAS.PSEUDO  -0.05284815   0.1214101  1.00000000  0.06568017  0.1223967
-GIS.PSEUDO  -0.06062434   0.1444710  0.06568017  1.00000000  0.1642737
-SDQ.PSEUDO  -0.29562398   0.4463382  0.12239672  0.16427369  1.0000000</code></pre>
+PSEUDO       1.00000000  -0.1917903 -0.04603623 -0.04142810 -0.2885868
+PITS.PSEUDO -0.19179033   1.0000000  0.11218247  0.14033260  0.4483996
+IAS.PSEUDO  -0.04603623   0.1121825  1.00000000  0.06731948  0.1150026
+GIS.PSEUDO  -0.04142810   0.1403326  0.06731948  1.00000000  0.1595057
+SDQ.PSEUDO  -0.28858678   0.4483996  0.11500255  0.15950567  1.0000000</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
