@@ -44,11 +44,18 @@ revscore <- function (x,cluster) {  #this reverse scores a scale for items of re
 #define working directories
 inputdir <- "data"
 
-##--- Begin by reading data and variable names -----------------------------------------------------------------------
+## Reading data and variable names 
+# csv created from "Study 2 - Data Matrix (with control item).xlsx" on 11/11/19.
 angelo2 <- read.csv(paste(inputdir,"Study 2 - Data Matrix.csv",sep="/"),header=TRUE,row.names=NULL) 
+```
 
+## Cleaning data
+```{r clean, echo=TRUE, warning=FALSE, message=FALSE, results="hide"}
+names(angelo2)[1] <- "Control"
+angelo2 <- angelo2 %>% filter(Control==1)
 
 ```
+
 
 ## Reverse scoring
 ```{r reverse, echo=TRUE, warning=FALSE, message=FALSE, results="hide"}
@@ -62,7 +69,7 @@ sapply(itemclusters,FUN=function(cluster) {
 })
 
 # all variables to be reverse-scored contain ".R" in name
-angelo2r <- select(angelo2,1:6) #grab first bit, then add columns
+angelo2r <- select(angelo2,Control:starts_with("Political")) #grab first bit, then add columns
 sapply(itemclusters,FUN=function(cluster) {
   angelo2r <<- cbind(angelo2r, angelo2 %>% select(starts_with(cluster)) %>% mutate_at(vars(contains(".R")),revscore,cluster)) 
 })
@@ -76,6 +83,11 @@ descr(angelo2r)
 # correlations after reverse scoring
 sapply(itemclusters,FUN=function(cluster) {
   angelo2r %>% select(starts_with(cluster)) %>% cor 
+})
+
+# look at reliabilities
+sapply(itemclusters,FUN=function(cluster) {
+  angelo2r %>% select(starts_with(cluster)) %>% psych::alpha(.) %>% print
 })
 
 ```
