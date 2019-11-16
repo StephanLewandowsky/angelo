@@ -46,13 +46,13 @@ inputdir <- "data"
 
 ## Reading data and variable names 
 # csv created from "Study 2 - Data Matrix (with control item).xlsx" on 11/11/19.
-angelo2 <- read.csv(paste(inputdir,"Study 2 - Data Matrix.csv",sep="/"),header=TRUE,row.names=NULL) 
+angelo2raw <- read.csv(paste(inputdir,"Study 2 - Data Matrix.csv",sep="/"),header=TRUE,row.names=NULL) 
 ```
 
 ## Cleaning data
 ```{r clean, echo=TRUE, warning=FALSE, message=FALSE, results="hide"}
-names(angelo2)[1] <- "Control"
-angelo2 <- angelo2 %>% filter(Control==1)
+names(angelo2raw)[1] <- "Control"
+angelo2 <- angelo2raw %>% filter(Control==1) %>% select(-Control)
 
 ```
 
@@ -69,7 +69,7 @@ sapply(itemclusters,FUN=function(cluster) {
 })
 
 # all variables to be reverse-scored contain ".R" in name
-angelo2r <- select(angelo2,Control:starts_with("Political")) #grab first bit, then add columns
+angelo2r <- select(angelo2,Age:starts_with("Political")) #grab first bit, then add columns
 sapply(itemclusters,FUN=function(cluster) {
   angelo2r <<- cbind(angelo2r, angelo2 %>% select(starts_with(cluster)) %>% mutate_at(vars(contains(".R")),revscore,cluster)) 
 })
@@ -88,26 +88,78 @@ sapply(itemclusters,FUN=function(cluster) {
 })
 ```
 
-## Look at reliabilities
-```{r alpha, echo=TRUE}
 
-sapply(itemclusters,FUN=function(cluster) {
-  angelo2r %>% select(starts_with(cluster)) %>% psych::alpha(.) %>% print
-})
-
-```
-
-## Correlations among composites
+## Correlations among composites retaining all items
 ```{r composites, echo=TRUE}
 
 angelocomps <- NULL
 for (cluster in itemclusters) {
-    angelocomps <- cbind(angelocomps, angelo2r %>% select(starts_with(cluster)) %>% apply(.,1,mean,na.rm=TRUE))
+  angelocomps <- cbind(angelocomps, angelo2r %>% select(starts_with(cluster)) %>% apply(.,1,mean,na.rm=TRUE))
 }
 angelocomps <- as.data.frame(angelocomps)
 names(angelocomps) <- itemclusters
-angelocomps <- cbind(select(angelo2r,1:6), angelocomps)
+angelocomps <- cbind(select(angelo2r,Age:starts_with("Political")), angelocomps)
 
-cor(angelocomps %>% select(-c(1:6)))
+cor(angelocomps %>% select(-c(Age:starts_with("Political"))))
 
 ```  
+
+## Look at reliabilities
+```{r alpha, echo=TRUE}
+# e.g. http://www.statsoft.com/Textbook/Reliability-and-Item-Analysis#classical
+#first print
+sapply(itemclusters,FUN=function(cluster) {
+  angelo2r %>% select(starts_with(cluster)) %>% psych::alpha(.) %>% print
+})
+#now retain output for further processing
+a2alphas <- sapply(itemclusters,FUN=function(cluster) {
+  angelo2r %>% select(starts_with(cluster)) %>% psych::alpha(.) 
+})
+
+#drop items based on cutoffs e.g. https://rpubs.com/hauselin/reliabilityanalysis 
+r.drop.cutoff   <- .3
+max.resp.cutoff <- .8
+
+tbditems<- NULL
+for (cluster in itemclusters) {
+  thisscale <-  a2alphas[,cluster]
+  tbditems <- c(tbditems,
+                unique(c(rownames(thisscale$item.stats)[thisscale$item.stats$r.drop < r.drop.cutoff],
+                         rownames(thisscale$response.freq) [apply(thisscale$response.freq,1,max) > max.resp.cutoff])))
+}
+angelo2rfin <- angelo2r %>% select(-tbditems)
+```
+
+## Redo reliability analysis after eliminating items 
+```{r alpha2, echo=TRUE}
+sapply(itemclusters,FUN=function(cluster) {
+  angelo2rfin %>% select(starts_with(cluster)) %>% psych::alpha(.) %>% print
+})
+```
+
+## Distribution of composites after elimination of items
+```{r compositesplot, echo=TRUE}
+
+angelocomps <- NULL
+for (cluster in itemclusters) {
+  angelocomps <- cbind(angelocomps, angelo2rfin %>% select(starts_with(cluster)) %>% apply(.,1,mean,na.rm=TRUE))
+}
+angelocomps <- as.data.frame(angelocomps)
+names(angelocomps) <- itemclusters
+angelocomps <- cbind(select(angelo2rfin,Age:starts_with("Political")), angelocomps)
+
+hist(angelocomps %>% select(-c(Age:starts_with("Political"))))
+
+#focus on PITS.PSEUDO
+table(angelo2rfin %>% select(starts_with("PITS")) %>% apply(.,1,sum))
+```
+
+## Correlations among composites after elimination of items
+```{r compositescor, echo=TRUE}
+
+cor(angelocomps %>% select(-c(Age:starts_with("Political"))))
+
+```  
+
+
+
