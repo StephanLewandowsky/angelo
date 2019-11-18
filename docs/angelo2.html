@@ -458,7 +458,7 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-11-16
+<strong>Last updated:</strong> 2019-11-18
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -593,10 +593,10 @@ environment
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotree34f31e3d44fa75a582c8bceee45eb9494a6c849btargetblank34f31e3a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/StephanLewandowsky/angelo/tree/34f31e3d44fa75a582c8bceee45eb9494a6c849b" target="_blank">34f31e3</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotreee073a2a8391dfd8788ab2d45ac24b63256910318targetblanke073a2aa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/StephanLewandowsky/angelo/tree/e073a2a8391dfd8788ab2d45ac24b63256910318" target="_blank">e073a2a</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotree34f31e3d44fa75a582c8bceee45eb9494a6c849btargetblank34f31e3a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotreee073a2a8391dfd8788ab2d45ac24b63256910318targetblanke073a2aa" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -655,6 +655,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/StephanLewandowsky/angelo/blob/e073a2a8391dfd8788ab2d45ac24b63256910318/analysis/angelo2.Rmd" target="_blank">e073a2a</a>
+</td>
+<td>
+StephanLewandowsky
+</td>
+<td>
+2019-11-18
+</td>
+<td>
+Exploring nonlinearities in Angelo 2
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/StephanLewandowsky/angelo/a584281d34d88c51846f49dde6f8e7e6384e7e80/docs/angelo2.html" target="_blank">a584281</a>
+</td>
+<td>
+StephanLewandowsky
+</td>
+<td>
+2019-11-16
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -853,6 +887,7 @@ added second experiment
 <h2><span class="header-section-number">0.1</span> Setup and read data</h2>
 <pre class="r"><code>rm(list=ls())
 library(lattice)
+library(hexbin) #helps with large data sets in lattic scatterplot matrix
 library(stargazer)
 library(tidyverse)
 library(lme4)
@@ -2451,6 +2486,43 @@ angelocomps &lt;- cbind(select(angelo2rfin,Age:starts_with(&quot;Political&quot;
 
 hist(angelocomps %&gt;% select(-c(Age:starts_with(&quot;Political&quot;))))</code></pre>
 <p><img src="figure/angelo2.Rmd/compositesplot-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-compositesplot-1">
+Past versions of compositesplot-1.png
+</button>
+</p>
+<div id="fig-compositesplot-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/StephanLewandowsky/angelo/blob/a584281d34d88c51846f49dde6f8e7e6384e7e80/docs/figure/angelo2.Rmd/compositesplot-1.png" target="_blank">a584281</a>
+</td>
+<td>
+StephanLewandowsky
+</td>
+<td>
+2019-11-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>#focus on PITS.PSEUDO
 table(angelo2rfin %&gt;% select(starts_with(&quot;PITS&quot;)) %&gt;% apply(.,1,sum))</code></pre>
 <pre><code>
@@ -2458,6 +2530,7 @@ table(angelo2rfin %&gt;% select(starts_with(&quot;PITS&quot;)) %&gt;% apply(.,1,
  8  4  1  5  2  2  4  3  1  9  3  3  3  6  4  8 10 22 15 38 23 19 29 55 41 
 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 
 59 64 62 76 75 51 60 53 43 49 51 18 37 17 87 </code></pre>
+<pre class="r"><code>#tbk &lt;- angelo2rfin %&gt;% select(starts_with(&quot;PITS&quot;)) %&gt;% apply(.,1,sum)!=50</code></pre>
 </div>
 <div id="correlations-among-composites-after-elimination-of-items" class="section level2">
 <h2><span class="header-section-number">0.10</span> Correlations among composites after elimination of items</h2>
@@ -2468,6 +2541,16 @@ PITS.PSEUDO -0.18676691   1.0000000  0.11218247  0.17698731  0.4517671
 IAS.PSEUDO  -0.02998438   0.1121825  1.00000000  0.12316210  0.1058484
 GIS.PSEUDO  -0.01953699   0.1769873  0.12316210  1.00000000  0.1849645
 SDQ.PSEUDO  -0.32288404   0.4517671  0.10584839  0.18496446  1.0000000</code></pre>
+</div>
+<div id="check-for-nonlinearities-in-pairwise-composite-correlations" class="section level2">
+<h2><span class="header-section-number">0.11</span> Check for nonlinearities in pairwise composite correlations</h2>
+<pre class="r"><code>splom(angelocomps %&gt;% select(-c(Age:starts_with(&quot;Political&quot;))),
+      panel=panel.hexbinplot,
+      lower.panel = function(x, y, ...){
+            panel.hexbinplot(x, y, ...)
+            panel.loess(x, y, ..., col = &#39;red&#39;,lwd=2)
+      })</code></pre>
+<p><img src="figure/angelo2.Rmd/nonlinplots-1.png" width="672" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -2501,7 +2584,7 @@ other attached packages:
 [16] forcats_0.4.0      stringr_1.3.1      dplyr_0.8.3       
 [19] purrr_0.3.2        readr_1.3.1        tidyr_0.8.2       
 [22] tibble_2.0.1       ggplot2_3.2.0      tidyverse_1.2.1   
-[25] stargazer_5.2.2    lattice_0.20-38   
+[25] stargazer_5.2.2    hexbin_1.28.0      lattice_0.20-38   
 
 loaded via a namespace (and not attached):
   [1] readxl_1.3.1         backports_1.1.3      BDgraph_2.54        
