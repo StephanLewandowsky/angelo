@@ -593,10 +593,10 @@ environment
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotreef87d36e02a446137040c4a8e35711dedc09bd146targetblankf87d36ea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/StephanLewandowsky/angelo/tree/f87d36e02a446137040c4a8e35711dedc09bd146" target="_blank">f87d36e</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotree7ad7a9493c30805930c7489a27f011ed27f5a405targetblank7ad7a94a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/StephanLewandowsky/angelo/tree/7ad7a9493c30805930c7489a27f011ed27f5a405" target="_blank">7ad7a94</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotreef87d36e02a446137040c4a8e35711dedc09bd146targetblankf87d36ea" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotree7ad7a9493c30805930c7489a27f011ed27f5a405targetblank7ad7a94a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -655,6 +655,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/StephanLewandowsky/angelo/blob/7ad7a9493c30805930c7489a27f011ed27f5a405/analysis/angelo2.Rmd" target="_blank">7ad7a94</a>
+</td>
+<td>
+StephanLewandowsky
+</td>
+<td>
+2019-11-18
+</td>
+<td>
+Exploring nonlinearities in Angelo 2
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/StephanLewandowsky/angelo/c2814c3e8ad212c5cec742d10f6f19a50a4294bf/docs/angelo2.html" target="_blank">c2814c3</a>
+</td>
+<td>
+StephanLewandowsky
+</td>
+<td>
+2019-11-18
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -2578,7 +2612,8 @@ SDQ.PSEUDO  -0.32288404   0.4517671  0.10584839  0.18496446  1.0000000</code></p
 </div>
 <div id="check-for-nonlinearities-in-pairwise-composite-correlations" class="section level2">
 <h2><span class="header-section-number">0.11</span> Check for nonlinearities in pairwise composite correlations</h2>
-<pre class="r"><code>splom(angelocomps %&gt;% select(-c(Age:starts_with(&quot;Political&quot;))),
+<pre class="r"><code>x11(width=7,height=7)
+splom(angelocomps %&gt;% select(-c(Age:starts_with(&quot;Political&quot;))),
       panel=panel.hexbinplot,
       lower.panel = function(x, y, ...){
             panel.hexbinplot(x, y, ...)
@@ -2607,6 +2642,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/StephanLewandowsky/angelo/blob/c2814c3e8ad212c5cec742d10f6f19a50a4294bf/docs/figure/angelo2.Rmd/nonlinplots-1.png" target="_blank">c2814c3</a>
+</td>
+<td>
+StephanLewandowsky
+</td>
+<td>
+2019-11-18
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/StephanLewandowsky/angelo/blob/ae9f567754de1aaeec0eea85963db4643b311b5b/docs/figure/angelo2.Rmd/nonlinplots-1.png" target="_blank">ae9f567</a>
