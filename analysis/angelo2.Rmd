@@ -19,6 +19,7 @@ editor_options:
 ```{r echo=TRUE, warning=FALSE, message=FALSE, results="hide"}
 rm(list=ls())
 library(lattice)
+library(hexbin) #helps with large data sets in lattic scatterplot matrix
 library(stargazer)
 library(tidyverse)
 library(lme4)
@@ -152,6 +153,9 @@ hist(angelocomps %>% select(-c(Age:starts_with("Political"))))
 
 #focus on PITS.PSEUDO
 table(angelo2rfin %>% select(starts_with("PITS")) %>% apply(.,1,sum))
+
+#tbk <- angelo2rfin %>% select(starts_with("PITS")) %>% apply(.,1,sum)!=50
+
 ```
 
 ## Correlations among composites after elimination of items
@@ -161,5 +165,13 @@ cor(angelocomps %>% select(-c(Age:starts_with("Political"))))
 
 ```  
 
-
+## Check for nonlinearities in pairwise composite correlations
+```{r nonlinplots, echo=TRUE}
+splom(angelocomps %>% select(-c(Age:starts_with("Political"))),
+      panel=panel.hexbinplot,
+      lower.panel = function(x, y, ...){
+            panel.hexbinplot(x, y, ...)
+            panel.loess(x, y, ..., col = 'red',lwd=2)
+      })
+```  
 
