@@ -172,6 +172,6 @@ splom(angelocomps %>% select(-c(Age:starts_with("Political"))),
       lower.panel = function(x, y, ...){
             panel.hexbinplot(x, y, ...)
             panel.loess(x, y, ..., col = 'red',lwd=2)
-      })
+      },varname.cex=0.7)
 ```  
 
