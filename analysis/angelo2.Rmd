@@ -167,6 +167,7 @@ cor(angelocomps %>% select(-c(Age:starts_with("Political"))))
 
 ## Check for nonlinearities in pairwise composite correlations
 ```{r nonlinplots, echo=TRUE}
+x11(width=7,height=7)
 splom(angelocomps %>% select(-c(Age:starts_with("Political"))),
       panel=panel.hexbinplot,
       lower.panel = function(x, y, ...){
