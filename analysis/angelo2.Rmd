@@ -179,8 +179,9 @@ splom(angelocomps %>% select(-c(Age:starts_with("Political"))),
 
 ## Look at correlations retaining only the 'skeptics' (i.e., PSEUDO <= 2.5)
 ```{r compositescorskeptics, echo=TRUE}
-
-cor(angelocomps %>% select(-c(Age:starts_with("Political"))) %>% filter(PSEUDO <= 2.5) )
+a2cskep <- angelocomps %>% filter(PSEUDO <= 2.5)
+print(str(a2cskep))
+cor(a2cskep %>% select(-c(Age:starts_with("Political"))) )
 
 ``` 
 
