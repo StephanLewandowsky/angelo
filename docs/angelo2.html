@@ -593,10 +593,10 @@ environment
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotreed68669b9f1ff894913ec513f71dd8ea798fa5681targetblankd68669ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/StephanLewandowsky/angelo/tree/d68669b9f1ff894913ec513f71dd8ea798fa5681" target="_blank">d68669b</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotreeba627c7ebcc8c7919cddbc7ba7d61f3b66abb113targetblankba627c7a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/StephanLewandowsky/angelo/tree/ba627c7ebcc8c7919cddbc7ba7d61f3b66abb113" target="_blank">ba627c7</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotreed68669b9f1ff894913ec513f71dd8ea798fa5681targetblankd68669ba" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomStephanLewandowskyangelotreeba627c7ebcc8c7919cddbc7ba7d61f3b66abb113targetblankba627c7a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -656,6 +656,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/StephanLewandowsky/angelo/blob/ba627c7ebcc8c7919cddbc7ba7d61f3b66abb113/analysis/angelo2.Rmd" target="_blank">ba627c7</a>
+</td>
+<td>
+StephanLewandowsky
+</td>
+<td>
+2019-11-20
+</td>
+<td>
+Exploring nonlinearities in Angelo 2
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/StephanLewandowsky/angelo/03f165c2c48bf0091d1193d177752098ade2fa7f/docs/angelo2.html" target="_blank">03f165c</a>
+</td>
+<td>
+StephanLewandowsky
+</td>
+<td>
+2019-11-20
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -2707,7 +2741,22 @@ StephanLewandowsky
 </div>
 <div id="look-at-correlations-retaining-only-the-skeptics-i.e.-pseudo-2.5" class="section level2">
 <h2><span class="header-section-number">0.12</span> Look at correlations retaining only the ‘skeptics’ (i.e., PSEUDO &lt;= 2.5)</h2>
-<pre class="r"><code>cor(angelocomps %&gt;% select(-c(Age:starts_with(&quot;Political&quot;))) %&gt;% filter(PSEUDO &lt;= 2.5) )</code></pre>
+<pre class="r"><code>a2cskep &lt;- angelocomps %&gt;% filter(PSEUDO &lt;= 2.5)
+print(str(a2cskep))</code></pre>
+<pre><code>&#39;data.frame&#39;:   932 obs. of  11 variables:
+ $ Age                               : int  39 18 40 41 37 22 45 45 42 33 ...
+ $ Sex                               : Factor w/ 3 levels &quot;&quot;,&quot;Female&quot;,&quot;Male&quot;: 2 3 2 3 3 3 3 3 2 3 ...
+ $ Education                         : Factor w/ 3 levels &quot;&quot;,&quot;Pre-University&quot;,..: 3 3 3 3 2 3 3 3 3 3 ...
+ $ Nationality                       : Factor w/ 125 levels &quot;&quot;,&quot;AR&quot;,&quot;arg&quot;,..: 51 65 64 65 64 59 65 65 81 5 ...
+ $ Religion                          : Factor w/ 5 levels &quot;&quot;,&quot;Agnostic&quot;,..: 3 3 2 4 3 4 3 2 3 3 ...
+ $ Political.tendency..1...Left.wing.: int  3 2 4 2 2 3 6 3 1 7 ...
+ $ PSEUDO                            : num  1.11 2 1.74 1.11 1 ...
+ $ PITS.PSEUDO                       : num  2.9 5 3.5 4 4.5 3.9 4.3 4.4 4.4 3.3 ...
+ $ IAS.PSEUDO                        : num  2 3.67 2.17 2.83 2 ...
+ $ GIS.PSEUDO                        : num  4.33 4.33 3.56 4 3.89 ...
+ $ SDQ.PSEUDO                        : num  5.62 5.12 4 5.5 7 ...
+NULL</code></pre>
+<pre class="r"><code>cor(a2cskep %&gt;% select(-c(Age:starts_with(&quot;Political&quot;))) )</code></pre>
 <pre><code>                 PSEUDO PITS.PSEUDO IAS.PSEUDO  GIS.PSEUDO  SDQ.PSEUDO
 PSEUDO       1.00000000  -0.1463975 0.03489214 -0.08042298 -0.27655199
 PITS.PSEUDO -0.14639750   1.0000000 0.10834065  0.19091518  0.40903828
