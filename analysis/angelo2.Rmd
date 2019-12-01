@@ -185,4 +185,35 @@ cor(a2cskep %>% select(-c(Age:starts_with("Political"))) )
 
 ``` 
 
+## Mediation model as sketched by Angelo
+```{r mediation, echo=TRUE}
 
+
+model <- ' # direct effects
+              SDQ.PSEUDO ~ dirt1 * PSEUDO
+              SDQ.PSEUDO ~ dirt2 * PITS.PSEUDO 
+           
+           # endogenous variable
+              PITS.PSEUDO ~ a * PSEUDO
+           
+           # mediator1
+              IAS.PSEUDO ~ c * PITS.PSEUDO
+              SDQ.PSEUDO ~ d * IAS.PSEUDO
+              medIAS := a*c*d
+
+           # mediator 2
+              GIS.PSEUDO ~ e * PITS.PSEUDO
+              SDQ.PSEUDO ~ f * GIS.PSEUDO
+              medGIS := a*e*f
+
+           # total effect
+             total := dirt1 + dirt2 * a + medIAS + medGIS
+         '
+fit <- sem(model, data = angelocomps)
+summary(fit, standardized=TRUE, fit.measures=TRUE)
+
+
+```
+
+<!---http://lavaan.ugent.be/tutorial/mediation.html 
+https://www.collabra.org/article/10.1525/collabra.143/--->
