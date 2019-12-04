@@ -185,7 +185,7 @@ cor(a2cskep %>% select(-c(Age:starts_with("Political"))) )
 
 ``` 
 
-## Mediation model as sketched by Angelo
+## Full mediation model as sketched by Angelo
 ```{r mediation, echo=TRUE}
 
 model1 <- ' # direct effects
@@ -210,6 +210,10 @@ model1 <- ' # direct effects
          '
 fit2mediators <- sem(model1, data = angelocomps)
 summary(fit2mediators, standardized=TRUE, fit.measures=TRUE)
+```
+
+## Turn off IAS mediator
+```{r mediation2, echo=TRUE}
 
 model2 <- ' # direct effects
               SDQ.PSEUDO ~ dirt1 * PSEUDO
@@ -232,7 +236,10 @@ model2 <- ' # direct effects
          '
 fit1mediator <- sem(model2, data = angelocomps)
 summary(fit1mediator, standardized=TRUE, fit.measures=TRUE)
+```
 
+## Eliminate PITS-->SDQ direct link (force full mediation)
+```{r mediation3, echo=TRUE}
 
 model3 <- ' # direct effects
               SDQ.PSEUDO ~ dirt1 * PSEUDO
@@ -256,7 +263,10 @@ model3 <- ' # direct effects
          '
 fitnodirect <- sem(model3, data = angelocomps)
 summary(fitnodirect, standardized=TRUE, fit.measures=TRUE)
+```
 
+## Compare variants of mediation models
+```{r mediationcomp, echo=TRUE}
 
 anova(fit1mediator,fit2mediators)
 anova(fit2mediators,fitnodirect)
