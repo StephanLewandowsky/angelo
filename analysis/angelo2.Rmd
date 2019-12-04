@@ -188,12 +188,11 @@ cor(a2cskep %>% select(-c(Age:starts_with("Political"))) )
 ## Mediation model as sketched by Angelo
 ```{r mediation, echo=TRUE}
 
-
-model <- ' # direct effects
+model1 <- ' # direct effects
               SDQ.PSEUDO ~ dirt1 * PSEUDO
               SDQ.PSEUDO ~ dirt2 * PITS.PSEUDO 
            
-           # endogenous variable
+           # intervening variable
               PITS.PSEUDO ~ a * PSEUDO
            
            # mediator1
@@ -209,9 +208,58 @@ model <- ' # direct effects
            # total effect
              total := dirt1 + dirt2 * a + medIAS + medGIS
          '
-fit <- sem(model, data = angelocomps)
-summary(fit, standardized=TRUE, fit.measures=TRUE)
+fit2mediators <- sem(model1, data = angelocomps)
+summary(fit2mediators, standardized=TRUE, fit.measures=TRUE)
 
+model2 <- ' # direct effects
+              SDQ.PSEUDO ~ dirt1 * PSEUDO
+              SDQ.PSEUDO ~ dirt2 * PITS.PSEUDO 
+           
+           # intervening variable
+              PITS.PSEUDO ~ a * PSEUDO
+           
+           # mediator1 (turned off)
+              IAS.PSEUDO ~ c * PITS.PSEUDO
+              SDQ.PSEUDO ~ 0 * IAS.PSEUDO
+              
+           # mediator 2
+              GIS.PSEUDO ~ e * PITS.PSEUDO
+              SDQ.PSEUDO ~ f * GIS.PSEUDO
+              medGIS := a*e*f
+
+           # total effect
+             total := dirt1 + dirt2 * a + medGIS
+         '
+fit1mediator <- sem(model2, data = angelocomps)
+summary(fit1mediator, standardized=TRUE, fit.measures=TRUE)
+
+
+model3 <- ' # direct effects
+              SDQ.PSEUDO ~ dirt1 * PSEUDO
+              SDQ.PSEUDO ~ 0 * PITS.PSEUDO 
+           
+           # intervening variable
+              PITS.PSEUDO ~ a * PSEUDO
+           
+           # mediator1
+              IAS.PSEUDO ~ c * PITS.PSEUDO
+              SDQ.PSEUDO ~ d * IAS.PSEUDO
+              medIAS := a*c*d
+
+           # mediator 2
+              GIS.PSEUDO ~ e * PITS.PSEUDO
+              SDQ.PSEUDO ~ f * GIS.PSEUDO
+              medGIS := a*e*f
+
+           # total effect
+             total := dirt1 +  medIAS + medGIS
+         '
+fitnodirect <- sem(model3, data = angelocomps)
+summary(fitnodirect, standardized=TRUE, fit.measures=TRUE)
+
+
+anova(fit1mediator,fit2mediators)
+anova(fit2mediators,fitnodirect)
 
 ```
 
